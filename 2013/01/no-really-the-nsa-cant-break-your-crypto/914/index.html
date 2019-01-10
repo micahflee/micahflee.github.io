@@ -1,0 +1,163 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>Legacy Comments</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../../../static/style.css">
+  <link rel="stylesheet" href="../../../../static/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Sure</p>
+        <p class="legacy-comment-meta-pub_date">June 14, 2013 06:55 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>That works if your key is s76f%^56d7agsjdhast65%$687673tgjhasd
+But not if it's made up of dictionary/numbers/punctuation.</p>
+<p>These are all currently crackable:
+Larry26_pw
+banana99
+123@Leopards!Cool!</p>
+<p>etc...</p>
+<p>So, chances are most real-world passwords are indeed crackable - not hypothetically - but truly currently crackable.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">micah</p>
+        <p class="legacy-comment-meta-pub_date">June 14, 2013 09:50 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Those are passwords, not keys. The actual encryption key is (in the example in this blog post) is a string of 128 random bits. In practice it's common for us to symmetrically encrypt a crypto key with a passphrase, e.g. GPG encryption. But in order t o break that the attacker needs a copy of your encrypted secret key.</p>
+<p>Let's say the attacker only has a copy of an email that you received that someone encrypted with your public key, but doesn't have a copy of your passphrase-protected secret key. Trying to decrypt that email doesn't have anything to do with passwords or passphrases. It has to do with finding the most efficient way to guess the actual string of bits that's protecting the email, and that's what I believe they can't do.</p>
+<p>However that doesn't mean you can just use GPG and everything is safe. Your computer can get hacked, they can access your secret key and brute-force the passphrase, they can confuse and get you to send encrypted messages to the wrong public key, they can rubber hose attack you for the info they want, or they can not care about the content when it's encrypted and gather everything they want from the metadata.</p>
+<p>But the whole point of this is that there are some math problems that, until there's some breakthrough in mathematics, make it so crypto (done correctly) actually works.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name"><a href="../../../../">Micah Lee's blog</a></p>
+      <p><img class="coffee" src="../../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP 0x403C2657CD994F73
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a>
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../../../../static/images/reality.png"></a></p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?<p><p>Check the <a href="../../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../../tags/tor/">tor</a></li>
+  
+  </ul>
+
+    </div>
+  </div>
+</body>

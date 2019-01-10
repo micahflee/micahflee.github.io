@@ -1,0 +1,354 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>Using Tor Browser Launcher in Qubes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    
+      <h1 class="article-title">Using Tor Browser Launcher in Qubes</h1>
+    
+    <p class="meta">
+      Posted May 9, 2014 12:00 AM
+      
+        in
+        
+          <a class="tag" href="../../../tags/tor">tor</a>
+        
+          <a class="tag" href="../../../tags/qubes">qubes</a>
+        
+      
+    </p>
+    
+      <p>I maintain a piece of software called <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>. It takes care of downloading Tor Browser Bundle for you, verifying the gpg signature, making sure you’re always using the latest version of Tor Browser, and making it easier to launch.</p>
+<p>I originally only made Tor Browser Launcher work in Debian-based distributions, but since the default templates in <a href="http://qubes-os.org/">Qubes</a> are based on Fedora, I recently ported it to RPM-based distributions as well. Here’s how to set it up.</p>
+<p>You’ll need to build an RPM from the torbrowser-launcher source code first. Create a new appvm (I called mine tbl-builder), open a terminal in it, and follow these steps:</p>
+<pre><code class="lang-bash">sudo yum -y install git python-psutil python-twisted pygame wmctrl gnupg fakeroot
+git clone https://github.com/micahflee/torbrowser-launcher.git
+cd torbrowser-launcher
+./build_rpm.sh
+</code></pre>
+<p>When you’re done, it should have built an RPM package in dist/torbrowser-launcher-[version]-1.noarch.rpm. Go ahead and copy this to your templatevm:</p>
+<pre><code class="lang-bash">qvm-copy-to-vm fedora-20-x64 dist/torbrowser-launcher-*.rpm
+</code></pre>
+<p>Now that you’ve copied the RPM to your templatevm, you can shut down and delete the appvm you just created. Next, open a terminal in your templatevm (e.g. fedora-20-x64), install torbrowser-launcher (and then cleanup your templatevm’s home dir):</p>
+<pre><code class="lang-bash">sudo yum install QubesIncoming/tbl-builder/torbrowser-launcher-*-1.noarch.rpm
+rm -r QubesIncoming
+</code></pre>
+<p>Now shut down your templatevm. Now all you have to do to add Tor Browser to your menu is go to an appvm’s settings, switch to the Applications tab, and move “Tor Browser” and “Tor Browser Settings” from Available to Selected, and save. If your appvm was already running when you installed torbrowser-launcher in your templatevm you’ll have to shut it down and restart it.</p>
+<p>Now you can open Tor Browser the way you open any other software in any of your appvms.</p>
+<p>Qubes also supports a special kind of netvm called a torvm. You can <a href="http://wiki.qubes-os.org/trac/wiki/UserDoc/TorVM">read about it here</a>. If you set an appvm’s netvm to be your torvm (making your appvm an anonvm), then all internet traffic in that appvm gets transparently proxied through Tor. This is great for a wide variety of things, but using the Tor Browser itself is still much wiser, because it does a lot of anti-forensics tricks that keep you anonymous. If you just use Firefox in an anonvm, your browser can much more easily be fingerprinted.</p>
+<p>If you’d like to use Tor Browser in an anonvm, you have to do one more step to stop yourself from connecting to Tor through the Tor network. Open Tor Browser in your anonvm, click the onion icon and open Preferences. Under Proxy Settings, change “Use the recommended proxy settings for my version of Firefox” to “Transparent Torification (Requires custom transproxy or Tor router)”. Then go to <a href="https://check.torproject.org/">https://check.torproject.org/</a> to verify that you’re still connected to the Tor network.</p>
+<p>That’s it. Now if your Tor Browser gets hacked and the attacker tries to leak your real IP address, it just won’t work. They’ll have to break out of Qubes isolation first.</p>
+
+
+      
+        
+        <div class="legacy-comments">
+          <p class="legacy-comments-notice">Legacy comments, imported from previous version of this blog:</p>
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Brennan Novak</p>
+        <p class="legacy-comment-meta-pub_date">May 30, 2015 05:07 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Hey Micah. I noticed in your step <blockquote>You’ll need to build an RPM from the torbrowser-launcher source code first. Create a new appvm (I called mine tbl-builder), open a terminal in it, and follow these steps:</blockquote> you seem to be creating a unique "AppVM" just to do the building process, do you do this for building all packages? Is this the more desired / secure approach instead of doing it inside of the fedora-21 TemplateVM ?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">May 30, 2015 09:34 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I don't think this is necessarily more secure than just installing these in the fedora-21 template. I just didn't want people mucking up their template with packages they might not necessarily want.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">privacyfriend</p>
+        <p class="legacy-comment-meta-pub_date">May 19, 2014 01:55 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Is it OK to remove the torlauncher TorBrowser Addon when running in transparent torification mode? (Starting Torbrowser without that addon is ALOT faster.)</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Grai</p>
+        <p class="legacy-comment-meta-pub_date">May 12, 2014 05:15 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Hi. Is it possible to run adobe flash inside a Firefox anonvm?
+I know about the security fails of flash for anonymity purposes, but i just wish know if this will provide a safe way to run flash?
+I study online whonix runs flash safely if asked, so can Qubes do the same? Thanks.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">micah</p>
+        <p class="legacy-comment-meta-pub_date">May 12, 2014 08:40 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Yes, Qubes can do the same. The main anonymity risks about using Flash is that it doesn't need to respect your browser's proxy settings, which means it can connect to server without using Tor (to learn your real IP), and also Flash videos can set their own type of cookies that can track you as you use the web. If you're using it inside of an anonvm, even if Flash tries to connect without using a proxy it will still end up going over Tor.</p>
+<p>And Tor Browser was specifically designed to make it impossible to uniquely fingerprint your browser, which isn't true for other browsers. So if you wanted to do this, it would also make sense to set your Firefox settings to never save a history and delete everything on exit, and perhaps chance your user agent to make it look like you're using Firefox in Windows or something.</p>
+<p>Of course, Flash is also really buggy, and using it at all is one of the easiest ways to get hacked. So if you use Flash in an anonvm, it's more likely that that vm will get hacked than if you used the normal Tor Browser.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Grai</p>
+        <p class="legacy-comment-meta-pub_date">May 13, 2014 05:44 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Thanks for detailed replying! I will now try Qubes also after whonix &amp; tails.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">attila</p>
+        <p class="legacy-comment-meta-pub_date">July 9, 2014 05:05 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>However, in case of Whonix and TOR VM, as it relates to Qubes, flash player cannot directly connect to server without using Tor due to their respective inherent architectures that force any/all apps to go through TOR network as there are no other connections available or possible.</p>
+<p>Isn't this true?</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Tor Browser in Qubes | 0ddn1x: tricks with *nix</p>
+        <p class="legacy-comment-meta-pub_date">February 23, 2016 12:47 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>[&#8230;] <a href="https://micahflee.com/2014/05/using-tor-browser-launcher-in-qubes/">https://micahflee.com/2014/05/using-tor-browser-launcher-in-qubes/</a> [&#8230;]</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">privacyfriend</p>
+        <p class="legacy-comment-meta-pub_date">May 15, 2014 01:07 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Hello Micah, 
+thank you for your guide.</p>
+<p>you might want to add 'rpm-build' to the list of packages to install before building, otherwise building will fail because rpmspec is missing.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+        </div>
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name"><a href="../../../">Micah Lee's blog</a></p>
+      <p><img class="coffee" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP 0x403C2657CD994F73
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a>
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../../../static/images/reality.png"></a></p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?<p><p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+  </ul>
+
+    </div>
+  </div>
+</body>

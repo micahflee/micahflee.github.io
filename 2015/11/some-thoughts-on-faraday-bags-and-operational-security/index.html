@@ -1,0 +1,836 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>Some Thoughts on Faraday Bags and Operational Security</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="../../../2015/11/some-thoughts-on-faraday-bags-and-operational-security/faraday-cage.jpg" />
+    </p>
+    
+    
+      <h1 class="article-title">Some Thoughts on Faraday Bags and Operational Security</h1>
+    
+    <p class="meta">
+      Posted November 25, 2015 12:00 AM
+      
+        in
+        
+          <a class="tag" href="../../../tags/security">security</a>
+        
+          <a class="tag" href="../../../tags/mobile">mobile</a>
+        
+      
+    </p>
+    
+      <p>I recently took a trip to Moscow to <a href="https://theintercept.com/2015/11/12/edward-snowden-explains-how-to-reclaim-your-privacy/">interview National Security Agency whistblower Edward Snowden</a> about operational security. In the article I published on The Intercept, I mentioned that I used a faraday bag.</p>
+<blockquote><p>Our first meeting would be in the hotel lobby, and I arrived with all my important electronic gear in tow. I had powered down my smartphone and placed it in a “faraday bag” designed to block all radio emissions.</p>
+</blockquote>
+<p>Since I published my interview, many people have asked me for more information about this faraday bag — which product did I get, what does it protect against, how does it work? So here are some quick thoughts on the topic.</p>
+<p><strong>What are faraday bags?</strong></p>
+<p>Faraday bags, or more generally, <a href="https://en.wikipedia.org/wiki/Faraday_cage">faraday cages</a>, are named after the brilliant scientist Michael Faraday. If you’re a nerd, I recommend watching the <a href="https://en.wikipedia.org/wiki/The_Electric_Boy">10th episode</a> of Neil DeGrasse Tyson’s Cosmos to learn more about him.</p>
+<p>They’re made of a material that blocks electric fields from passing through it. Smartphones have a ton of different built-in radios: GSM, CDMA, 2G, 3G, 4G, wifi, bluetooth, NFC, GPS, and others. Each of these communicates wirelessly by sending and receiving information through the air in the form of radio emissions on different frequencies. If you put your smartphone inside of a faraday bag, it might be listening for incoming radio emissions, but none will reach it, and it might be attempting to communicate to the outside, but all of its messages will fail to penetrate the bag.</p>
+<p><strong>Which one should I buy?</strong></p>
+<p>I bought my faraday bag on Amazon. I didn’t have a particular product in mind; I basically just read reviews and got a nice one that was a little on the bigger side so that I could fit multiple phones, and also my passport (which has an RFID chip, which also communicates using radio emissions).</p>
+<p>It doesn’t particularly matter which product you choose, but make sure that you test it after you get it to confirm that it works. Testing it is easy enough. Put your phone inside the bag, and then use another phone to try calling it. If your phone rings, it doesn’t work. You can also test data in a similar fashion — try sending yourself a notification over data (like a Facebook message) and see if your phone receives it while it’s inside the bag.</p>
+<p><strong>Why might this be useful for operational security?</strong></p>
+<p>First, assume that your smartphone is hacked and that the attacker can utilize all of its radios and sensors. Also assume that your attacker can get information from third party companies, such as your cell phone carrier, which will know your location and be in a position to eavesdrop on much of your phone usage.</p>
+<p>Smartphones are crazy useful, so it sucks to not use them just because you can’t trust them. Instead, you can use faraday bags to <em>selectively keep certain information away from your phone</em>, despite the fact that you can’t trust it.</p>
+<p>If you carry your phone around with you, your attacker gets to learn your location. From when you turn on your phone after your airplane lands, to taking public transit or a taxi to your hotel, to going out for dinner or drinks, or anything else — the attacker can see your exact location.</p>
+<p>So if you want to have a meeting without revealing to your attacker where this meeting is taking place (your attacker can likely infer who you’re meeting with based on what other phones are in the same location), but you don’t want to leave your phone in your hotel room, you can safely bring it with you inside a faraday bag, because your phone itself won’t be able to determine its location. It may try to, but those signals won’t penetrate the material of the bag.</p>
+<p>Your phone might be spying on you in other ways, too. It has a microphone, so it could be listening to your conversations and streaming them back to your attacker over the internet, or using some other wireless technology like wifi or bluetooth. Keeping your phone in a faraday bag will prevent your phone from communicating at all.</p>
+<p>But here’s an important caveat: Your phone could be listening to your conversations and storing them on disk, waiting for an internet connection. As soon as you take your phone out of your faraday bag, it can use the internet to upload recorded audio to your attacker.</p>
+<p>Faraday bags block electric fields, but they don’t block sound. If you don’t want your phone to overhear a conversation, just putting it in a faraday bag isn’t enough. You also need to put it out of earshot. Put it in a different room, muffle it under some pillows, or put it in the refrigerator.</p>
+
+
+      
+        
+        <div class="legacy-comments">
+          <p class="legacy-comments-notice">Legacy comments, imported from previous version of this blog:</p>
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">gaiko</p>
+        <p class="legacy-comment-meta-pub_date">February 22, 2016 01:24 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Hi, this is marginally related to compromised phones, I noticed you are a Qubes fan, have you taken a look at "Secure Spaces" the isolated android rom? Would really be curious to hear your thoughts.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">neddy</p>
+        <p class="legacy-comment-meta-pub_date">November 28, 2015 02:07 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Please, please, please learn the difference between "it's" and "its" -- because not knowing (or caring) makes you look illiterate.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">November 30, 2015 11:11 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Typo fixed, jerk.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Eric</p>
+        <p class="legacy-comment-meta-pub_date">July 24, 2018 08:12 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>The difference?? Whats to know? One is an abbreviation, the other is not... (well it is possessive). Not much to 'know'. Obviously a typo</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Shannon Davis</p>
+        <p class="legacy-comment-meta-pub_date">December 23, 2016 09:38 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Micah, what do you think about the VPN software HIDE MY ASS?</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Grace Sapia</p>
+        <p class="legacy-comment-meta-pub_date">May 3, 2018 06:25 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Dear Micah Lee, I am not as smart as all you guys on this blog about all this technology, so please bare with me. I was hoping you can answer a question for me. I wanted to get a Faraday bag to shield me from radiation and electromagnetic fields. Yes, I am one of those crazy nuts who still worry about that. I understand that the Faraday bag would do that. But I had hoped that while my cell phone is in the F/bag, that my friends can still leave messages or texts, and then I can check them later. But from what I am reading on this blog, it doesn't sound like anyone would be able to get through and leave any kind of message. Am I right about that? Since you are much smarter than I on this topic, do you have any thoughts/suggestions? It would be very much appreciated!!</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">May 3, 2018 09:13 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>That's right, faraday bags are designed to block wireless signals from penetrating the bag completely. People can still send you messages, they just won't reach the phone until after you take it out of the bag and it can talk to networks again. My advise to you is to not worry about the radiation emitted by your cell phone. It's non-ionizing and isn't harmful to health. Also, your phone's radio transmitters are not very powerful compared to the transmitters on cell phone towers, FM radio towers, etc., and those signals are constantly going through your body, but that doesn't matter either because they aren't harmful to your health.</p>
+<p>If you really want to protect your body from harmful radiation, you should wear sunscreen.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Grace Sapia</p>
+        <p class="legacy-comment-meta-pub_date">May 3, 2018 10:53 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Thanks very much for your help and for clearing things up for me. Much appreciated!</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Grace Sapia</p>
+        <p class="legacy-comment-meta-pub_date">May 4, 2018 05:26 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Can I ask another dumb question? So then are you saying that let's say I am carrying around my phone in a faraday bag in my purse and a friend is trying to send me a text (or call me) during that time. Does that text (or voice mail message) get completely lost, or does it just "wait" in limbo (so to speak) until I take my phone out of the faraday bag, and then that text (or voicemail message) reaches my phone and gets registered (for lack of a better word) and ultimately gets sent to my phone, and I still receive that text (or voicemail message), but just after I take my phone out of the faraday bag? Is that how it works? Or is it that this friend would not be able to reach my phone at all while in the faraday bag? Thanks for your patience with my questions.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">May 4, 2018 10:35 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>When your friend sends you a SMS message, they actually send it to your cell phone carrier, who collects a queue of messages to deliver to you. Your carrier will try to deliver it immediately, but if your handset isn't on the network, it will wait until it appears on the network before sending it. So if your phone is turned off (or if it's in a faraday bag), your messages will just queue up on your carrier's computer all until it connects to the network again, and your carrier will then send them all at once.</p>
+<p>So just by putting your phone in a faraday bag (or turning it off) shouldn't make you lose any messages.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Grace Sapia</p>
+        <p class="legacy-comment-meta-pub_date">May 4, 2018 03:06 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>THANK YOU so much for taking the time to answer my inane questions!! Now I get it. I really appreciate it. Have a great weekend!</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Felipe Castellagne</p>
+        <p class="legacy-comment-meta-pub_date">July 16, 2018 05:00 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>With all due respect to your posting, and IMHO, you wouldn't have a need for a Faraday bag if you are truly worried about harmful UV rays, and if you are talking about body scanners, x-rays and the like, a Faraday bag is just enough to fit a mobile phone, and maybe a tablet. The idea that a Faraday will protect your body seems impractical because there are other more plausible ways of protecting yourself from harmful rays.  But if I continue, i will digress from the topic so best  to stop here.</p>
+<p>Going back to your condition that your mobile, while inside a Faraday must be able to receive messages, and or certain alerts you have chosen; this only means that a Faraday is not what you need because  a good quality Faraday will prevent any type of radio connections or radio signals from bluetooth, WiFi, mobile connection, all sensors, NFC, GPS,  from entering or going out of the bag.  But there is a caveat here:  A Faraday CANNOT stop sounds from leaving the bag, or entering the bag.  Putting a mobile inside a true working Faraday is not really a foolproof way of avoiding hackers if your phone is the target.  So depending on your needs and situation you're supposed to use it for.</p>
+<p>Frankly, a Faraday, in order to be a feasible product, is being marketed as an indispensable tool to secure our privacy, and that we need to use this always.  It is as a matter of fact,  impractical and inconvenient if we follow the directions on the numerous ways described on the tin that a Faraday can secure our privacy.  Hilarious actually because it says it secures our data from leaving the bag because it disallows any type connection.  This is true but once your mobile is out of the bag, there goes your data leaving your device at the first connection it can get, and since your phone is marked to targeted, it doesn't even matter if a malware has been installed prior because there are other ways of getting to your data before it leaves your phone.</p>
+<p>A Faraday has as its best use, for preventing hackers from penetrating your phone from another device nearby, whether android or not.  Say, you're Video chatting on your tablet, and your mobile is nearby.  A   hacker can, without your noticing it as your busy doing work or video chatting on your tablet,  enable your bluetooth to discover other devices in your room, your Samsung TV,  then can see you also from TVcam.  Then hacker via tablet bluetooth discovers your phone and if the hacker is a malicious one, can scare by sending you a message on your phone.  You get scared reading the message when you realize the hacker has you covered, He threatens you and tells what you're doing because he can still see you or maybe not. You close the app and even uninstall it because that's the best way to rid of the hacker. You wonder how  hacker got your mobile number and how was he able to send you a text ?  You factory reset the phone right away.</p>
+<p>A Faraday can block signals from reaching the mobile inside.   When Video chatting with strangers using a tablet, make sure all devices, phone, other tablets and devices nearby have their airplane mode on.  Use a VPN app to prevent hacker from discovering other devices nearby.   And don't buy a Samsung TV  ;-)</p>
+<p>Sincerely,</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Jim</p>
+        <p class="legacy-comment-meta-pub_date">July 24, 2018 08:05 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>WTF are you talking about dude?!?</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Jeroen</p>
+        <p class="legacy-comment-meta-pub_date">November 26, 2015 09:35 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Hypothetically speaking, can one use a faraday bag for shoplifting?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">November 30, 2015 11:12 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Yup.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Michael</p>
+        <p class="legacy-comment-meta-pub_date">January 10, 2017 01:42 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Yes they can to defeat the electronic tag - individuals use a carry bag lined with tinfoil.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Josh B.</p>
+        <p class="legacy-comment-meta-pub_date">September 9, 2016 01:20 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Our Faraday bags and sleeves have double the shielding material and are guaranteed to block ALL signals to and from your wireless devices.</p>
+<p>We have had them tested at two different, independent labs, and there are positive reviews of our products all over the internet.</p>
+<p>Free shipping to US customers and greatly discounted international shipping as well.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Babe Brown</p>
+        <p class="legacy-comment-meta-pub_date">April 1, 2017 03:27 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Josh B., but you don't say what company you are from, so that if we are interested, we could check it out.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Darien</p>
+        <p class="legacy-comment-meta-pub_date">May 10, 2017 06:59 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Ive just orderd 3 from Amazon,for my car key fobs,as I have keyless ignition.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Michael</p>
+        <p class="legacy-comment-meta-pub_date">January 10, 2017 01:52 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Just as a note regarding the cons of a Faraday bag, there is an interesting example within one the Tom Clancy Campus Novels.  The Agency is collecting all the meta data on their employee's mobile phones, they notice that it went to a certain area within the city and then stopped moving, at which time a new sim was activated.  I believe, without doing the research wasn't this also mentioned in Snowden's stuff that it isn't just the tracking of mobiles but also the mobiles that have been turned off (or in this case placed in a F/Bag), so if two mobiles are turned off at the same times some one is up to something.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">kwadro</p>
+        <p class="legacy-comment-meta-pub_date">December 22, 2015 03:15 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>If you've got a fridge around, why bother with the bag?</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">EC</p>
+        <p class="legacy-comment-meta-pub_date">November 26, 2015 06:59 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Metal tins work as well. Find an old tin and test it by putting phone inside and try calling it.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Zach G</p>
+        <p class="legacy-comment-meta-pub_date">November 26, 2015 04:26 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Any chance you'd share a link to the bag you bought?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">November 26, 2015 09:18 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I think I got this one:</p>
+<p>Black Hole Faraday Bag - RF Signal Isolation for Forensics, Standard Window Size
+<a href="http://www.amazon.com/Black-Hole-Faraday-Bag-Isolation/dp/B0091WILY0/ref=sr_1_5?ie=UTF8&amp;qid=1448558305&amp;sr=8-5">http://www.amazon.com/Black-Hole-Faraday-Bag-Isolation/dp/B0091WILY0/ref=sr_1_5?ie=UTF8&amp;qid=1448558305&amp;sr=8-5</a></p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Andy C</p>
+        <p class="legacy-comment-meta-pub_date">May 17, 2018 01:42 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Just wrap your car key in kitchen foil or make your own "Faraday" bag using some soft material covered in foil and place in a wallet or purse etc.
+Almost free and just as effective</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Wayne</p>
+        <p class="legacy-comment-meta-pub_date">December 31, 2018 08:25 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I bought a pouch on eBay and it has never worked. I tried wrapping the key in tin foil and putting in the pouch, it still did not work. I doubt the effectiveness of these methods.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Tschernobyl</p>
+        <p class="legacy-comment-meta-pub_date">March 4, 2016 08:28 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Scanning my wlan earlier I've noticed that the microwave does not disturb it. Inspired by this post, I unplugged my microwave and put one of my phones in it. and yes, a modern microwave oven is a faraday cage. I also suspect that it has similar muffling capabilities as the fridge, though I have not tested this myself.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Zach G</p>
+        <p class="legacy-comment-meta-pub_date">December 22, 2015 10:19 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>You can't carry the fridge around the subway, taxi etc. Quite so easily.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">NR</p>
+        <p class="legacy-comment-meta-pub_date">November 26, 2015 05:24 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>(Also a fan of Zero History, btw)</p>
+<p>Whilst I get the Faraday bag / pouch re. RFID chips in a passport... is there an assumption here that - for a compromised phone - "off" is not necessarily "OFF"?</p>
+<p>I.e. Why not just power down? Or is this a tech double-bagging for surety?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">November 26, 2015 09:18 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Yeah. While it's very unlikely, it is in fact possible that when you power your phone off some malware displays a video for you that looks exactly like you're powering it off, but is still able to use your sensors. Removing the battery is also another way to be sure.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Becky</p>
+        <p class="legacy-comment-meta-pub_date">December 31, 2017 10:00 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Couldn't you just wrap your fobs and phobes in foil?</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Pam</p>
+        <p class="legacy-comment-meta-pub_date">July 16, 2018 11:35 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Can my employer detect the faraday bag? What type of signal, if any, will they see?</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+        </div>
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name"><a href="../../../">Micah Lee's blog</a></p>
+      <p><img class="coffee" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP 0x403C2657CD994F73
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a>
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../../../static/images/reality.png"></a></p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?<p><p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+  </ul>
+
+    </div>
+  </div>
+</body>

@@ -1,0 +1,297 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>How Mailpile can implement opportunistic PGP email encryption</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="../../../2013/12/how-i-want-mailpile-to-handle-openpgp/mailpile.png" />
+    </p>
+    
+    
+      <h1 class="article-title">How Mailpile can implement opportunistic PGP email encryption</h1>
+    
+    <p class="meta">
+      Posted December 2, 2013 12:00 AM
+      
+        in
+        
+          <a class="tag" href="../../../tags/crypto">crypto</a>
+        
+          <a class="tag" href="../../../tags/openpgp">openpgp</a>
+        
+          <a class="tag" href="../../../tags/security">security</a>
+        
+      
+    </p>
+    
+      <p>For those wanting to decentralize the Internet and encrypt all the things, Mailpile is a hot topic.</p>
+<p><strong>What’s Mailpile?</strong></p>
+<p>Mailpile is a web-based email client (like Thunderbird or Outlook, not to be confused with a service, like Gmail) that you install locally and access by opening <a href="http://localhost:33411/">http://localhost:33411/</a> in your browser.</p>
+<p>The goal of Mailpile is to give everyone all the nice features they’re used to with Gmail but that you don’t get with a traditional email client, like labels, conversations, and really quick search. You can use Mailpile to check any email address (including your @gmail.com one).</p>
+<p>Right now Gmail is overwhelmingly the most popular email provider because it’s such a good product. If you want to escape Google’s centralized one-stop-PRISM-shop email service you have to put up with something that’s more annoying to use. Mailpile promises to make any email service you want to use as usable as Gmail, with the added benefit that Google-bots don’t parse the contents of your email and serve targeted ads, and that you have a choice of who to host your email with (perhaps you want to host it in Iceland, or on a home server). Basically, it might help break Gmail’s deathgrip on the email market, and considerably re-decentralize email.</p>
+<p>But what the cypherpunks are most excited about is that Mailpile has the potential to make PGP-encrypted email not suck nearly as much as it does today.</p>
+<p><em>Note: Mailpile is an <a href="https://github.com/pagekite/mailpile">open source project</a> that’s been funded by a successful Indiegogo campaign. Right now it’s in a pre-alpha state, so it doesn’t work yet. The alpha is scheduled for release in January.</em></p>
+<p><strong>How will PGP be different in Mailpile?</strong></p>
+<p>Everyone wants to use PGP email encryption in the Gmail web interface. There have been plenty of attempts at building PGP browser add-ons (<a href="http://mailvelope.com/">Mailvelope</a> seems to be the most promising right now) but so far nothing has really stuck because of some fundamental problems about glueing PGP onto a system that was never designed for it.</p>
+<p>Mailpile is being designed for it. When you open an encrypted email in Mailpile the server detects that it’s encrypted and calls out to gpg to decrypt it using gpg-agent. Your operating system pops up a passphrase dialog, so your passphrase never goes through the browser. All OpenPGP operations happen as system calls to gpg, the same way it works with Enigmail. Additionally, since Mailpile will have access to all your local email, it will be possible to do things such as search encrypted email.</p>
+<p>This is a chance to build the user interface for OpenPGP correctly and to remove all of the friction from using it. In fact, I believe that Mailpile could pretty effectively make PGP encrypted email encryption happen almost in the background, without the user needing to do much of anything.</p>
+<p><strong>How can Mailpile make using PGP suck less?</strong></p>
+<p>Mailpile should encourage a PGP trust system similar to how SSH trust works, Trust-On-First-Use (TOFU). Since there’s a very small chance that you’ll be the victim of an active man-in-the-middle attack the very first time you see a public key, you can go ahead and assume that the first key you saw is valid. With, of course, the ability to change this trust setting manually for each key.</p>
+<p>This proposal relies heavily on using key servers, and Mailpile should communicate with key servers using Tor. Not using Tor would leak information about who you are and who emails you. The Windows and Mac versions will have a trickier time with a Tor dependency, but it’s certainly possible and I think it’s absolutely worth it.</p>
+<p>Everyone should have a PGP key. When you setup an account in Mailpile it should help you create a PGP key if you don’t already have one. If you create a new PGP key and already have old secret keys in your keyring, it should offer to sign your new key with your old ones. Each time you add a new Mailpile account it should offer to add a new user ID to your primary key. Every time your key is changed it should upload your modified key to key servers.</p>
+<p>Mailpile should keep a local database of metadata about PGP keys. For each public key it knows about it should record the timestamp from the first time you saw it in your email. Each key should also have a trust settings: either “trusted”, “not trusted”, or “automatic”, completely separate from any data that’s stored in the actual PGP key packets (like user trust or signatures).</p>
+<p>Every time you see a PGP-signed email, if the user doesn’t already have the PGP key that signed that email it should search key servers for it and download it. When you add a new account it should also search all of your old email for signatures and try downloading all of those public keys from key servers, too.</p>
+<p>All emails should default to being signed, and as many emails as possible should be encrypted by default. When you write a new email and put email addresses in the To, CC, and BCC fields, if you have “trusted” PGP keys for all recipients, the email should default to being encrypted.</p>
+<p>The question is: what does “trusted” mean? Since we want to rely on TOFU by default I think it should mean this:</p>
+<ul>
+<li>If you have signed the key, it should be trusted.</li>
+<li>If you have manually marked it as “trusted” in the Mailpile interface, it should be trusted.</li>
+<li>If you have manually marked it as “untrusted” in the Mailpile interface, it should be untrusted.</li>
+</ul>
+<p>If you haven’t signed it and you haven’t marked it as “trusted” or “untrusted”, it should use this algorthim (or something similar) to make an intelligent decision about whether this public key should be trustworthy enough to encrypt the message to:</p>
+<ul>
+<li>If this is the only key that includes a user ID with the recipient’s email address on, it should be trusted.</li>
+<li>Elif all other keys that include a user ID with the recipient’s email address have signed this key, it should be trusted.</li>
+<li>Elif this is the <em>first</em> key you’ve seen that includes a user ID with the recipient’s email address on it, it should be trusted.</li>
+<li>Otherwise, it should be untrusted.</li>
+</ul>
+<p><strong>What would this do?</strong></p>
+<p>With these defaults, a couple things will happen. You’ll automatically download the public keys of everyone else that you email that uses PGP. When you write emails, they’ll get opportunistically encrypted. If a bunch of different people who regularly email each other all use Mailpile, they don’t have to change any behavior at all, and all their email will automatically get encrypted.</p>
+<p>If people try to attack this system by sending you emails that are signed with malicious keys pretending to be other people, you won’t trust those keys by default. You’ll still encrypt to the first key you saw.</p>
+<p>If someone creates a new PGP key for their email address and you still have their old one, the first time you email them you’ll encrypt it to the wrong key (unless they’ve been good PGP users and signed their new key with their old one, in which case it will just work). However, you should be able to quickly work out the problem and manually mark the new key as “trusted”. From that point on it should just work.</p>
+<p>You can use PGP completely safely, and have very high confidence that most of the public keys you use are valid, without having to participate in or even know what the Web of Trust is. If you do use the Web of Trust, all the keys you sign would be trusted like you expect.</p>
+<p><strong>So wait, does this exist?</strong></p>
+<p>Nope, it’s just an idea. But I think it could work pretty well.</p>
+<p>If other people agree that it’s a good idea, I’d love it if the Mailpile developers decided to implement it as default behavior in Mailpile. If not, I’d love it if at least someone could build a Mailpile plugin that does this.</p>
+
+
+      
+        
+        <div class="legacy-comments">
+          <p class="legacy-comments-notice">Legacy comments, imported from previous version of this blog:</p>
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">valbonneconsulting</p>
+        <p class="legacy-comment-meta-pub_date">December 7, 2013 05:00 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>nice article again.
+also answered some of my thoughts I aired in my previous reply.
+(y)</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">elijah</p>
+        <p class="legacy-comment-meta-pub_date">December 2, 2013 10:14 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>This is essentially how LEAP email works (<a href="https://leap.se/email">https://leap.se/email</a>). However, instead of using Tor for HKP lookups LEAP uses caching proxies where both connections use TLS (and often over the included VPN).</p>
+<p>In the long run, I don't think TOFU will be good enough. It is fine for now, but as soon as it becomes the standard practice then it will suddenly become very weak. TOFU is easy to attack, and if ever becomes an attractive target then it will likely be attacked.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Smári McCarthy</p>
+        <p class="legacy-comment-meta-pub_date">December 3, 2013 09:02 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>It's true that TOFU can easily be attacked and that it isn't necessarily a good idea, but right now I'd argue that the biggest problem isn't that people's PGP keys are being MITM'd, but rather that people aren't even using PGP keys in the first place. So if we bootstrap ourselves using TOFU, but think very hard about how we can share trust in keys with other trusted parties without publishing the entire WOT all the time, then we might be able to get progressive improvements on the current situation without having to wait for magic to be invented.</p>
+<p>Micah's thinking here echoes the thinking we've been doing almost exactly, but where variance is introduced it's mostly in the form of us being a bit more nitpicky with the way user experience is managed. In many cases Micah is assuming that offering people security options is the right thing to do, when in reality most users will not know the answer to such questions. I'd rather operate on the basis of reasonable defaults and allow people to configure the behavior explicitly if they see fit.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">www.banner-designer.co.uk</p>
+        <p class="legacy-comment-meta-pub_date">December 19, 2015 05:11 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Creating an ontology for the provided information is the main step in the logical data design phase.
+Obviously you're also going to need to possess the necessary equipment, 
+as well as for something similar to this that will mean a pc and also the right web creating 
+software for example Expensive or perhaps a similar program.
+Successful web sites are "user friendly," allowing valuable information to be obtained easily by the user.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Fabio Pietrosanti</p>
+        <p class="legacy-comment-meta-pub_date">December 3, 2013 12:33 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>It's also true that targeted and individual TOFU "hijacks" can be verified at a later stage, with some batch, periodic key verification process. 
+By designing that kind of periodic process in place, if a TOFU-verified key exchange has been hijacked, it would be possible to identify the attack and trace it down the details.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+        </div>
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name"><a href="../../../">Micah Lee's blog</a></p>
+      <p><img class="coffee" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP 0x403C2657CD994F73
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a>
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../../../static/images/reality.png"></a></p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?<p><p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+  </ul>
+
+    </div>
+  </div>
+</body>

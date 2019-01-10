@@ -1,0 +1,883 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>It’s 2013. We’re all being spied on. Why do security software websites not use HTTPS?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    
+      <h1 class="article-title">It’s 2013. We’re all being spied on. Why do security software websites not use HTTPS?</h1>
+    
+    <p class="meta">
+      Posted August 28, 2013 12:00 AM
+      
+        in
+        
+          <a class="tag" href="../../../tags/crypto">crypto</a>
+        
+          <a class="tag" href="../../../tags/hackers">hackers</a>
+        
+          <a class="tag" href="../../../tags/https">https</a>
+        
+          <a class="tag" href="../../../tags/security">security</a>
+        
+      
+    </p>
+    
+      <p><strong>Update:</strong> This post made the <a href="http://www.reddit.com/r/technology/comments/1ladvh/its_2013_were_all_being_spied_on_why_do_security/">frontpage of reddit</a> and many of the comments are <a href="https://xkcd.com/386/">wrong</a>. I took a moment to clear a couple things up at the bottom of the post.</p>
+<p>We desperately need to work towards deprecating HTTP and replacing it only with HTTPS. The web is a huge part of what billions of people use the Internet for, and still most of it is not encrypted. Since the Snowden leaks started getting published we’ve learned that NSA and GCHQ spy on as close to the entire Internet as they can get.</p>
+<p>It would be naive to think that the US and UK are the only governments doing this too. The network isn’t safe, and the only way to make it safe is to encrypt all the things. Websites that still use HTTP are putting users in danger. Here are a couple of examples.</p>
+<p>If you’re a Windows user and you heard that you can use something called Off the Record (OTR) to have end-to-end encrypted chats with your friends, how do you get started?</p>
+<ol>
+<li>First you go to <a href="https://pidgin.im/">https://pidgin.im/</a> and download Pidgin. This website forces HTTPS, so you probably haven’t gotten hacked yet.</li>
+<li>After downloading and installing Pidgin you need to download and install the OTR plugin. So you go to <a href="http://www.cypherpunks.ca/otr/">http://www.cypherpunks.ca/otr/</a> and download the latest OTR installer, which at the time of writing is <a href="http://www.cypherpunks.ca/otr/binaries/windows/pidgin-otr-4.0.0-1.exe">http://www.cypherpunks.ca/otr/binaries/windows/pidgin-otr-4.0.0-1.exe</a>. This website does not force or even use HTTPS, which means it would be trivial for spy agencies or random hackers on your wifi network to put malware on your computer.</li>
+</ol>
+<p><strong>For some reason cypherpunks.ca, the website that distributes Windows binaries of OTR, doesn’t use HTTPS and therefore puts OTR users at risk.</strong></p>
+<p>Let’s say you’re a Windows user and you’re interested in using OpenPGP email encryption. How do you get started?</p>
+<ol>
+<li>The free software implementation of OpenPGP is GnuPG (GPG), so first you go to <a href="http://gnupg.org/">http://gnupg.org/</a> to see what to do next. This websites doesn’t force or even use HTTPS, which means any information you find on this website might not be trustworthy, and any links to download GPG installers might include malware.</li>
+<li>Assuming you haven’t already been hacked, you’ll notice that the easiest way to get GPG in Windows is to visit <a href="http://www.gpg4win.org/">http://www.gpg4win.org/</a> and download the latest version which, at the time of this writing, is <a href="http://files.gpg4win.org/gpg4win-2.2.0.exe">http://files.gpg4win.org/gpg4win-2.2.0.exe</a>. It would be trivial for spy agencies or random hackers to replace this with a malicious version and put malware on your computer.</li>
+</ol>
+<p><strong>For some reason gnupg.org, the website that distributes information about and the source code for GPG, and gpg4win.org, the website that distributes Windows GPG binaries, don’t use HTTPS and therefore puts their users at risk.</strong></p>
+<p><em>Luckily the websites for the Mac OS X software for OTR (<a href="https://adium.im/">https://adium.im/</a>) and GPG (<a href="https://gpgtools.org/">https://gpgtools.org/</a>) force HTTPS. And GNU/Linux users should get this software from their package manager which uses public key cryptography to authenticate the packages.</em></p>
+<p>Let’s say you’re really interesting in using disk encryption and you’ve heard that TrueCrypt might be useful for you. How do you get started?</p>
+<ol>
+<li>You visit <a href="http://www.truecrypt.org/">http://www.truecrypt.org/</a>. Since this website doesn’t force HTTPS, any information you find on this website might not be trustworthy, and any download links might contain malware.</li>
+<li>When you actually do download the TrueCrypt installer, the download links for Windows, Mac OS X, and GNU/Linux all download from URLs like <a href="http://www.truecrypt.org/download/transient/…">http://www.truecrypt.org/download/transient/…</a>. If you download and install TrueCrypt from their website, it would be trivial for an attacker to put malware on your computer.</li>
+</ol>
+<p><strong>For some reason truecrypt.org, the website that distributes TrueCrypt binaries for Windows, Mac OS X, and GNU/Linux doesn’t use HTTPS and therefore puts its users at risk.</strong></p>
+<p>I chose Off the Record, GnuPG, and TrueCrypt because they’re prominent examples. But the problem is much bigger than these websites. It’s <em>almost every website</em>. It’s not just security software that can put malware on people’s computers, it’s <em>any software</em>.</p>
+<p>I understand why <em>everyone</em> doesn’t use HTTPS yet.</p>
+<p>If your website is hosted on a shared hosting provider you may need to pay more money for a static IP address to turn on HTTPS. This is unfortunate, but hopefully shared hosting providers will start using <a href="http://en.wikipedia.org/wiki/Server_Name_Indication">Server Name Indication</a> and make this way cheaper and easier for their customers to run more secure websites.</p>
+<p>But if you’re not a small website stuck on shared hosting, you don’t have an excuse.</p>
+<p>People think that it costs money to get a certificate authority to sign your cert, but <a href="https://startssl.com/">StartSSL</a> is trusted by browsers and signs certs for free.</p>
+<p>People say that using HTTPS is a performance hit. Locking your car door is also a performance hit, and so is putting on clothes in the morning. Security and privacy is worth a performance hit, especially when <em>we have proof that the Internet is being spied on by the most powerful governments in the world</em>. Scaling HTTPS is a solved problem, and performance is no excuse.</p>
+<p>If you run a website, and the HTTP version of your site doesn’t automatically redirect to HTTPS, then you’re doing things wrong. Please take steps to start supporting HTTPS and then to start forcing HTTPS for all of your traffic. It’s the responsible thing to do for the privacy and security of your visitors.</p>
+<p><strong>Update:</strong></p>
+<ul>
+<li>NSA sends legal requests to get data from some companies (such as everyone in PRISM) but not from <em>all</em> websites. Websites outside of the US can legally ignore NSA requests.</li>
+<li>Certificate authorities don’t have the secret keys of HTTPS web servers, they just sign the associated public keys. So no, NSA can’t ask CAs for all the keys.</li>
+<li>NSA passively monitors traffic on the Internet backbones, but they can’t see any HTTPS content without having the associated secret keys. However if the HTTPS websites use <a href="https://www.eff.org/deeplinks/2013/08/pushing-perfect-forward-secrecy-important-web-privacy-protection">Perfect Forward Secrecy</a>, even if NSA has the secret key they still can’t see any of the HTTPS content.</li>
+<li>Yes, they can still do active MITM attacks using a compelled CA, but they can’t realistically do this <em>against the entire Internet</em>, only specific targets (tech like <a href="https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning">certificate pinning</a>, <a href="https://www.eff.org/observatory">SSL Observatory</a>, and <a href="http://convergence.io/">Convergence</a> will detect/prevent these attacks). One of the reasons that the NSA spying programs are so unconstitutional is because they’re <em>spying on everyone</em>. If we make passive attacks no longer work, forcing NSA to do active attacks, that’s a huge win.</li>
+<li>HTTPS doesn’t protect everything. When you load an HTTPS URL, such as <a href="https://micahflee.com/2013/08/its-2013-were-all-being-spied-on-why-do-security-software-websites-not-use-https/">https://micahflee.com/2013/08/its-2013-were-all-being-spied-on-why-do-security-software-websites-not-use-https/</a>, the hostname (“micahflee.com”) gets leaked, but the rest of the URL (“/2013/08/its-2013-were-all-being-spied-on-why-do-security-software-websites-not-use-https/”) stays private. Other metadata that leaks is your IP address, the exact time of the request, and the file sizes of the request and the response.</li>
+</ul>
+<p>Full disclosure: I’m the maintainer of the free software browser add-on <a href="https://www.eff.org/https-everywhere">HTTPS Everywhere</a>. If everyone used HTTPS and no one used HTTP, HTTPS Everywhere would become obsolete. I would love it if HTTPS Everywhere were obsolete.</p>
+
+
+      
+        
+        <div class="legacy-comments">
+          <p class="legacy-comments-notice">Legacy comments, imported from previous version of this blog:</p>
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">John Doe</p>
+        <p class="legacy-comment-meta-pub_date">August 29, 2013 05:32 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Sorry, this is none sense.
+Given the 3 objectives in security (Confidentiality, Integrity, and Availability), SSL provides Confidentiality and Integrity.
+If I'm making available some software (whether TrueCrypt or GPG, or which ever), then there is no point in providing Confidentiality. The information is available publicly. You downloading it with SSL will not keep anything (more) secret.
+You mention Integrity by talking about injecting malware. We need to provide for the integrity of the packages available for download, yes. This is often done with  MD5 checksums. The user downloads the package and checks that the MD5 they compute matches that shown on the site(s) (plural when you check multiple sources). Done.
+Your analogy of people locking their doors broken. The burden of the extra 1 second to lock you door is borne by the 100 people locking their 100 cars - 1 second each. If the software vendor were to add SSL by default to his servers, then he needs to bear the burden of locking those 100 cars - all the compute burden of doing SSL is focalized on the web server (or dedicate SSL accelerator for the rich).
+So option (1-FREE) use MD5 where the visitor consumes his time checking and performance remains high and scalable on HTTP, or (2-COST) use SSL where the entire burden is with the server side (no more caching, no CDNs, dedicated SSL accelerator hardware).
+ Now, regarding the injection of malware, yes that's an issue. But SSL won't address this. Intercepting one session of one user to falsify that one HTTP packet is possible but somewhat complex. Falsify the traffic for that one page for all visitors? Perhaps not impossible but way more complex. We could just attack the distribution server to have it distribute compromised content or compel the software vendor to compromise the software himself. The later is a lot easier, especially when we have root CAs with which to sign our own real fake certificates. Note that option 1-FREE will help detect this when suddenly the MD5's are all over the place.
+If you're worried about malware then disable JavaScript, Flash, Java, or any other browser plug-in. Do not run binaries from the Internet unless you trust the source and have validated their integrity (MD5?). Or install from source, compiling yourself. Still checking the MD5...
+So in this case (distributing publicly available software), SSL does not add anything. It just costs something.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Baps</p>
+        <p class="legacy-comment-meta-pub_date">August 29, 2013 06:23 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Dude, MD5 is hopelessly broken, nobody should be using MD5 for anything.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">John Doe</p>
+        <p class="legacy-comment-meta-pub_date">August 29, 2013 07:05 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Thanks!</p>
+<p>Indeed, TrueCrypt, GnuPG, and kernel.org offer PGP signatures for the downloads. MD5 has completely disappeared.</p>
+<p>TIL that package managers (deb &amp; rpm) now also use PGP sigs. to verify packages.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">asdf</p>
+        <p class="legacy-comment-meta-pub_date">November 12, 2013 12:05 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>This comment is ridiculous. First, md5 is completely broken. There are programs to change a file in undetectable ways to make it have the same md5 hash as another file and it works in a reasonable amount of time. Second, even if you used a secure hash, this only protects again the file being corrupted through accidental means. If someone could change the file that you were receiving, they could also change the hash you are receiving to match the changed file.</p>
+<p>People saying that we shouldn't use HTTPS because there are other ways things can go wrong, are like people saying we shouldn't use condoms because there is still a change of STD and pregnancy. Even though condoms (HTTPS) may not be as good as abstinence (not using the internet at all), we aren't comparing these two. We are comparing condoms (HTTPS) to unprotected sex (HTTP). HTTPS is undeniably better and is only a small performance trade off. All processors are fast enough to make this trivial. Facebook and Google and Twitter send their whole sites over HTTPS and don't seem to think that it is a problem.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">James</p>
+        <p class="legacy-comment-meta-pub_date">August 28, 2013 10:51 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I use Windows and have downloaded Pidgin, GPG and Trucrypt just to learn them and didn't realize they weren't using HTTPS until I read your piece.</p>
+<p>It's really surprising that companies that provide security tools aren't secure themselves.</p>
+<p>Thanks for pointing this out, much appreciated.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Fred</p>
+        <p class="legacy-comment-meta-pub_date">August 28, 2013 09:27 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>You should stop writing about a subject you know nothing about. HTTPS is pretty much a joke. There is software readily available that can pierce through HTTP about as simply as a wet piece of toilet paper.</p>
+<p>I was at a party not to long ago with a bunch of people I did not know and by the desert table I started talking to a fellow and he asked me what I did. I replied that I was the VP of a software company and I asked him the same question. He replied that he was the web security analyst for one of the major Canadian banks. After a pause I said to him " web security huh... https" and I kind of snickered. He rolled his eyes almost ashamed and said "I know... I know"</p>
+<p>The biggest security experts in this country KNOW that HTTPS is easily compromised yet they still use it because they do not know any better.</p>
+<p>If you want Internet security that actually works, you come talk to me.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">stan</p>
+        <p class="legacy-comment-meta-pub_date">September 4, 2013 06:50 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Micahflee tanx a million. Would experiment.</p>
+<p>Don't you think most computer , tablet, smartphones are hacked from production not just software but hardware?</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">F</p>
+        <p class="legacy-comment-meta-pub_date">August 28, 2013 09:12 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Please educate yourself more about HTTPS before writing junk like this.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Baps</p>
+        <p class="legacy-comment-meta-pub_date">August 29, 2013 05:44 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>You need to fix your own websites encryption before you complain about the security on other sites:
+<a href="https://www.ssllabs.com/ssltest/analyze.html?d=micahflee.com">https://www.ssllabs.com/ssltest/analyze.html?d=micahflee.com</a></p>
+<p>You need to prioritise RC4 ciphers after gcm ciphers in order to mitigate BEAST. Yes RC4 is an old and creaky cipher but it is the only meaningful defense against the BEAST attack, crucially it is not considered insecure at this stage.</p>
+<p>I would also recommend prioritising ALL of your GCM ciphers as this is current best practice.</p>
+<p>Consider using Elliptic curve ciphers for forward secrecy as these are more efficient and less burdensome on your server.</p>
+<p>Use Strict Transport Security (HSTS). Practice what you preach, if you want to persuade people to use https all the time then why not start with your own domain.</p>
+<p>(Also, please be aware that currently it is not possible to have full forward secrecy whilst also fully mitigating BEAST.)</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Robert</p>
+        <p class="legacy-comment-meta-pub_date">August 29, 2013 07:30 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Or ... admit that the NSA has hooks into the "unencrypted data" on those websites, https verses http in this instance makes no difference.  The ISP's are giving the NSA what they want unencrypted anyways.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Job</p>
+        <p class="legacy-comment-meta-pub_date">August 28, 2013 11:52 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Compare it with locking your front door. It goes a long way in securing the contents of your house (including yourself), but anyone with enough knowledge, skill and intent will be able to enter your house no matter what. Besides, if nobody would lock their doors, being a thief would become much easier and thus much more widespread.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">anon</p>
+        <p class="legacy-comment-meta-pub_date">August 29, 2013 10:33 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Dude - have you taken a look at this stuff?  What goes into the 'HTTPS' handshake - there is nothing preventing the server, who chooses the final symmetric key used for the actual encryption, if implemented in house, to then send that key over to NSA.</p>
+<p>Citing news just last week on the Guardian, the NSA revealed that they could indeed, even with HTTPS, see a 'snapshot of your screen' - in other words, they could intercept your gmail request/response cycle just by intercepting the transmission alone.  That means they do, in fact, have a way 'around https'...  So NO - your statement on HTTPS is a dead one - https, even though it does use encryption, is an older standard that can easily be worked around.  And since google and amazon and apple and microsoft complies, there is nothing we can actually do to prevent the NSA from getting at any of your internet traffic...</p>
+<p>However, we are starting to work on our own again.  IEEE is working on a new internet encryption method, just like they designed https, to thwart this kind of interception by governments (This isn't just the US - it's going on everywhere).</p>
+<p>The best answer used to be a VPN.  However, just like HTTPS they control the final key, and if they are in cahooots! with the go-go, that means the VPN is worthless - doesn't actually protect you..</p>
+<p>This means one thing only - let's say I build you a browser add-on that doesn't allow any third-party communications.  That will mean no more connect.facebook, apis.google.com, ads, or cookie tracking.  However, similar things can be done entirely on the server side, which renders my app useless provided that companies then respond in that manner..</p>
+<p>What about if I create a new anti-virus that indeed protects you from most malware and spyware?  I can only protect you from thrid parties, and MOSt types of stuff - not all of it, like keylogging, because NO OS actually provides you the FULL capability to monitor what's actually GOING ON on a single computer - you have the option of ONLY intercepting request packets on windows.  That doesn't give you any information on what actual program is requesting - say firefox.exe requests somethign and you give it full permissions - there is nothing preventing anybody else from calling their malware 'firefox.exe', or injecting their malware to a memory residency or an add-on to 'firefox.exe'.  And since every file and all other stuff needs to be done by 'firefox' - it means it has full reign on your OS - a HUGE hole, right there.  Something we cannot hope to defend against.</p>
+<p>On top of that, let's say I completely defend the host computer, plus the data transmissions over the internet with my own VPN service - and no government can ask or demand me to do anything.  There are still ways around it, because we've sat idle with encryption for so long, because of government threats to cryptographers and researchers, that now computers have surpassed the mathematical derivitives of encryption and can brute-force any encryption standard in just two days with the latest super computer.  On top of that, I cannot protect you, say, from your own OS - if IT has a keylogger, I surely cannot create ANY software that can PREVENT its actions....</p>
+<p>So there exists numerous problems on numerous levels.  So the question then becomes, who is going to be honest?  Who is trustworthy?  Because it all boils down to who can be honest and trustworthy.  And given that there's so many ways around everything, we cannot possibly hope to protect you, UNLESS the laws change in some country and we go back to researching better, more difficult to break encryption methods.  But this also has a problem - the better the encryption, usually requires longer keys, meaning the heavier encryption we do means we need faster networks.  Eventually we'll reach a bottleneck, compounding the above problems.</p>
+<p>In other words, the answer doesn't lie with HTTPS.  We are going to have to find ways, as security analysts - to do just what the go-go is doing: find ways around what the go-go is doing to get around our security, and find loopholes in laws that are preventing us from providing proper security.</p>
+<p>Keep in mind - I'm not worried about hackers.  I trust them much more than I do these governments right now.  When these governments get back under control - then we'll go back to our security/anti-sec fun-times.  I would say we need to start working together - both anti-sec and sec.  You guys are good at finding the problems with security - we're good at inventing new types of security.  Surely we could team up and nail at least something along those talents...</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Fred</p>
+        <p class="legacy-comment-meta-pub_date">October 21, 2013 11:16 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>The situation first mentioned in the article is actually reversed.</p>
+<p>i.e. The Pidgin information site may be using SSL however the download is from SourceForge. There is no SSL on the download page.</p>
+<p>The OTR source page <em>is</em> (now) using SSL, whoops, they say they're using TLS. Nice.</p>
+<p>However there are no SHA__ signatures for comparison on either site. Oops.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Baps</p>
+        <p class="legacy-comment-meta-pub_date">August 31, 2013 09:56 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Comment awaiting moderation gah.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">micah</p>
+        <p class="legacy-comment-meta-pub_date">September 5, 2013 04:25 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Sorry it was automatic. Your comment had links.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">D</p>
+        <p class="legacy-comment-meta-pub_date">August 28, 2013 08:06 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Wow calm down, SSL is not a panacea. Because a certificate happens to be in your trust store doesn't mean anything you download is safe and pristine.</p>
+<p>I honestly suggest you educate yourself on how SSL /actually/ works and how it works. Saying that the GPG doesn't offer downloads over https and therefore "puts users at risks" is naive at best. They offer signatures for the packages however, which you certainly can verify.</p>
+<p>Trust chains are not magical.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">E</p>
+        <p class="legacy-comment-meta-pub_date">August 28, 2013 08:12 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>@D +1</p>
+<p>SSL doesn't mean the server hasn't been compromised.  Some of those softwares mentioned are designed to do exactly what you want, which is verify the authenticity of a piece of software.  Then it doesn't matter if it is not HTTPS.  You just need to trust the public key that is signing that software.</p>
+<p>Not to mention there are some interesting entities in your trust store right now, which include many root certificates from various governments.</p>
+<p>A vendor said recently "because you can run their software over HTTPS", it doesn't matter that password storage is insecure.  But it's OK, because they also run their software as "sa" (root on MSSQL).</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">S</p>
+        <p class="legacy-comment-meta-pub_date">August 29, 2013 02:28 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>You do understand that if a download can be compromised, the signature can be too, right?</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">dangarble</p>
+        <p class="legacy-comment-meta-pub_date">October 25, 2014 12:22 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>This is similar to saying, door locks aren't foolproof, so I don't lock my car. I'd be a fool to leave my car unlocked based on that thought process.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">JV</p>
+        <p class="legacy-comment-meta-pub_date">August 28, 2013 09:26 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Yeah technically its slower but to the end user its probably not noticeable, if they do notice it will be a very minor difference. We switched our entire web application to HTTPS without any problem. The goodwill from the added security was huge and performance was fine.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Martin</p>
+        <p class="legacy-comment-meta-pub_date">August 29, 2013 02:07 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Personally, let them keep using HTTP. Let's liken it to locking the front door like has been done previously.</p>
+<p>Houses A-G have the toughest locks to pick, strongest bars on windows etc - so the only way to get in is to learn to pick that tough lock.</p>
+<p>Houses F-Z on the other hand leave the doors on the latch, so they look closed but aren't locked, and they also leave the upstairs windows open.</p>
+<p>The people wanting to steal basic stuff will just targest F-Z, as it's easier and quicker, and you can get more for your time. There will still be the few that target A-G, as they want what they have, and also the kudos for being able to do that.</p>
+<p>Now think what if all A-Z have the same tough locks and bars on the windows - all the people wanting access will have no choice but to learn how to break it - and then the crap hits the fan, as nothing will have any semblance of security.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Lockmakers</p>
+        <p class="legacy-comment-meta-pub_date">August 29, 2013 02:25 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Oooooor ... people make better security systems?</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">diet pills that work fast uk</p>
+        <p class="legacy-comment-meta-pub_date">September 11, 2013 12:13 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>This is a great tip particularly to those new to the blogosphere.
+Simple but very accurate info… Thanks for sharing this one.
+A must read post!</p>
+<p>Also visit my website :: <a href="http://thecupcakeblog.com/butterscotch-cupcakes/" rel="nofollow">diet pills that work fast uk</a></p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">NEWTYPE89</p>
+        <p class="legacy-comment-meta-pub_date">August 29, 2013 06:57 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>you do relise that thars only so much HTTPS can do its not a end all be all encryption method and on top of that all these protocols go threw the government meaning they know how to get threw it hell Im willing to bet money on the fact that the CIA and NSA has tech guys that can esaly brake threw HTTPS</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Baps</p>
+        <p class="legacy-comment-meta-pub_date">August 29, 2013 01:49 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I am not sure I actually agree with you. What you are really asserting is what conspiracy theorists generally lament. If what you are saying is actually true then the Extended Validation (green ev) system wouldn't work. You would not see any green EV if the government was intercepting anything. Also, if a site uses forward secrecy then it doesn't matter if the private key from a site or CA is compromised.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">micah</p>
+        <p class="legacy-comment-meta-pub_date">August 29, 2013 12:32 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Some of the commenters seem to say: "GnuPG and other software sometimes offers OpenPGP signatures so people can manually verify, or they offers md5 checksums of the downloads so people can make sure they're valid."</p>
+<p>This is ridiculous for three reasons.</p>
+<p>1) The only people who manually verified signatures are especially paranoid hackers. Nobody else even knows how. This fact is one of the major reasons I decided to write Tor Browser Launcher (<a href="https://micahflee.com/2013/04/sudo-apt-get-install-torbrowser/">https://micahflee.com/2013/04/sudo-apt-get-install-torbrowser/</a>), because most people who download the Tor Browser Bundle are trusting only in the HTTPS connection to www.torproject.org, and there are widely publicized attacks that against HTTPS that are hard to detect as long as the attacker has access to a CA, such as the US government.</p>
+<p>2) If you use HTTP, and the attacker can modify the binary downloads, they can just as easily modify the PGP sigs or MD5 checksums that you're seeing. It would be ridiculous for them not to. All software should offer sigs so that those who wish to verify it can, but just doing that and nothing to prevent these sigs from getting modified in transit will not protect the users of your software.</p>
+<p>3) Since gpg4win.org is specifically an example here, how would a Windows user who wishes to verify a download of GPG do it? They download the binary from <a href="http://files.gpg4win.org/gpg4win-2.2.0.exe">http://files.gpg4win.org/gpg4win-2.2.0.exe</a> and then the sig from <a href="http://files.gpg4win.org/gpg4win-2.2.0.exe.sig">http://files.gpg4win.org/gpg4win-2.2.0.exe.sig</a>. But they don't have GPG installed yet to verify the sig. So maybe they run gpg4win-2.2.0.exe before verifying it, hoping to use it to verify itself. If there was malware, they've already lost. It's stupid.</p>
+<p>--</p>
+<p>Some commenters seem to say: "HTTPS is broken, everyone knows that. HTTPS only offers a little bit of privacy and security."</p>
+<p>This is flat out wrong. HTTPS works great. It's the public key infrastructure that's broken. All the things you've heard about how easy it is to bypass HTTPS are specifically talking about MITM attacks that use malicious certs signed by browser-trusted CAs. CAs are not the only way to authenticate certs though.</p>
+<p>If you authenticate without using CAs (manual fingerprint verification, certificate pinning, or one of the decentralized PKI experiments), you can detect MITM attacks that are being conducted by the NSA, or anyone else. If you use HTTPS Everywhere (<a href="https://www.eff.org/https-everywhere">https://www.eff.org/https-everywhere</a>) you can even opt-in to the SSL Observatory (<a href="https://www.eff.org/observatory">https://www.eff.org/observatory</a>) which will send us the certs you see. We're building the infrastructure to alert users when we detect MITM attacks that are carried out with browser-trusted CAs.</p>
+<p>There's also the commenters who don't know anything about this stuff but just insist that since NSA is loaded with money they can obviously break public key cryptography. If you say something like this, please cite your source. But for now just think about this Edward Snowden quote: "Properly implemented strong crypto systems are one of the few things that you can rely on." (<a href="http://www.guardian.co.uk/world/2013/jun/17/edward-snowden-nsa-files-whistleblower">http://www.guardian.co.uk/world/2013/jun/17/edward-snowden-nsa-files-whistleblower</a>)</p>
+<p>--</p>
+<p>Some commenters seem to say: "Google, Amazon, Apple, Microsoft, the ISPs, and everyone else just give your data to the NSA, so HTTPS doesn't help anyway."</p>
+<p>HTTPS can't help you protect your data from servers that betray your trust. But from everyone else it can. The entire Internet isn't Google. An example of a part of the Internet that does indeed use HTTPS and isn't Google is <a href="https://gpgtools.org/">https://gpgtools.org/</a>, the website to download GPG binaries for Mac. Also, this website is hosted in Germany, outside of NSA's jurisdiction.</p>
+<p>There is a huge difference between specific companies being asked to give user data to the NSA, and vast swaths of everyone's user data being collected by NSA without anyone giving permission simply because they neglect to use HTTPS.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Baps</p>
+        <p class="legacy-comment-meta-pub_date">August 29, 2013 04:54 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Hello Micah,</p>
+<p>I believe that your first point is null and void if a site/server utilises (perfect) forward secrecy ciphers. Also, if your solution really is as good as you say why not approach the TOR people and get it implemented? I also saw lecture by Jake Applebaum who works for TOR and he said in a very matter of fact way that the TOR browser alone is not good enough and is provided because they know most people want to use it like that. He said that TAILS is how it should be used as it provides a more secure foundation. In security parlance TALIS is essentially a DMZ (demilitarised zone).</p>
+<p>Second, ignore MD5, it is broken. As far as I am aware the way that PGP works is to provide not just integrity to the file/s that have been presented but it also provides authentication. This means that if the signature is tampered with even if it is on an insecure connection it can be tested and there would be NO DOUBT that the file/s would have been intercepted by a 3rd party. What I am trying to say is that there is a way of looking up and verifying the integrity of the PGP signature itself to see if it has been issued by the person you think it has been issued by. The TOR project provides a signature AND provides https I believe as a belt and braces solution.</p>
+<p>Third point, if I am correct about point two then your third point has already been answered. Also I don't think it is dependent on the client software to prove the authenticity, I have a feeling it is dependent on a remote key server.</p>
+<p>I do agree that https is not broken or insecure. However saying that it works "great" is rather disingenuous. There are 700+ Certificate Authorities, 95% of which I have no reason to trust and have no relationship with but necessarily am forced to trust. As Moxxy Marlinspike says we need trust agility. HTTPS is also extremely hard to configure from a server point of view. It is staggering how many companies out there actually provide insecure HTTPS. Your own site is a case in point: <a href="https://www.ssllabs.com/ssltest/analyze.html?d=micahflee.com">https://www.ssllabs.com/ssltest/analyze.html?d=micahflee.com</a> (granted there are minor issues, but my point is that even people who should know about https configure it wrongly or not very well.</p>
+<p>Its not just the EFF's SSL Observatory that can be used to verify certificates. Steve Gibson is also running a nice fingerprinting service that may be of interest, located here: <a href="https://www.grc.com/fingerprints.htm">https://www.grc.com/fingerprints.htm</a></p>
+<p>In a sense the users are actually correct in my view about the likes of Google, Amazon et al. Security researchers are now saying that we need to think about how we protect ourselves from abuse from these companies. The ONLY way to do that is to have a TNO (Trust No One) solution. So for the likes of cloud services encrypting data ourselves before it goes onto the internet is the only sure fire solution. Companies like CryptoCat are attempting to protect themselves from us and us from them by providing perfect forward secrecy which really is a TNO solution.</p>
+<p>We also need to know the limitations of HTTPS. It is only protection of the transport layer, it is not encrypting or protecting information once it reaches the other party, it only provides protection when data is in motion.</p>
+<p>I suppose the real reason that we do not see HTTPS all over the place is because of what we call "the tyranny of the default". Sites simply do not provide HTTPS because they may lack the understanding of why it is good for users, security and privacy etc. The site administrators will simply say or think "this setup has worked for me so far so why should I change anything?" In a sense users/administrators who are not technically inclined will just leave everything on the default settings. If https was provided as soon as a site was created I am sure people would simply accept it and we would see it all over the place and would become much more accustomed to it.</p>
+<p>An excuse the people generally employ is that https is slower than standard http connection. Whilst this is technically correct really this is a laughable concern in this day and age because even on tablets and phones we have fast enough processors to deal with even the most complicated forward secret cryptography.</p>
+<p>Micah, why doesn't your site provide Strict Transport Security (HSTS)? If you are going to tell sites to use HTTPS in as many situations as possible then please at least start with your own site for anyone to take you even remotely seriously.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Daniel</p>
+        <p class="legacy-comment-meta-pub_date">August 28, 2013 10:39 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>To all the people "trying to set the record straight" about ssl. Is your point that because all systems have flaws users as a whole should continue to do nothing? Do you honestly think that by parading around the weakness's of SSL you are actually helping anyone or doing anything remotely productive? Do you truly believe that if the entire internet was to employ SSL tomorrow that the end result would not be a net positive?</p>
+<p>The point of this article was to raise awareness about a situation that should not exist. If you go back and actually read the thing you will see that no where does the author claim that https is the be all end all solution capable of completely annulling the NSA's endeavors.</p>
+<p>I sincerely hope that someday you work out how to actually contribute to solving problems instead of just continuing to get in the way.</p>
+<p>PROTIP: The author probably knows more about security than you do.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Ichi</p>
+        <p class="legacy-comment-meta-pub_date">August 28, 2013 11:01 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Thanks you Daniel!!</p>
+<p>One of the most intelligent comments I've seen yet. I was thinking exactly what you said. The article is trying to highlight how many websites are not employing standard security practices (Even the big pro security websites) that would at least mitigate our current problem.</p>
+<p>It's amazing how many fools jump in to say 'It won't fix anything, so why bother?'  So f**king what!? So because they could compromise a server we shouldn't employ any security practices at all? Foolish. I wouldn't want my data being hosted on any of their servers, that's for damn sure. You should always employ every security practice at your disposal. Nothing is ever 100% secure, yet you should always be trying to get there!</p>
+<p>So far all I've seen in the comments (Other then the few intelligent posts that seem to understand) is a bunch or bad advice and/or hearsay bullshit. No one cares if you heard a dude that knows a dude that is a security guru and he said 'https is teh sux'.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">stan</p>
+        <p class="legacy-comment-meta-pub_date">August 29, 2013 10:43 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Hi my name is stan and I don't know anything about security however I am interested in a few locks rather than none. What do I do to make life a little difficult for the internet burglars. Advice. I don't know md5 or jack but can browse and download. Thanks :) (my name really isn't stan of course)</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Herp Derpington</p>
+        <p class="legacy-comment-meta-pub_date">August 29, 2013 04:54 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Those who would trade a little performance for a little security or privacy deserve neither.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+        </div>
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name"><a href="../../../">Micah Lee's blog</a></p>
+      <p><img class="coffee" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP 0x403C2657CD994F73
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a>
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../../../static/images/reality.png"></a></p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?<p><p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+  </ul>
+
+    </div>
+  </div>
+</body>

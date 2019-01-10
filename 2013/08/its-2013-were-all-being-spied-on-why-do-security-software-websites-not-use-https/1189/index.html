@@ -1,0 +1,176 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>Legacy Comments</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../../../static/style.css">
+  <link rel="stylesheet" href="../../../../static/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">micah</p>
+        <p class="legacy-comment-meta-pub_date">August 29, 2013 12:32 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Some of the commenters seem to say: "GnuPG and other software sometimes offers OpenPGP signatures so people can manually verify, or they offers md5 checksums of the downloads so people can make sure they're valid."</p>
+<p>This is ridiculous for three reasons.</p>
+<p>1) The only people who manually verified signatures are especially paranoid hackers. Nobody else even knows how. This fact is one of the major reasons I decided to write Tor Browser Launcher (<a href="https://micahflee.com/2013/04/sudo-apt-get-install-torbrowser/">https://micahflee.com/2013/04/sudo-apt-get-install-torbrowser/</a>), because most people who download the Tor Browser Bundle are trusting only in the HTTPS connection to www.torproject.org, and there are widely publicized attacks that against HTTPS that are hard to detect as long as the attacker has access to a CA, such as the US government.</p>
+<p>2) If you use HTTP, and the attacker can modify the binary downloads, they can just as easily modify the PGP sigs or MD5 checksums that you're seeing. It would be ridiculous for them not to. All software should offer sigs so that those who wish to verify it can, but just doing that and nothing to prevent these sigs from getting modified in transit will not protect the users of your software.</p>
+<p>3) Since gpg4win.org is specifically an example here, how would a Windows user who wishes to verify a download of GPG do it? They download the binary from <a href="http://files.gpg4win.org/gpg4win-2.2.0.exe">http://files.gpg4win.org/gpg4win-2.2.0.exe</a> and then the sig from <a href="http://files.gpg4win.org/gpg4win-2.2.0.exe.sig">http://files.gpg4win.org/gpg4win-2.2.0.exe.sig</a>. But they don't have GPG installed yet to verify the sig. So maybe they run gpg4win-2.2.0.exe before verifying it, hoping to use it to verify itself. If there was malware, they've already lost. It's stupid.</p>
+<p>--</p>
+<p>Some commenters seem to say: "HTTPS is broken, everyone knows that. HTTPS only offers a little bit of privacy and security."</p>
+<p>This is flat out wrong. HTTPS works great. It's the public key infrastructure that's broken. All the things you've heard about how easy it is to bypass HTTPS are specifically talking about MITM attacks that use malicious certs signed by browser-trusted CAs. CAs are not the only way to authenticate certs though.</p>
+<p>If you authenticate without using CAs (manual fingerprint verification, certificate pinning, or one of the decentralized PKI experiments), you can detect MITM attacks that are being conducted by the NSA, or anyone else. If you use HTTPS Everywhere (<a href="https://www.eff.org/https-everywhere">https://www.eff.org/https-everywhere</a>) you can even opt-in to the SSL Observatory (<a href="https://www.eff.org/observatory">https://www.eff.org/observatory</a>) which will send us the certs you see. We're building the infrastructure to alert users when we detect MITM attacks that are carried out with browser-trusted CAs.</p>
+<p>There's also the commenters who don't know anything about this stuff but just insist that since NSA is loaded with money they can obviously break public key cryptography. If you say something like this, please cite your source. But for now just think about this Edward Snowden quote: "Properly implemented strong crypto systems are one of the few things that you can rely on." (<a href="http://www.guardian.co.uk/world/2013/jun/17/edward-snowden-nsa-files-whistleblower">http://www.guardian.co.uk/world/2013/jun/17/edward-snowden-nsa-files-whistleblower</a>)</p>
+<p>--</p>
+<p>Some commenters seem to say: "Google, Amazon, Apple, Microsoft, the ISPs, and everyone else just give your data to the NSA, so HTTPS doesn't help anyway."</p>
+<p>HTTPS can't help you protect your data from servers that betray your trust. But from everyone else it can. The entire Internet isn't Google. An example of a part of the Internet that does indeed use HTTPS and isn't Google is <a href="https://gpgtools.org/">https://gpgtools.org/</a>, the website to download GPG binaries for Mac. Also, this website is hosted in Germany, outside of NSA's jurisdiction.</p>
+<p>There is a huge difference between specific companies being asked to give user data to the NSA, and vast swaths of everyone's user data being collected by NSA without anyone giving permission simply because they neglect to use HTTPS.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Baps</p>
+        <p class="legacy-comment-meta-pub_date">August 29, 2013 04:54 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Hello Micah,</p>
+<p>I believe that your first point is null and void if a site/server utilises (perfect) forward secrecy ciphers. Also, if your solution really is as good as you say why not approach the TOR people and get it implemented? I also saw lecture by Jake Applebaum who works for TOR and he said in a very matter of fact way that the TOR browser alone is not good enough and is provided because they know most people want to use it like that. He said that TAILS is how it should be used as it provides a more secure foundation. In security parlance TALIS is essentially a DMZ (demilitarised zone).</p>
+<p>Second, ignore MD5, it is broken. As far as I am aware the way that PGP works is to provide not just integrity to the file/s that have been presented but it also provides authentication. This means that if the signature is tampered with even if it is on an insecure connection it can be tested and there would be NO DOUBT that the file/s would have been intercepted by a 3rd party. What I am trying to say is that there is a way of looking up and verifying the integrity of the PGP signature itself to see if it has been issued by the person you think it has been issued by. The TOR project provides a signature AND provides https I believe as a belt and braces solution.</p>
+<p>Third point, if I am correct about point two then your third point has already been answered. Also I don't think it is dependent on the client software to prove the authenticity, I have a feeling it is dependent on a remote key server.</p>
+<p>I do agree that https is not broken or insecure. However saying that it works "great" is rather disingenuous. There are 700+ Certificate Authorities, 95% of which I have no reason to trust and have no relationship with but necessarily am forced to trust. As Moxxy Marlinspike says we need trust agility. HTTPS is also extremely hard to configure from a server point of view. It is staggering how many companies out there actually provide insecure HTTPS. Your own site is a case in point: <a href="https://www.ssllabs.com/ssltest/analyze.html?d=micahflee.com">https://www.ssllabs.com/ssltest/analyze.html?d=micahflee.com</a> (granted there are minor issues, but my point is that even people who should know about https configure it wrongly or not very well.</p>
+<p>Its not just the EFF's SSL Observatory that can be used to verify certificates. Steve Gibson is also running a nice fingerprinting service that may be of interest, located here: <a href="https://www.grc.com/fingerprints.htm">https://www.grc.com/fingerprints.htm</a></p>
+<p>In a sense the users are actually correct in my view about the likes of Google, Amazon et al. Security researchers are now saying that we need to think about how we protect ourselves from abuse from these companies. The ONLY way to do that is to have a TNO (Trust No One) solution. So for the likes of cloud services encrypting data ourselves before it goes onto the internet is the only sure fire solution. Companies like CryptoCat are attempting to protect themselves from us and us from them by providing perfect forward secrecy which really is a TNO solution.</p>
+<p>We also need to know the limitations of HTTPS. It is only protection of the transport layer, it is not encrypting or protecting information once it reaches the other party, it only provides protection when data is in motion.</p>
+<p>I suppose the real reason that we do not see HTTPS all over the place is because of what we call "the tyranny of the default". Sites simply do not provide HTTPS because they may lack the understanding of why it is good for users, security and privacy etc. The site administrators will simply say or think "this setup has worked for me so far so why should I change anything?" In a sense users/administrators who are not technically inclined will just leave everything on the default settings. If https was provided as soon as a site was created I am sure people would simply accept it and we would see it all over the place and would become much more accustomed to it.</p>
+<p>An excuse the people generally employ is that https is slower than standard http connection. Whilst this is technically correct really this is a laughable concern in this day and age because even on tablets and phones we have fast enough processors to deal with even the most complicated forward secret cryptography.</p>
+<p>Micah, why doesn't your site provide Strict Transport Security (HSTS)? If you are going to tell sites to use HTTPS in as many situations as possible then please at least start with your own site for anyone to take you even remotely seriously.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name"><a href="../../../../">Micah Lee's blog</a></p>
+      <p><img class="coffee" src="../../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP 0x403C2657CD994F73
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a>
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../../../../static/images/reality.png"></a></p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?<p><p>Check the <a href="../../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../../tags/tor/">tor</a></li>
+  
+  </ul>
+
+    </div>
+  </div>
+</body>

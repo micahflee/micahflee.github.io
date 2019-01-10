@@ -1,0 +1,181 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>Legacy Comments</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../../../static/style.css">
+  <link rel="stylesheet" href="../../../../static/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Anonymous</p>
+        <p class="legacy-comment-meta-pub_date">May 9, 2016 05:14 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>How can i get this small change (concept) to get it to work:</p>
+<p>Note: I am asking what i must write on /boot/grub/grug.cfg to chainload to the Linux bootloader.</p>
+<p>I prefer to have an encrypted /boot partition, with Grub2 on it with a manual edited /boot/grub/grug.cfg file (i get it working with GRUB_ENABLE_DISKCRYPT=t on /etc/default/grub prior to do grub-install with /boot encrypted partition mounted on /boot).</p>
+<p>If i boot the PC, it loads Grub2 from inside encrypted partition perfectly well.</p>
+<p>What i need is to chainload the other Linux distros (i know how when they are not encrypted).</p>
+<p>Beware i only have one partition per Linux (all is inside that partition), so each Linux distro /boot is a folder inside that partition.</p>
+<p>Think partition scheme as this:
+/dev/sda1 (Windows1, not encrypted yet)
+/dev/sda2 (Windows2, not encrypted yet)
+/dev/sda3 (Windows3, not encrypted yet)
+/dev/sda4 (extended)
+/dev/sda5 (for Grub2 - encrypted)
+/dev/sda6 (for Linux1 - encrypted)
+/dev/sda7 (for Linux2 - encrypted)
+...etc..</p>
+<p>And LUKS as this:
+/dev/sda5 - LUKS (password0)
+/dev/sda6 - LUKS (password1)
+/dev/sda7 - LUKS (password2)</p>
+<p>Then over such LUKS, LVM as this:
+/dev/mapper/Grub2_crypt with one volume group inside it, with one logical partition formated as Ext4
+/dev/mapper/Linux1_crypt with one volume group inside it, with two logical partitions SWAP + / formated as Ext4
+/dev/mapper/Linux2_crypt with one volume group inside it, with two logical partitions  SWAP + / formated as Ext4</p>
+<p>How can i cahinload to Linux1 and Linux2 bootloaders that are installed on their respective /boot folders from /boot Grub2, what i must write on grub.cfg file?</p>
+<p>lsblk (when all is 'open' looks like this):
+sda
++-sda1
++-sda2
++-sda3
++-sda4
++-sda5
+  +-Grub2_crypt
+     +-Grub2_vg_crypt-Grub2_lg_crypt
++-sda6
+  +-Linux1_crypt
+     +-Linux1_vg_crypt-Linux1swap_lg_crypt
+     +-Linux1_vg_crypt-Linux1_lg_crypt
++-sda7
+  +-Linux2_crypt
+     +-Linux2_vg_crypt-Linux2swap_lg_crypt
+     +-Linux2_vg_crypt-Linux2_lg_crypt</p>
+<p>First things i want: 
+How can i install Grub2 onto Linux1_vg_crypt-Linux1_lg_crypt?
+How can i install Grub2 onto Linux2_vg_crypt-Linux2_lg_crypt?</p>
+<p>Second thing i want:
+What must i write inside grub.cfg file that is inside Grub2_vg_crypt-Grub2_lg_crypt?</p>
+<p>In other words, how to chain from Grub2 menu to a /boot folder inside a LVM partition over LUKS?</p>
+<p>I know how to chainload if i have a separate /boot partition for each Linux and they are not encrypted.</p>
+<p>But i want unencrypted only the MBR and 62 consecutives sectors, the rest of the disk all encrypted... beware i put three primary partitions telling there is Windows, but it is not, it is to make all inside an extended partition... i could had say the same without any primary partition... ah!, yes BIOS - MBR mode.</p>
+<p>After getting on Grub load the others, i will try the same but in a UEFI mode... i am trying to get knownledge on how to do it all by hand, without even install any Linux, that is very important.</p>
+<p>Just in case it helps, for a step by step, i am trying all this by starting a Linux LiveCD called SystemRescueCD in pure console mode, the hard way, i know!</p>
+<p>Thanks!</p>
+
+    </div>
+  </div>
+  
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name"><a href="../../../../">Micah Lee's blog</a></p>
+      <p><img class="coffee" src="../../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP 0x403C2657CD994F73
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a>
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../../../../static/images/reality.png"></a></p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?<p><p>Check the <a href="../../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../../tags/tor/">tor</a></li>
+  
+  </ul>
+
+    </div>
+  </div>
+</body>

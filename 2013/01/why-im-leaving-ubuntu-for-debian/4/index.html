@@ -1,0 +1,270 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>Legacy Comments</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../../../static/style.css">
+  <link rel="stylesheet" href="../../../../static/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Rob</p>
+        <p class="legacy-comment-meta-pub_date">January 27, 2013 12:43 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>You can have stable, well-maintained software or you can have the latest versions.  You can only pick one.</p>
+<p>Debian tends towards stability.  And -- since it's not 2002 -- having the latest versions isn't crucial.</p>
+<p>Take Iceweasel, for example.  What's changed from 10 to 18?  Well... not a whole lot.  Debian backports security fixes, and as far as features are concerned the Firefox ESR releases (which Debian bases Iceweasel on) don't miss anything that you'll need to browse the web.</p>
+<p>I get that version envy drives people away from stable, but it shouldn't drive beginners to testing...  'cause there's a reason that's not considered a stable release...</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">micah</p>
+        <p class="legacy-comment-meta-pub_date">January 27, 2013 01:01 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>@Rob, actually you can have both. You can use stable repos (or in my case testing) for your operating system, and install specific packages from experimental or sid. To install the latest Iceweasel on my testing repo, I added this line to /etc/apt/sources.list:</p>
+<p>deb <a href="http://linux.csua.berkeley.edu/debian/">http://linux.csua.berkeley.edu/debian/</a> experimental main</p>
+<p>Then:</p>
+<p>apt-get update
+apt-get -t experimental install iceweasel</p>
+<p>Now I'm using Iceweasel 18.0.1. From what I hear, Debian testing is actually quite stable. Ubuntu is based on testing and experimental, so my Debian is as stable as what I've been used to.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Sharp</p>
+        <p class="legacy-comment-meta-pub_date">January 27, 2013 07:24 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Micah,</p>
+<p>You can use pinning to tell apt to prefer the experimental repos for apps like iceweasel and icedove, while prefering testing for everything else. It's what I do. I also have unstable in my sources.list just in case there is a dependency which an experimental package needs.</p>
+<p><a href="http://wiki.debian.org/AptPreferences">http://wiki.debian.org/AptPreferences</a></p>
+<p>Hope you and others find that useful!</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Omari</p>
+        <p class="legacy-comment-meta-pub_date">January 28, 2013 05:33 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>You can get both stable and the latest with Slackware. Of course the tradeoff is that Slackware does not come with as many packages as the larger distributions, and its package manager is not as sophisticated.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">John</p>
+        <p class="legacy-comment-meta-pub_date">April 22, 2013 10:59 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Web browsers should be constantly updated. Talk to any web developer and they'll tell you the same. HTML5 and CSS3 browser support gets better in each subsequent version of FireFox, Chrome, Safari, and surprisingly even, Internet Explorer.</p>
+<p>A huge part of the pain of being a web developer is having to support crusty, ancient web browsers. Stop making it harder for web developers to create awesome content for <b>you</b>!!</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Alan</p>
+        <p class="legacy-comment-meta-pub_date">May 7, 2013 01:20 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Actually, the version present in debian stable is an ESR release. It would have the long-term support anyway, as Firefox ESR is targeted at businesses who don't necessarily need the web to be all shiny and what-not. Debian just renames it "Iceweasel" for license reasons (Not as dumb as it seems at first).</p>
+<p>It's easy enough to upgrade if you want, it's called "Debian Backports", and anyone who wants to run debian stable on a desktop should know about it.</p>
+<p>I actively avoid using many of these new features that make the web "better", as they are also responsible for a massive number of browser vulnerabilities. It's usually a waste of bandwidth and CPU anyway. I prefer my information to be un-diluted by wasteful web design. Sometimes I even use a text-mode browser for things.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Van</p>
+        <p class="legacy-comment-meta-pub_date">March 2, 2015 05:33 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>That's why software engineers make the big bucks.  If software engineering were easy, you would get paid McDonald's wages.  ;-)</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name"><a href="../../../../">Micah Lee's blog</a></p>
+      <p><img class="coffee" src="../../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP 0x403C2657CD994F73
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a>
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../../../../static/images/reality.png"></a></p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?<p><p>Check the <a href="../../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../../tags/tor/">tor</a></li>
+  
+  </ul>
+
+    </div>
+  </div>
+</body>
