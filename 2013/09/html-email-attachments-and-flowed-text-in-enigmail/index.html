@@ -54,17 +54,12 @@
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">Alan Eliasen</p>
-        <p class="legacy-comment-meta-pub_date">September 19, 2013 02:45 PM</p>
+        <p class="legacy-comment-meta-author">Jesse</p>
+        <p class="legacy-comment-meta-pub_date">December 27, 2013 02:41 AM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>I've had people ask me why Enigmail stops their ability to send HTML-formatted e-mail, and I noticed, when walking someone else through the Enigmail wizard, that it asks to turn off HTML formatting.  This is a good guide to re-enabling it, so thanks.  I always just said "If you need HTML, don't let it turn it off in the wizard."  Actually, I recommend not using the Enigmail wizard at all, but generating your keys directly in the gpg command-line tool, as some of its options are broader and the implications of your choices stated more correctly.</p>
-<p>However, I <a href="https://futureboy.us/pgp.html" rel="nofollow">argue strongly in my GPG guide</a> that PGP/MIME will probably limit your ability to reach many people who (correctly) use GPG, and I recommend against using PGP/MIME.  Enigmail's receiving of encrypted attachments and public keys is broken, too, and it often can't even decrypt and import, say, a public key that it attached.  (Try sending an encrypted or unencrypted public key to yourself as an Enigmail attachment, and then importing it.)</p>
-<p>Enigmail also has a severe security bug that if it encounters a PGP/MIME message, it will automatically and silently try to decrypt it, even if you've told Enigmail <em>not</em> to automatically decrypt messages!  This is very bad if someone's looking over your shoulder, and it may make you fail to notice that the message was encrypted at all, so you might forget to encrypt a reply, etc.</p>
-<p>For these reasons, I personally recommend against the use of PGP/MIME at the moment, even if both sides use Enigmail, but rather recommend just plain ASCII-armored encrypted text in the body of a plaintext message.  It will let you reach more people and reduce the risk of your attachments being unreadable or being stripped out entirely.</p>
-<p>Additionally, unpredictability is the key to good encryption practice.  For this reason, I recommend strongly against using HTML in encrypted messages, as this gives a long run of "known plaintext".   If it's not obvious why known plaintext can be bad, consider <a href="http://sac2013.irmacs.sfu.ca/slides/s9.pdf" rel="nofollow"> this recent disastrous break on the widely-used (albeit not in GPG) RC4 cipher&lt;/A&gt; which allows, if you know a small number of bytes of the plaintext,  (even as low as 6) to recover the rest of the message, given enough ciphertexts.  The more unpredictable your messages are, the harder they will be to break.</p>
-<p>This article helps you to still be able to send HTML-formatted messages in your other communications, and for that it is very helpful, but you don't want HTML in your encrypted communications if you want your message to be as unpredictable as possible.</p>
+      <p>Thanks, that was super helpful!</p>
 
     </div>
   </div>
@@ -120,12 +115,17 @@
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">Jesse</p>
-        <p class="legacy-comment-meta-pub_date">December 27, 2013 02:41 AM</p>
+        <p class="legacy-comment-meta-author">Alan Eliasen</p>
+        <p class="legacy-comment-meta-pub_date">September 19, 2013 02:45 PM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>Thanks, that was super helpful!</p>
+      <p>I've had people ask me why Enigmail stops their ability to send HTML-formatted e-mail, and I noticed, when walking someone else through the Enigmail wizard, that it asks to turn off HTML formatting.  This is a good guide to re-enabling it, so thanks.  I always just said "If you need HTML, don't let it turn it off in the wizard."  Actually, I recommend not using the Enigmail wizard at all, but generating your keys directly in the gpg command-line tool, as some of its options are broader and the implications of your choices stated more correctly.</p>
+<p>However, I <a href="https://futureboy.us/pgp.html" rel="nofollow">argue strongly in my GPG guide</a> that PGP/MIME will probably limit your ability to reach many people who (correctly) use GPG, and I recommend against using PGP/MIME.  Enigmail's receiving of encrypted attachments and public keys is broken, too, and it often can't even decrypt and import, say, a public key that it attached.  (Try sending an encrypted or unencrypted public key to yourself as an Enigmail attachment, and then importing it.)</p>
+<p>Enigmail also has a severe security bug that if it encounters a PGP/MIME message, it will automatically and silently try to decrypt it, even if you've told Enigmail <em>not</em> to automatically decrypt messages!  This is very bad if someone's looking over your shoulder, and it may make you fail to notice that the message was encrypted at all, so you might forget to encrypt a reply, etc.</p>
+<p>For these reasons, I personally recommend against the use of PGP/MIME at the moment, even if both sides use Enigmail, but rather recommend just plain ASCII-armored encrypted text in the body of a plaintext message.  It will let you reach more people and reduce the risk of your attachments being unreadable or being stripped out entirely.</p>
+<p>Additionally, unpredictability is the key to good encryption practice.  For this reason, I recommend strongly against using HTML in encrypted messages, as this gives a long run of "known plaintext".   If it's not obvious why known plaintext can be bad, consider <a href="http://sac2013.irmacs.sfu.ca/slides/s9.pdf" rel="nofollow"> this recent disastrous break on the widely-used (albeit not in GPG) RC4 cipher&lt;/A&gt; which allows, if you know a small number of bytes of the plaintext,  (even as low as 6) to recover the rest of the message, given enough ciphertexts.  The more unpredictable your messages are, the harder they will be to break.</p>
+<p>This article helps you to still be able to send HTML-formatted messages in your other communications, and for that it is very helpful, but you don't want HTML in your encrypted communications if you want your message to be as unpredictable as possible.</p>
 
     </div>
   </div>

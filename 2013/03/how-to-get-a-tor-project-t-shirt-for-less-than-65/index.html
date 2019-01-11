@@ -57,15 +57,44 @@
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">null pointer exception</p>
-        <p class="legacy-comment-meta-pub_date">December 23, 2015 07:24 PM</p>
+        <p class="legacy-comment-meta-author">Sally Forth</p>
+        <p class="legacy-comment-meta-pub_date">March 20, 2013 05:07 PM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>I know this post is a bit old; however, I'm thinking about paying for a VPS. Is there a particular reason you went gandi? Do you recommend them?</p>
+      <p>I'm considering following the advice at unhosted.org and using a rented VPS in a nice friendly country for my web-app dealings. Would it be a terrible idea to use the same machine as a Tor node, even a non-exit relay?</p>
 
     </div>
   </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">micah</p>
+        <p class="legacy-comment-meta-pub_date">March 21, 2013 11:25 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>There are a couple things that could happen if you decide to use an active web server as a Tor node. The IP addresses of all Tor relays, middle and exit, are public. They have to be, or the Tor client wouldn't be able to use them to build circuits.</p>
+<ul>
+<li>Since people often abuse the Tor network, it's common practice for internet services to block all public Tor IPs. This might mean if your web site wants to send an email it might never reach it's destination and be blocked as spam, or if your website tries making http requests to web servers, the requests could get blocked or your website could be presented with a CAPTCHA, which of course would be a challenge to beat. </li>
+<li>You could use up tons of bandwidth and your website might be slow to load or unresponsive. If this is an issue you can always throttle your Tor bandwidth by changing settings in /etc/tor/torrc.</li>
+<li>If you're running an exit node, abuse of your node might make your web host close your account, which of course will also bring down your website.</li>
+</ul>
+<p>I think there are plenty of situations, especially for static websites, where none of these are that big of a concern though.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
   
 
             
@@ -118,44 +147,15 @@
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">Sally Forth</p>
-        <p class="legacy-comment-meta-pub_date">March 20, 2013 05:07 PM</p>
+        <p class="legacy-comment-meta-author">null pointer exception</p>
+        <p class="legacy-comment-meta-pub_date">December 23, 2015 07:24 PM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>I'm considering following the advice at unhosted.org and using a rented VPS in a nice friendly country for my web-app dealings. Would it be a terrible idea to use the same machine as a Tor node, even a non-exit relay?</p>
+      <p>I know this post is a bit old; however, I'm thinking about paying for a VPS. Is there a particular reason you went gandi? Do you recommend them?</p>
 
     </div>
   </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">micah</p>
-        <p class="legacy-comment-meta-pub_date">March 21, 2013 11:25 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>There are a couple things that could happen if you decide to use an active web server as a Tor node. The IP addresses of all Tor relays, middle and exit, are public. They have to be, or the Tor client wouldn't be able to use them to build circuits.</p>
-<ul>
-<li>Since people often abuse the Tor network, it's common practice for internet services to block all public Tor IPs. This might mean if your web site wants to send an email it might never reach it's destination and be blocked as spam, or if your website tries making http requests to web servers, the requests could get blocked or your website could be presented with a CAPTCHA, which of course would be a challenge to beat. </li>
-<li>You could use up tons of bandwidth and your website might be slow to load or unresponsive. If this is an issue you can always throttle your Tor bandwidth by changing settings in /etc/tor/torrc.</li>
-<li>If you're running an exit node, abuse of your node might make your web host close your account, which of course will also bring down your website.</li>
-</ul>
-<p>I think there are plenty of situations, especially for static websites, where none of these are that big of a concern though.</p>
-
-    </div>
-  </div>
-  
-
-        
-      
-    </div>
   
 
             

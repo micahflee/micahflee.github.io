@@ -1,9 +1,10 @@
 <!doctype html>
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="../static/style.css">
   <title>sudo apt-get install torbrowser</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="stylesheet" href="../static/fontawesome/css/all.min.css">
 </head>
 <body>
   <div class="wrapper">
@@ -18,8 +19,62 @@
     <p class="meta">
       Posted 
       
+        in
+        
+          <a class="tag" href="../tags/tor">tor</a>
+        
+          <a class="tag" href="../tags/crypto">crypto</a>
+        
+          <a class="tag" href="../tags/security">security</a>
+        
+      
     </p>
     
+      <p><strong>TL;DR: I wrote a piece of software called <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a> that downloads and auto-updates Tor Browser Bundle for you, in your language and for your architecture, and verifies signatures. I’d like help finding bugs before the initial release.</strong></p>
+<p>Over the years, <a href="https://www.torproject.org/">Tor Project</a> has done an amazing job at making Tor more user-friendly. In the past if you wanted anonymity you had to download and install Tor, maybe hand-edit your torrc file, and configure your browser to use a proxy server. You had to make sure that you didn’t have browser plugins like Flash or Java enabled that would compromise your anonymity. Eventually, this got easier when you could install the TorButton Firefox add-on, but even then you had to keep manually separate your own identity and your anonymous browsing.</p>
+<p>Now all you have to do is head to torproject.org, click the large “Download Tor” button, and then download the Tor Browser Bundle (TBB). Then you extract it (normally to somewhere in your home directory, or to a USB stick) and run start-tor-browser, and wait to connect to the Tor network and for your anonymous browser to pop up with the friendly green “Congratulations. Your browser is configured to use Tor.” page.</p>
+<p><img src="../sudo-apt-get-install-torbrowser/screenshot-from-2013-04-09-100000-1024x576.png" alt="Tor Browser Bundle"></p>
+<p>Despite these advancements, Tor could still be more user-friendly.</p>
+<p>If you want to install TBB for regular use on your computer, you don’t get a Tor Browser entry in your desktop environment’s menu system. You can’t easily add it to your Ubuntu Unity launcher, favorite it in GNOME 3, or stick it on a panel in Cinnamon or MATE (not to mention add it to your quick launch bar in Windows).</p>
+<p>TBB doesn’t automatically update either. It warns you when you’re using an out-of-date version but you have to repeat the download and extract process manually. People often use Tor Browser infrequently enough to not bother with updating when they just want to quickly look something up anonymously, which compromises their security.</p>
+<p>When users download TBB, Tor Project provides a GnuPG signature of the package, but roughly 0% of users, including the elitest of hackers, actually verify that signature to be sure they weren’t MitM’d during the download. All TBB downloads go over HTTPS (unlike <a href="http://www.cypherpunks.ca/otr/">some security tools</a>), but there are still critical and widely publicized security problems with relying on the certificate authority infrastructure.</p>
+<p>![GnuPG signatures][tbb_sig.png]</p>
+<p>Finally, for GNU/Linux users, there’s no easy way to install TBB from the package manager, which is the preferred and expected way to install software on that platform. If it were installable from the package manager, it would open up the possibility for distributions to have Tor Browser installed by default.</p>
+<p><strong>These reasons are why I wrote Tor Browser Launcher.</strong> <a href="https://github.com/micahflee/torbrowser-launcher">Check it out on GitHub</a>.</p>
+<blockquote><p>Tor Browser Launcher is intended to make the Tor Browser Bundle (TBB) easier to maintain and use for GNU/Linux users. You install torbrowser-launcher from your distribution’s package manager and it handles everything else, including:</p>
+<ul>
+<li>Downloading the most recent version of TBB for you, in your language and for your architecture</li>
+<li>Automatically updating while saving your bookmarks and preferences</li>
+<li>Verifying the TBB’s GnuPG signature</li>
+<li>Adding a “Tor Browser” application launcher to your desktop environment’s menu</li>
+</ul>
+<p>When you first launch Tor Browser Launcher, it will download TBB from <a href="https://www.torproject.org/">https://www.torproject.org/</a> and extract it in ~/.torproject, and then execute it. When you run it after that it will just execute TBB.</p>
+</blockquote>
+<p>I’m hoping to first get Tor Browser Launcher into Tor Project’s <a href="https://www.torproject.org/docs/debian">deb.torproject.org repository</a>, and then later into Debian and Ubuntu, and other distributions as well like Fedora and Arch. I want Tor Browser Launcher to become the preferred way for GNU/Linux users to get TBB.</p>
+<p>Eventually I’d also like to port Tor Browser Launcher to Windows and Mac OS X.</p>
+<p>When you install Tor Browser Launcher, it adds a “Tor Browser” item to your desktop environment’s menu in the Internet category:</p>
+<p><img src="../sudo-apt-get-install-torbrowser/torbrowser-launcher_menu.png" alt="Tor Browser Launcher in the menu"></p>
+<p>The first time you run it, or when it finds updates, it downloads TBB from <a href="https://www.torproject.org/">https://www.torproject.org/</a>, and it also verifies the GnuPG signature:</p>
+<p><img src="../sudo-apt-get-install-torbrowser/torbrowser-launcher_downloading.png" alt="Downloading"></p>
+<p><img src="../sudo-apt-get-install-torbrowser/torbrowser-launcher_verifying.png" alt="Verifying"></p>
+<p>On success, it runs start-tor-browser, which loads Vidalia and Firefox. If you already have TBB installed, it immediately runs start-tor-browser:</p>
+<p><img src="../sudo-apt-get-install-torbrowser/torbrowser-launcher_success1.png" alt="Tor Browser Success"></p>
+<p>If the GnuPG signature doesn’t check out, it throws an error:</p>
+<p><img src="../sudo-apt-get-install-torbrowser/torbrowser-launcher_verification_error.png" alt="Signature verification error"></p>
+<p><strong>I’d like your help.</strong> I think Tor Browser Launcher is about ready for it’s first release. I’m already <a href="https://trac.torproject.org/projects/tor/ticket/8648">working on</a> getting it into deb.torproject.org, but first I want to find and fix any final bugs. Can you install it, try using it, and if you find anything wrong <a href="https://github.com/micahflee/torbrowser-launcher/issues?page=1&amp;state=open">open a new issue on GitHub</a>?</p>
+<p>If you’re using Debian, Ubuntu, Mint, or a related distro, it’s easy to build a .deb from source and install it. First install git, python-stdeb, and all of the Tor Browser Launcher dependencies:</p>
+<pre><code>sudo apt-get install git python-stdeb python-gtk2 python-psutil python-twisted wmctrl gnupg
+</code></pre>
+<p>Then git clone it, and build and install the .deb:</p>
+<pre><code>git clone https://github.com/micahflee/torbrowser-launcher.git
+cd torbrowser-launcher
+./build_and_install.sh
+</code></pre>
+<p>After typing your password to install the .deb, you’re done. You should now have a “Tor Browser” menu item. If you want to see debugging information, run torbrowser-launcher from a terminal.</p>
+<p>To see the discussion with the community that lead to this, check the comments on these two bugs: <a href="https://trac.torproject.org/projects/tor/ticket/3994">#3994</a> and <a href="https://trac.torproject.org/projects/tor/ticket/5236">#5236</a>. Also, some discussion happened on the <a href="https://lists.torproject.org/cgi-bin/mailman/listinfo/tor-talk/">tor-talk</a> and <a href="https://lists.torproject.org/cgi-bin/mailman/listinfo/tor-dev/">tor-dev</a> mailing lists.</p>
+<p>I also want to point out that Jamie Nguyen has <a href="https://jamielinux.com/articles/2013/01/tor-and-tor-browser-repository-on-fedora/">successfully packaged Tor Browser for Fedora</a>, though it’s not in the official repos. His solution doesn’t technically use TBB, but is still clever. I prefer Tor Browser Launcher though because it’s much less work to maintain (no need to update it each time there’s a TBB release), and if it ends up in distros that are slow to provide new versions of software (like Debian stable) users will still get the latest and greatest TBB.</p>
+
+
       
     
   </div>
@@ -29,6 +84,55 @@
     <div class="sidebar">
       <p class="name"><a href="../">Micah Lee's blog</a></p>
       <p><img class="coffee" src="../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP 0x403C2657CD994F73
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a>
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../static/images/reality.png"></a></p>
     </div>
   </div>
 </body>

@@ -1,9 +1,10 @@
 <!doctype html>
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="../static/style.css">
   <title>Backdoored Linux Mint, and the Perils of Checksums</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="stylesheet" href="../static/fontawesome/css/all.min.css">
 </head>
 <body>
   <div class="wrapper">
@@ -12,14 +13,52 @@
   
   <div class="blog-post">
     
+    <p class="feature-image">
+      <img src="../backdoored-linux-mint-and-the-perils-of-checksums/mint.png" />
+    </p>
+    
     
       <h1 class="article-title">Backdoored Linux Mint, and the Perils of Checksums</h1>
     
     <p class="meta">
       Posted 
       
+        in
+        
+          <a class="tag" href="../tags/hackers">hackers</a>
+        
+          <a class="tag" href="../tags/linux">linux</a>
+        
+          <a class="tag" href="../tags/openpgp">openpgp</a>
+        
+          <a class="tag" href="../tags/security">security</a>
+        
+      
     </p>
     
+      <p>Someone hacked the website of Linux Mint — which, according to <a href="https://stats.wikimedia.org/wikimedia/squids/SquidReportOperatingSystems.htm">Wikipedia’s traffic analysis report</a> is the 3rd most popular desktop Linux distribution after Ubuntu and Fedora — and replaced links to ISO downloads with a backdoored version of the operating system. This <a href="http://blog.linuxmint.com/?p=2994">blog post</a> explains the situation.</p>
+<p>From the post and comments, the key points includes:</p>
+<ul>
+<li>Links to the malicious version of the ISO were added, detected, and removed on the same day, February 20. If you’re already running Linux Mint, this doesn’t affect you — all files installed or updated using the package manager are digitally signed and the signatures are verified.</li>
+<li>Linux Mint 17.3 Cinnamon was the only version that was compromised</li>
+<li>The website was hacked because of a WordPress exploit. Project leader Clement Lefebvre says, “Yes, the breach was made via wordpress. From there they got a www-data shell.”</li>
+<li>The backdoored ISO contains Linux Mint with <a href="http://blog.malwaremustdie.org/2013/05/story-of-unix-trojan-tsunami-ircbot-w.html">Tsunami botnet malware</a> running on it.</li>
+</ul>
+<p>The blog post includes instructions for checking your ISO files to ensure that they’re valid by comparing MD5 checksums. MD5 checksums!</p>
+<p>Besides the fact that the website isn’t available over HTTPS so network attackers could change those MD5 checksums to whatever they want as you load the blog post, <a href="https://en.wikipedia.org/wiki/MD5#Security">MD5 is entirely broken</a> and has been for many years. MD5 should never be relied on for verifying that you have the legitimate version of a file. It would not be difficult for someone to generate a backdoored Linux Mint ISO that has the same MD5 checksum as the legitimate ISO. Likewise, while SHA1 is considerable stronger, it also should not be used for security purposes anymore. Wikipedia’s <a href="https://en.wikipedia.org/wiki/SHA-1">SHA1 article</a> says: “SHA-1 is no longer considered secure against well-funded opponent.”</p>
+<p>It would be great if the Linux Mint project can completely stop relying on MD5 and started using a checksum algorithm that is considered secure today, like SHA256.</p>
+<p>But it’s also important to note that comparing the checksum of a file you downloaded with what you see on the website you downloaded it from isn’t secure either, even if you are using SHA256. If a hacker can hack the website to modify the download link, they can modify the checksum at the same time to match their malicious download.</p>
+<p>The only solution to this problem is to use public key cryptography. The ISOs should be digitally signed with an OpenPGP secret key, and users should verify the signature using the associated public key. Linux Mint actually does in fact sign releases with a PGP key, but there’s no information on the download page about this, or how to go about verifying the signature.</p>
+<p>If you look at the directory structure in the Linux Mint folder on one of the download mirrors, like <a href="http://mirrors.kernel.org/linuxmint/stable/17.3/">http://mirrors.kernel.org/linuxmint/stable/17.3/</a> for example, you’ll see a bunch of ISO files as well as sha256sum.txt and sha256sum.txt.gpg. The sha256sum.txt file includes SHA256 checksums of all of the ISO files, and you can use sha256sum.txt.gpg to verify the signature of that file.</p>
+<p>This appears to be the signing key:</p>
+<pre><code>pub   dsa1024/0FF405B2 2009-04-29 [SC]
+      Key fingerprint = E1A3 8B8F 1446 75D0 60EA  666F 3EE6 7F3D 0FF4 05B2
+uid         [ unknown] Clement Lefebvre (Linux Mint Package Repository v1) 
+sub   elg2048/0F346519 2009-04-29 [E]
+</code></pre>
+<p>Verifying is PGP signatures is more complicated and harder to explain than comparing checksums, but it’s actually secure. It’s the only way to be sure that a Linux installer ISO you download hasn’t been tampered with since the image was built by the developers. Tails is an example of an operating system that does an <a href="https://tails.boum.org/download/index.en.html#verify">excellent job</a> at explaining how to verify PGP signatures when you download their ISO.</p>
+
+
       
     
   </div>
@@ -29,6 +68,55 @@
     <div class="sidebar">
       <p class="name"><a href="../">Micah Lee's blog</a></p>
       <p><img class="coffee" src="../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP 0x403C2657CD994F73
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a>
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../static/images/reality.png"></a></p>
     </div>
   </div>
 </body>

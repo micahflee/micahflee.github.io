@@ -1,9 +1,10 @@
 <!doctype html>
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="../static/style.css">
   <title>OnionShare has some exciting new features</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="stylesheet" href="../static/fontawesome/css/all.min.css">
 </head>
 <body>
   <div class="wrapper">
@@ -12,14 +13,56 @@
   
   <div class="blog-post">
     
+    <p class="feature-image">
+      <img src="../onionshare-has-some-exciting-new-features/onionshare-server.png" />
+    </p>
+    
     
       <h1 class="article-title">OnionShare has some exciting new features</h1>
     
     <p class="meta">
       Posted 
       
+        in
+        
+          <a class="tag" href="../tags/onionshare">onionshare</a>
+        
+      
     </p>
     
+      <p>It’s been some time since I’ve written about OnionShare, so I thought I’d write an update on all of the latest work. Today we released version 1.3 (and last month we released 1.2, so the releases are getting more frequent). You can get the latest version at onionshare.org.</p>
+<p>But first, I owe a huge thanks to <a href="https://twitter.com/_mig5">Miguel Jacq</a> for churning out new features, taking over a lot of the GitHub issue triaging responsibilities, and becoming a core OnionShare developer.</p>
+<p>If you haven’t tried it out in awhile, here are some things that are new:</p>
+<p>The user interface has a <em>major</em> upgrade. It’s now much more clear exactly what steps you’re supposed to take at every point, and it looks a bit more like a modern piece of software. In addition to the OnionShare interface getting redesigned, the client-side web interface — what people receiving the files with Tor Browser see — also has a new look:</p>
+<p><img src="../onionshare-has-some-exciting-new-features/onionshare-client.png" alt=""></p>
+<p>(That’s Tor Browser running in a disposable Whonix AppVM in Qubes, by the way.)</p>
+<p>I owe a huge thanks to <a href="https://keybase.io/glennsorrentino">Glenn Sorrentino</a> for, nine months ago, doing a formal user study of OnionShare users and designing a brand new user experience that only now, in version 1.3, is seeing the light of day. Glenn also redesigned the onionshare.org website!</p>
+<p>OnionShare now bundles a copy of Tor with it (and has since May 2017), which means there’s no need to have Tor Browser open in the background anymore. Instead, OnionShare connects to Tor itself.</p>
+<p><img src="../onionshare-has-some-exciting-new-features/onionshare-bundled-tor.png" alt=""></p>
+<p>Because OnionShare can now control its own Tor process, it’s now also possible for censored users in countries like China to connect to the Tor network using bridges, from within OnionShare. Bridge support was first added last month, and support for meek bridges was added to 1.3 (for Linux only at the moment).</p>
+<p><img src="../onionshare-has-some-exciting-new-features/onionshare-bridges.png" alt=""></p>
+<p>Here’s more information about how to <a href="https://github.com/micahflee/onionshare/wiki/Connecting-to-Tor">connect to Tor</a>, and <a href="https://github.com/micahflee/onionshare/wiki/Using-Bridges">using bridges</a>, in OnionShare.</p>
+<p>Another recent feature is the auto-stop timer. Already, OnionShare will stop the share as soon as the first download finishes (you can disable this in the settings if you want to send files to multiple people). But now, if the receiver doesn’t download the file after a specified amount of time, OnionShare will automatically stop sharing for you. For example, here I’m sharing a screenshot, but the share will automatically stop at 2pm:</p>
+<p><img src="../onionshare-has-some-exciting-new-features/onionshare-autostop1.png" alt=""></p>
+<p>Once you start the share, you can see a countdown of seconds remaining before it stops on its own. (If the receiver starts downloading before that countdown finishes though, they’ll be able to finish downloading all the files no matter how long the download takes.)</p>
+<p><img src="../onionshare-has-some-exciting-new-features/onionshare-autostop2.png" alt=""></p>
+<p>Here’s more information about <a href="https://github.com/micahflee/onionshare/wiki/Using-the-Auto-Stop-Timer">using the auto-stop timer</a>.</p>
+<p>Another feature is persistent OnionShare addresses. By default, every time you share something, OnionShare generates a brand new URL, and soon as you’re done sharing it that URL no longer exists, and never will exist again. But now, you can change a setting that will allow you to re-use the same OnionShare URL for multiple shares.</p>
+<p>This might come in handy in any situation where you want to send someone files, but you don’t want to have any online communication channel with them. For example, let’s say a whistleblower (Alice) meets a journalist (Bob) in person. Alice can hand Bob a piece of paper with an OnionShare address on it and tell him to check it every night at a specific time. Now, Alice can continually anonymously send files to Bob without needing to communicate new OnionShare addresses every time. Here’s more information about <a href="https://github.com/micahflee/onionshare/wiki/Using-a-Persistent-URL">persistent addresses</a>.</p>
+<p>Another advanced feature that’s been added is support for stealth, or authenticated, onion services. These are Tor onion services that are much more private, but are also harder to use. The sender needs to share both the OnionShare address but also a HidServAuth string, and the receiver needs to add this HidServAuth string to their torrc file before they’ll be able to connect to it. (This is why it’s an advanced feature, it’s not quite practical for beginners to do this without a lot of troubleshooting.) Here’s more information about using <a href="https://github.com/micahflee/onionshare/wiki/Stealth-Onion-Services">stealth onions</a> in OnionShare.</p>
+<p>On a similar note, you might be wondering about OnionShare support for next generation Tor onion services, which are more secure and private than existing onion services. There is an <a href="https://github.com/micahflee/onionshare/issues/461">open issue</a> for this, but currently it’s blocked until an upstream project that OnionShare relies on, <a href="https://stem.torproject.org/">stem</a>, adds support for ephemeral next gen onion services itself. However, the OnionShare website itself is now accessible using a next gen onion service, and OnionShare will load it to check for available updates:</p>
+<pre><code>http://lldan5gahapx5k7iafb3s4ikijc4ni7gx5iywdflkba5y2ezyg6sjgyd.onion/
+</code></pre>
+<p>I’ve described some of the newest and biggest features in OnionShare, but it’s not nearly an exhaustive list. There are many more, including a system tray icon with desktop notifications, the ability to cancel shares before they finish starting, translations into several languages, checking for updates automatically, among others. Oh, and since January 2017, OnionShare has been <a href="https://tails.boum.org/doc/anonymous_internet/onionshare/index.en.html">built-in to the Tails operating system</a> too!</p>
+<p>I’m striving to make OnionShare a contributor-friendly open source project. Pull requests are always welcome, and in fact <a href="https://github.com/micahflee/onionshare/graphs/contributors">51 different people</a> have already contributed code.</p>
+<p>If you’d like to get involved in OnionShare development:</p>
+<ul>
+<li>Read the <a href="https://github.com/micahflee/onionshare/wiki/Developing-OnionShare">Developing OnionShare</a> page on the wiki</li>
+<li>Join the new (and so far extremely low-traffic) <a href="https://lists.riseup.net/www/subscribe/onionshare-dev">mailing list</a> for OnionShare developers and designers</li>
+<li>Checkout the GitHub <a href="https://github.com/micahflee/onionshare/issues">issues page</a> for bugs or enhancements to work on, or open your own issues if there are features you’d like to develop</li>
+</ul>
+
+
       
     
   </div>
@@ -29,6 +72,55 @@
     <div class="sidebar">
       <p class="name"><a href="../">Micah Lee's blog</a></p>
       <p><img class="coffee" src="../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP 0x403C2657CD994F73
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a>
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../static/images/reality.png"></a></p>
     </div>
   </div>
 </body>

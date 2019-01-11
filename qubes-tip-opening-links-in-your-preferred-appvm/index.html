@@ -1,9 +1,10 @@
 <!doctype html>
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="../static/style.css">
   <title>Qubes Tip: Opening links in your preferred AppVM</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="stylesheet" href="../static/fontawesome/css/all.min.css">
 </head>
 <body>
   <div class="wrapper">
@@ -18,8 +19,42 @@
     <p class="meta">
       Posted 
       
+        in
+        
+          <a class="tag" href="../tags/qubes">qubes</a>
+        
+      
     </p>
     
+      <p>If you use Qubes like I do, you have many different AppVMs to compartmentalize different programs. You might have one VM for your email client, one for your jabber client, one for your password database. But if you click a link in any of these programs, it sure would be nice if that link opened in the browser VM of your choice. This isn’t all that hard to setup.</p>
+<p>The command <code>qvm-open-in-vm</code> lets you open a document or a URL in another VM.</p>
+<pre><code>user@dev:~$ qvm-open-in-vm
+Usage: /usr/bin/qvm-open-in-vm vmname filename
+</code></pre>
+<p>If you have a terminal open in your dev VM and want to load <a href="https://micahflee.com/">https://micahflee.com/</a> in your browser VM, you can do it like this:</p>
+<pre><code>user@dev:~$ qvm-open-in-vm browser https://micahflee.com
+</code></pre>
+<p>You get a prompt in <code>dom0</code> asking if you really want to allow this cross-VM behavior. When you choose yes, a new tab loading my website opens in your default browser in your browser VM.</p>
+<p><img src="../qubes-tip-opening-links-in-your-preferred-appvm/qubes-links.png" alt="qubes.OpenURL"></p>
+<p>Excellent. Now let’s say you want this to automatically happen every time you click any link. You can do this by creating a <code>.desktop</code> file that advertises itself as a handler for http/https links, and then setting this as your default browser.</p>
+<p>Open a text editor and copy and paste this into it:</p>
+<pre><code>[Desktop Entry]
+Encoding=UTF-8
+Name=BrowserVM
+Exec=qvm-open-in-vm browser %u
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Categories=Network;WebBrowser;
+MimeType=x-scheme-handler/unknown;x-scheme-handler/about;text/html;text/xml;application/xhtml+xml;application/xml;application/vnd.mozilla.xul+xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;
+</code></pre>
+<p>Replace browser in the line that says <code>Exec=qvm-open-in-vm browser %u</code> with whatever AppVM you want to open links in. Save this file to <code>~/.local/share/applications/browser_vm.desktop</code>.</p>
+<p>Finally, set it as your default browser (like I’m doing here in my email VM):</p>
+<pre><code>user@email:~$ xdg-settings set default-web-browser browser_vm.desktop
+</code></pre>
+<p>Now whenever you click a link in a program running in this VM (such as Thunderbird), it will open that link in your browser VM.</p>
+
+
       
     
   </div>
@@ -29,6 +64,55 @@
     <div class="sidebar">
       <p class="name"><a href="../">Micah Lee's blog</a></p>
       <p><img class="coffee" src="../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP 0x403C2657CD994F73
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a>
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../static/images/reality.png"></a></p>
     </div>
   </div>
 </body>

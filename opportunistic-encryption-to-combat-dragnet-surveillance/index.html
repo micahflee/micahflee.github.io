@@ -1,9 +1,10 @@
 <!doctype html>
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="../static/style.css">
   <title>Opportunistic Encryption to Combat Dragnet Surveillance</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="stylesheet" href="../static/fontawesome/css/all.min.css">
 </head>
 <body>
   <div class="wrapper">
@@ -18,8 +19,26 @@
     <p class="meta">
       Posted 
       
+        in
+        
+          <a class="tag" href="../tags/crypto">crypto</a>
+        
+          <a class="tag" href="../tags/https">https</a>
+        
+      
     </p>
     
+      <p>The world is in shock and anger over recent revelations that NSA and GCHQ are conducting suspiciounless spying on every human with an internet or phone network connection. One of the ways they’re spying on the entire internet is by tapping the underwater fiber-optic cables that connect the continents and parsing and logging the firehose of packets as they fly by.</p>
+<p>If we want to keep what we do on the internet private, a good way to do that is to encrypt as much of our internet traffic as possible. End-to-end encryption is hard to do right for end users because identity verification is really, really hard to scale. It’s not practical for everyone who wants to visit an HTTPS website to meet in person and read out SHA1 fingerprints for SSL certs.</p>
+<p>The only real-world scalable identity verification system in widespread use right now is the collection of browser-trusted certificate authorities and their intermediaries. But it suffers from the problem where individuals and organizations without much power or money cannot compromise it’s security, but powerful organizations like NSA and GCHQ can easily compromise it to mount man-in-the-middle attacks.</p>
+<p>However, I think global adversaries like NSA and GCHQ are hesitant to mount <em>dragnet</em> active attacks against HTTPS certificates because they run the very real risk of getting caught. If you run <a href="https://www.eff.org/https-everywhere">HTTPS Everywhere</a> and opt-in to the decentralized <a href="https://www.eff.org/observatory">SSL Observatory</a>, your browser will warn you when the Observatory has detected a known malicious certificate (admittedly we don’t know of many malicious certs yet, but the more users we get the more likely we’ll spot attacks in the wild and can warn other about them). If you use Chrome it’s certificate pinning feature will also warn you about attacks against Google SSL certs. There are other tools out there too that make this detection possible.</p>
+<p>If NSA and GCHQ want to eavesdrop on encrypted communications, even ones that they can easily MITM without being detected, they have to do active attacks. It can’t just be passive eavesdropping, it has to actually be modifying traffic in transit and serving malicious public keys. If they start doing dragnet active MITM attacks on large swaths of the internet they will get caught, and it will be a worse public relations and diplomatic nightmare than they’re already facing. There would be no sensible way to claim that the US wasn’t “hacking the Chinese” or, for that matter, hacking the Germans, the Brazilians, the Israelis, the Australians, the Tunisians, the Mexicans, and everyone else in the world.</p>
+<p>But right now the web, and many other services on the internet, are still largely unencrypted. We need to fix this.</p>
+<p>Wouldn’t it be great if every single HTTP request had automatic, opportunistic end-to-end encryption between the browser and the server? Anyone could MITM it, but at least they would be forced to do an active attack. If just a small percentage of people manually verify crypto keys, active attacks run the risk of getting caught.</p>
+<p>Why stop at HTTP requests? Wouldn’t it be great if all TCP connections had automatic opportunistic encryption? Obviously these are enormous engineering projects that will completely break lots of technologies that people rely on, like intrusion detection systems. But I think it would be a big step in the right direction to make the internet secure from spy agencies.</p>
+<p>It’s time we encrypt all the things.</p>
+
+
       
     
   </div>
@@ -29,6 +48,55 @@
     <div class="sidebar">
       <p class="name"><a href="../">Micah Lee's blog</a></p>
       <p><img class="coffee" src="../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP 0x403C2657CD994F73
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a>
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../static/images/reality.png"></a></p>
     </div>
   </div>
 </body>

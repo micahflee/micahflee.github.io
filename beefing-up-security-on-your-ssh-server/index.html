@@ -1,0 +1,138 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>Beefing Up Security on Your SSH Server</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="stylesheet" href="../static/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="../beefing-up-security-on-your-ssh-server/ssh.png" />
+    </p>
+    
+    
+      <h1 class="article-title">Beefing Up Security on Your SSH Server</h1>
+    
+    <p class="meta">
+      Posted 
+      
+        in
+        
+          <a class="tag" href="../tags/sysadmin">sysadmin</a>
+        
+          <a class="tag" href="../tags/security">security</a>
+        
+      
+    </p>
+    
+      <p>Lately I’ve been thinking about setting up a blog to talk about tech things I find interesting, particularly web security, since that’s how I spend a lot of my work and free time. Since I had an under-used VPS sitting around, I figured I ought to set up WordPress on it and start blogging. What better topic to blog about than how I’m securely setting up this website?</p>
+<p>I’m going to start by talking about how to harden SSH. In later posts I’ll talk about how I set up Apache, install an SSL certificate and configure it for maximum security, and some WordPress security tricks. I’m using <a href="http://www.debian.org/">Debian</a>, but it shouldn’t be hard to adapt this to any Linux distro. I’m assuming you have root access to your server.</p>
+<p>Let’s start by making sure you can SSH into your server using public key authentication instead a password. Public key auth is much more secure for a number of reasons. Your crypto key is much larger than a password, making guessing it (just about) impossible. If you disable SSHing with passwords, the attacker is forced to attack your actual computer that has your key, as well as break the password protecting that key.</p>
+<p>If HBGary Federal had disabled password auth and only allowed public key auth, maybe they wouldn’t have gotten <a href="http://arstechnica.com/tech-policy/2011/02/anonymous-speaks-the-inside-story-of-the-hbgary-hack/">owned so hard</a>.</p>
+<p>I’m assuming you’re using an operating system with bash, ssh, and a reasonable terminal program already installed (like Linux distros or OS X). The internet is full of advice on how to generate an SSH keypair in Windows, but I’m not the one to ask. The rest of this blog post should still be useful to you though.</p>
+<p>If you already have an SSH key on your computer, you can skip this part. If you don’t, you need to create one. Open a terminal and type:</p>
+<pre><code>ssh-keygen
+</code></pre>
+<p>It will ask you where to save the key, defaulting to ~/.ssh/id_rsa. Press enter to leave the default. Then it will ask for a passphrase. I strongly suggest you use one. When this is done, two files should have been created, ~/.ssh/id_rsa (keep it secret, keep it safe) and ~/.ssh/id_rsa.pub (your SSH public key).</p>
+<p>Here’s how SSH public key authentication works. You put your public key on your server, and you keep your secret key on your laptop. When you try SSHing as a specific user to your server, the SSH server will look in that user’s ~/.ssh/authorized_keys file to see if your public key is there. If your laptop has the associated secret key, it lets you in.</p>
+<p>So let’s put your public key on the server. On your laptop, open a terminal and take a look at your public key.</p>
+<pre><code>cat ~/.ssh/id_rsa.pub
+</code></pre>
+<p>Here’s what mine looks like:</p>
+<pre><code>ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDG4uNgF9LczaoWvKPILitruwq0Enut3+UtGPb/mKgL837HLN/zBqxN6dzFvzP9msdx36ut76jLHtRvoIpp3UKzke3358kLgmleAMnmh9YkhLcV9FmSUC7B+t3Vij8Ce6OUOWC+Ot6+Eyp9s7hiuN6ZJI7LLg5bvgArTonTuMYRvXvnbzFm6ldJRUGPQWKMajNi7JWafyzPg2LnIqPYMBlWgEJUMPE9j/7MPtrBw4Yik5P8MxrmwH7CizdC9rsGLUfmiQUGAYr8Lhiws4I3B5ijeKyAPmQm4QQSMfW1mmgQF1P8xTXN7EiMa8OHV6Jgk6hKwlyjx7Y7p/jTwK5dEAuX micah@spock
+</code></pre>
+<p>Take that entire string and copy it. SSH into your server and create a ~/.ssh folder, if it’s not already there.</p>
+<pre><code>mkdir ~/.ssh
+</code></pre>
+<p>Create an authorized_keys file. My text editor of choice is vim, but feel free to use nano or emacs or whatever.</p>
+<pre><code>vim ~/.ssh/authorized_keys
+</code></pre>
+<p>Now paste the entire public key into this file. If you want to allow multiple keys to SSH in as this user, just have a different public key per line of this file.</p>
+<p>SSH forces you to do things securely, and fails to work if you’ve set permissions incorrectly. Let’s make sure no one but you has access to look at your SSH settings by changing permissions. On your server type:</p>
+<pre><code>chmod 700 ~/.ssh
+chmod 600 ~/.ssh/*
+</code></pre>
+<p>Now test to see if it works. Type <code>exit</code> and you should be back on your local computer. SSH back in. If everything worked, you should have a box pop up asking for your SSH key passphrase. Type it in, and you should be back at your server. Chances are your computer has ssh-agent running which caches your passphrase so you don’t have to type it in if you’ve recently unlocked your key. If public key auth isn’t working for you, try SSHing with the <code>-v</code> flag to troubleshoot.</p>
+<p>If so far so good, let’s configure your SSH daemon. SSH into your Linux box and switch to root, either by running <code>su</code> and typing the root password, or running <code>sudo -s</code> and typing your user password. Edit your SSH daemon config file:</p>
+<pre><code>vim /etc/ssh/sshd_config
+</code></pre>
+<p>You can generally leave your distro’s defaults, but just make sure that these settings are set like so:</p>
+<pre><code>PermitRootLogin no
+PubkeyAuthentication yes
+PermitEmptyPasswords no
+PasswordAuthentication no
+</code></pre>
+<p>Now restart your SSH server:</p>
+<pre><code>service ssh restart
+</code></pre>
+<p>Your SSH server is now hardened. Oh, and don’t lose that SSH key, or the passphrase that protects it :).</p>
+
+
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name"><a href="../">Micah Lee's blog</a></p>
+      <p><img class="coffee" src="../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP 0x403C2657CD994F73
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a>
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../static/images/reality.png"></a></p>
+    </div>
+  </div>
+</body>
