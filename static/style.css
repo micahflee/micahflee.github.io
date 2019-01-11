@@ -97,6 +97,10 @@ article iframe {
   max-width: 100%;
 }
 
+article p {
+  word-wrap: break-word;
+}
+
 div.legacy-comments {
   border: 1px solid #999999;
   padding: 20px;
