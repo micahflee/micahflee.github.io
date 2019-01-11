@@ -155,6 +155,10 @@ div.sidebar .name {
   padding: 0;
 }
 
+div.sidebar .name a {
+  color: #000000;
+}
+
 div.sidebar img.coffee {
   max-width: 100%;
 }
