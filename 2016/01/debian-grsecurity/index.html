@@ -351,12 +351,418 @@ $ torbrowser-launcher
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
+        <p class="legacy-comment-meta-author">Kevin Gallagher</p>
+        <p class="legacy-comment-meta-pub_date">January 15, 2016 05:03 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Also, the next level of hardening is using the grsecurity <a href="https://en.wikibooks.org/wiki/Grsecurity/The_RBAC_System" rel="nofollow">RBAC</a>, which is extremely powerful. It  has a utility called <a href="https://grsecurity.net/stable/gradm-3.1-201507191652.tar.gz" rel="nofollow">gradm</a> which you can put in learning mode, then use your computer as you normally would and it will write a ton of data relating to your usage patterns and every permission/role/access/capability that is required. Then, it can write a policy file for the RBAC based on this data, which, when you enable it, will explicitly grant access only to the things you need to do. It's super cool!</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">pablo</p>
+        <p class="legacy-comment-meta-pub_date">March 9, 2017 04:57 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Don't forget that in order to have a FULL protection with RBAC you must not perform any administrative task (e.g. install new packages, enable/disable services....), even if you're root. Maybe an effective protection with RBAC is something too strict for a Desktop use, but I agree that is extremely powerful</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">pablo</p>
+        <p class="legacy-comment-meta-pub_date">March 9, 2017 04:58 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I mean during Learning Mode*</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Patrick</p>
+        <p class="legacy-comment-meta-pub_date">January 31, 2016 02:13 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Great article.  To help some users with firmware, here's excellent reference:</p>
+<p><a href="https://www.linux.com/learn/tutorials/806072-how-to-install-firmware-in-debian-to-enable-wireless-video-or-sound/">https://www.linux.com/learn/tutorials/806072-how-to-install-firmware-in-debian-to-enable-wireless-video-or-sound/</a></p>
+<p>Also, I recommend users to edit  /etc/apt/sources.list  to have the following -</p>
+<p>deb <a href="http://ftp.it.debian.org/debian/">http://ftp.it.debian.org/debian/</a> sid main contrib non-free
+deb-src <a href="http://ftp.it.debian.org/debian/">http://ftp.it.debian.org/debian/</a> sid main contrib non-free</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">luis</p>
+        <p class="legacy-comment-meta-pub_date">October 19, 2016 04:09 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>After all the procedures i came across another problem when compiling the kernel. Can anyone plz give a look at the erros i got and try to give me some explanation? 
+<a href="http://beta.pastee.com/4ubju">http://beta.pastee.com/4ubju</a></p>
+<p>Thanks</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Tomas</p>
+        <p class="legacy-comment-meta-pub_date">October 29, 2016 10:24 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Have you read the article? This should fix it for you:</p>
+<h1>apt-get install kernel-package</h1>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">unknown</p>
+        <p class="legacy-comment-meta-pub_date">February 14, 2016 10:52 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Make sure  add HTTPS repo , before downloading torbrowser bundle , and add Debian tor Debian repo
+(As explained by ioerror ) 
+Commenting from place where anonymous dangerous than normal</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">February 15, 2016 11:45 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Using https repos and including the Tor repo installing of installing it from Debian are good things to do, but aren't necessary for security. Tor Browser Launcher (used in this blog post) downloads Tor Browser over https with certificate pinning, and verifies the PGP signature for you.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">anon</p>
+        <p class="legacy-comment-meta-pub_date">February 16, 2016 12:15 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Agree, but what if tor download sites are blocked , tor browser launcher is great ( security wise )  , for first time to download tor we need rely on Debian repo tor (system tor option ) , but I'm afraid when I download tor from Debian http repo MITM guys can know I'm downloading tor ( once I download tor I use obfs proxy for connect and download through tor browser launcher ) so my traffic doesn't look like tor , sorry if I'm going off traffic</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Zaki Manian</p>
+        <p class="legacy-comment-meta-pub_date">January 16, 2016 09:30 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Another usability consideration I can think of is that Qubes doesn't provide GPU access outside dom0, webGL is kinda nice and half the CPU die is GPU, it's kind of a shame not to use it</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Jasper</p>
+        <p class="legacy-comment-meta-pub_date">February 3, 2016 07:02 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Hi Micah,
+I´d like to ask something. I'm willing to switch to qubes but what's keeping me from using it is KeePass's auto-type. How would I go about managing passwords in a Vault VM that can't sync my database with a remote server, neither can I efficiently get passwords from the Vault to my browser VM. (Ignoring the ctrl+c, ctrl+shift+c, ctrl+shift+v, ctrl+v thing)</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">February 3, 2016 07:23 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>If you're willing to sync your password database to a remote server, then you could always make an AppVM for KeePass that has firewall rules that block everything except the connection to your remote server. And if the ctrl-c, ctrl-shift-c, ctrl-shift-v, ctrl-v thing is too much for you, you could always just keep your KeePass database in the AppVM that you use to browse the web, and use it's auto-type feature. In both of these cases your passwords might be slightly less protected, but no less than just using a password database in a normal operating system. And you still get all the other benefits of Qubes.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Jasper</p>
+        <p class="legacy-comment-meta-pub_date">February 3, 2016 07:39 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Thanks! I'll make the firewall whitelist just the server and just do the the ctrl-c, ctrl-shift-c, ctrl-shift-v, ctrl-v thing.
+I'm hoping Qubes could at some point have some sort of system similar to 'split GPG'. So that an AppVM can request credentials from the KeePass VM.</p>
+<p>P.S. you said "if you're willing to sync the database to a remote server" isn't the database secure enough to do such a thing? (assume a 7+ word diceware passphrase)</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
         <p class="legacy-comment-meta-author">Josh Glenn</p>
         <p class="legacy-comment-meta-pub_date">March 15, 2017 12:24 AM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
       <p>Thanks for the great post, saved me a reinstall of Ubuntu after installing coldkernel.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">griffin</p>
+        <p class="legacy-comment-meta-pub_date">May 26, 2016 01:00 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I use xfce, how do I replace below gnome line for xfce4?
+" $ sudo paxctl -cm /usr/bin/gnome-shell "</p>
+<p>thank you.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">mrlynch</p>
+        <p class="legacy-comment-meta-pub_date">June 24, 2016 09:52 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>sudo paxctl -cm /usr/bin/xfce4-session</p>
+<p>that might do the trick</p>
+<p>cheers</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Mike</p>
+        <p class="legacy-comment-meta-pub_date">November 28, 2016 01:48 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Anybody know the corresponding command for kde desktop?
+I've tried 'sudo paxctl -cm /usr/bin/startkde'
+doesn't seem to want to work
+BTW I followed this tutorial using Arch Linux, and was able to get a gnome desktop working... Just like me some plasma better.</p>
+<p>Great write up Micah</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Mike</p>
+        <p class="legacy-comment-meta-pub_date">December 9, 2016 08:41 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>(SOLVED)
+sudo paxctl -cm /usr/bin/plasmashell
+For KDE Plasma Desktop</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Kevin Gallagher</p>
+        <p class="legacy-comment-meta-pub_date">January 15, 2016 04:57 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Yay! Great post, and thanks for the shoutout. Two notes:</p>
+<p>Desktop users may want to compile the kernel_headers package too (add it to the make-kpkg command), since many drivers (ex. Nvidia, Radeon, VirtualBox, Openswan) require the kernel headers to be installed in order for DKMS (Dynamic Kernel Module Support) to work.</p>
+<p>Secondly, you may want to look into using <a href="https://grsecurity.net/paxctld/paxctld_1.0-4_amd64.deb" rel="nofollow">paxctld</a> or Subgraph's <a href="https://github.com/subgraph/paxrat" rel="nofollow">paxrat</a> for a daemon to manage PaX flags on binaries. The issue is that every time packages are updated (eg. Python, Iceweasel, GRUB) they will lose the headers, making it necessary to run paxctl again. You can make all that configuration persistent in /etc/paxctld.conf, and paxtld will apply the flags on any update to the binaries specified in that configuration file. Unfortunately, neither of these packages are in Debian repos as yet.</p>
 
     </div>
   </div>
@@ -463,14 +869,12 @@ sudo paxctl -cm /home/username/.local/share/torbrowser/tbb/x86_64/tor-browser_en
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">Kevin Gallagher</p>
-        <p class="legacy-comment-meta-pub_date">January 15, 2016 04:57 PM</p>
+        <p class="legacy-comment-meta-author">Newsletter CyberSécurité semaine 4 - Adacis</p>
+        <p class="legacy-comment-meta-pub_date">January 23, 2016 12:23 AM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>Yay! Great post, and thanks for the shoutout. Two notes:</p>
-<p>Desktop users may want to compile the kernel_headers package too (add it to the make-kpkg command), since many drivers (ex. Nvidia, Radeon, VirtualBox, Openswan) require the kernel headers to be installed in order for DKMS (Dynamic Kernel Module Support) to work.</p>
-<p>Secondly, you may want to look into using <a href="https://grsecurity.net/paxctld/paxctld_1.0-4_amd64.deb" rel="nofollow">paxctld</a> or Subgraph's <a href="https://github.com/subgraph/paxrat" rel="nofollow">paxrat</a> for a daemon to manage PaX flags on binaries. The issue is that every time packages are updated (eg. Python, Iceweasel, GRUB) they will lose the headers, making it necessary to run paxctl again. You can make all that configuration persistent in /etc/paxctld.conf, and paxtld will apply the flags on any update to the binaries specified in that configuration file. Unfortunately, neither of these packages are in Debian repos as yet.</p>
+      <p>[&#8230;] HOT ! Retour d&rsquo;expérience sur le durcissement Debian avec GrSecurity [&#8230;]</p>
 
     </div>
   </div>
@@ -484,16 +888,38 @@ sudo paxctl -cm /home/username/.local/share/torbrowser/tbb/x86_64/tor-browser_en
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">asdf</p>
-        <p class="legacy-comment-meta-pub_date">August 15, 2016 02:39 AM</p>
+        <p class="legacy-comment-meta-author">Corsac</p>
+        <p class="legacy-comment-meta-pub_date">January 17, 2016 06:51 AM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>I can't verify the kernel. It's signed by FF992F6D and not the official signing key. I've tried re-downloading a bunch of times.</p>
-<p>Wtf is going on? Am I doing something wrong?</p>
+      <p>The sysctl interface <em>is</em> enabled.</p>
 
     </div>
   </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Patterson</p>
+        <p class="legacy-comment-meta-pub_date">January 17, 2016 03:47 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>OK, thanks Corsac. There must be something else keeping my machine from working with exactly these steps.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
   
 
             
@@ -504,12 +930,14 @@ sudo paxctl -cm /home/username/.local/share/torbrowser/tbb/x86_64/tor-browser_en
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">JT. Flemin</p>
-        <p class="legacy-comment-meta-pub_date">August 10, 2018 06:07 PM</p>
+        <p class="legacy-comment-meta-author">Dg</p>
+        <p class="legacy-comment-meta-pub_date">February 7, 2016 07:43 AM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>any possibility to do this in debian stretch without installing jessie unstable? no?</p>
+      <p>Thanks for an intersting article.
+However, I take issue with the use of stock Linux kernel. The inclusion of proprietary firmware means that there is the possibility of backdoors, and if such a malicious firmware program managed to fool the system into thinking it was something else, it could in theory run some code in kernel space. So why use the stock kernel over the Debian kernel or Linux-libre? You could for example just buy a (freedom-respecting) USB wireless adaptor so you can have WiFi. Could grsecurity stop suspicious action by malicious firmware programs? I am not sure but I suspect it would not be effective for such a scenario.
+Regards</p>
 
     </div>
   </div>
@@ -549,198 +977,6 @@ sudo paxctl -cm /home/username/.local/share/torbrowser/tbb/x86_64/tor-browser_en
     </div>
     <div class="legacy-comment-body">
       <p>Can you use Firejail and GRsecurity together? I am thinking of setting up Firejail on the next install.  The internet is getting nastier and nastier...</p>
-
-    </div>
-  </div>
-  
-
-        
-      
-    </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Jared Jennings</p>
-        <p class="legacy-comment-meta-pub_date">February 11, 2016 12:51 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>This is a very clear howto on an important topic, thanks! One tip: When you pipe tail -f though grep, it's good to hand grep the --line-buffered switch.</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Jasper</p>
-        <p class="legacy-comment-meta-pub_date">February 3, 2016 07:02 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Hi Micah,
-I´d like to ask something. I'm willing to switch to qubes but what's keeping me from using it is KeePass's auto-type. How would I go about managing passwords in a Vault VM that can't sync my database with a remote server, neither can I efficiently get passwords from the Vault to my browser VM. (Ignoring the ctrl+c, ctrl+shift+c, ctrl+shift+v, ctrl+v thing)</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Micah Lee</p>
-        <p class="legacy-comment-meta-pub_date">February 3, 2016 07:23 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>If you're willing to sync your password database to a remote server, then you could always make an AppVM for KeePass that has firewall rules that block everything except the connection to your remote server. And if the ctrl-c, ctrl-shift-c, ctrl-shift-v, ctrl-v thing is too much for you, you could always just keep your KeePass database in the AppVM that you use to browse the web, and use it's auto-type feature. In both of these cases your passwords might be slightly less protected, but no less than just using a password database in a normal operating system. And you still get all the other benefits of Qubes.</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Jasper</p>
-        <p class="legacy-comment-meta-pub_date">February 3, 2016 07:39 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Thanks! I'll make the firewall whitelist just the server and just do the the ctrl-c, ctrl-shift-c, ctrl-shift-v, ctrl-v thing.
-I'm hoping Qubes could at some point have some sort of system similar to 'split GPG'. So that an AppVM can request credentials from the KeePass VM.</p>
-<p>P.S. you said "if you're willing to sync the database to a remote server" isn't the database secure enough to do such a thing? (assume a 7+ word diceware passphrase)</p>
-
-    </div>
-  </div>
-  
-
-        
-      
-    </div>
-  
-
-        
-      
-    </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Nick</p>
-        <p class="legacy-comment-meta-pub_date">May 15, 2016 02:14 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Hm.. interesting article.</p>
-<p>Now i know why my debian unstable system wouldn't boot with grsecurity kernel.
-But when the boot process get stopped by grsecurity, and won't start the graphical desktop, i didn't have the option to use Ctrl+Alt+F1 for further login. I must use the "single" option via grub kernel parameter, or i never see any tty. I also didn't compile the kernel with grsecurity, there was an usable patched binary kernel in the unstable repository. My system is fully encrypted too, with seperated /, /tmp, /var, /boot, /home, /var/log volumes. The / and /boot volumes are always gets mounted as read-only.
-This is perhaps an problem for grsecurity on first start. Any ideas?</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">aer</p>
-        <p class="legacy-comment-meta-pub_date">February 16, 2016 04:08 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>It's good to have a hardened Linux kernel so the feeling of being secure is really true.
-To save myself from trouble of getting my hands dirty, I will just install Qube OS.</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">David man</p>
-        <p class="legacy-comment-meta-pub_date">January 14, 2018 09:46 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Hello,
-Are the test patch have any valuable , and can be used  (compared to release patch) ?</p>
-<p>Thank you,</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Diederik de Haas</p>
-        <p class="legacy-comment-meta-pub_date">January 16, 2016 06:40 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>It's been a while since I last used it, but by using the installer from <a href="https://www.debian.org/devel/debian-installer/">https://www.debian.org/devel/debian-installer/</a> you can install testing directly and if I'm not mistaken also sid directly. I think it's in one of the Advanced menu sections.</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Diederik de Haas</p>
-        <p class="legacy-comment-meta-pub_date">January 16, 2016 06:44 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Found it: <a href="https://wiki.debian.org/InstallFAQ#Q._How_do_I_install_.22unstable.22_.28.22sid.22.29.3F">https://wiki.debian.org/InstallFAQ#Q._How_do_I_install_.22unstable.22_.28.22sid.22.29.3F</a></p>
 
     </div>
   </div>
@@ -899,6 +1135,296 @@ Are the test patch have any valuable , and can be used  (compared to release pat
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
+        <p class="legacy-comment-meta-author">Jared Jennings</p>
+        <p class="legacy-comment-meta-pub_date">February 11, 2016 12:51 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>This is a very clear howto on an important topic, thanks! One tip: When you pipe tail -f though grep, it's good to hand grep the --line-buffered switch.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Nick</p>
+        <p class="legacy-comment-meta-pub_date">May 15, 2016 02:14 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Hm.. interesting article.</p>
+<p>Now i know why my debian unstable system wouldn't boot with grsecurity kernel.
+But when the boot process get stopped by grsecurity, and won't start the graphical desktop, i didn't have the option to use Ctrl+Alt+F1 for further login. I must use the "single" option via grub kernel parameter, or i never see any tty. I also didn't compile the kernel with grsecurity, there was an usable patched binary kernel in the unstable repository. My system is fully encrypted too, with seperated /, /tmp, /var, /boot, /home, /var/log volumes. The / and /boot volumes are always gets mounted as read-only.
+This is perhaps an problem for grsecurity on first start. Any ideas?</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Luis</p>
+        <p class="legacy-comment-meta-pub_date">October 18, 2016 06:42 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Hi,
+I tried to install grsec on my disto Debian Jessie 8 Stable.  I did the exactly steps, changed the sources.list did the apt-get dist-upgrade etc (..) reboot. However when I start to compile and try to install dependencies ( $ sudo apt-get install libncurses5-dev build-essential fakeroot kernel-package gcc-5 gcc-5-plugin-dev make ) I get this error <a href="http://beta.pastee.com/29ck9">http://beta.pastee.com/29ck9</a>.</p>
+<p>Can someone help me to get pass this step?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">luis</p>
+        <p class="legacy-comment-meta-pub_date">October 19, 2016 04:07 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Problem solved. 
+The repositories on sources.list were not correct.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Diederik de Haas</p>
+        <p class="legacy-comment-meta-pub_date">January 16, 2016 06:40 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>It's been a while since I last used it, but by using the installer from <a href="https://www.debian.org/devel/debian-installer/">https://www.debian.org/devel/debian-installer/</a> you can install testing directly and if I'm not mistaken also sid directly. I think it's in one of the Advanced menu sections.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Diederik de Haas</p>
+        <p class="legacy-comment-meta-pub_date">January 16, 2016 06:44 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Found it: <a href="https://wiki.debian.org/InstallFAQ#Q._How_do_I_install_.22unstable.22_.28.22sid.22.29.3F">https://wiki.debian.org/InstallFAQ#Q._How_do_I_install_.22unstable.22_.28.22sid.22.29.3F</a></p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">aer</p>
+        <p class="legacy-comment-meta-pub_date">February 16, 2016 04:08 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>It's good to have a hardened Linux kernel so the feeling of being secure is really true.
+To save myself from trouble of getting my hands dirty, I will just install Qube OS.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Joni</p>
+        <p class="legacy-comment-meta-pub_date">February 11, 2016 01:12 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Do you think Grsecurity is better than SELinux?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Lionel</p>
+        <p class="legacy-comment-meta-pub_date">February 14, 2016 07:50 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>SELinux is of the "policy " class: it denies some operations to some programs. Most distros have sub-par support for SELinux and many people disable it because it's too annoying for their particular use case.
+PaX/grsecurity is of the "anti-exploitation" class: its wide set of features provides various means to prevent vulnerabilities from being successfully exploited at all, or at least making attackers' lives exploiting vulnerabilities very much harder.</p>
+<p>SELinux on a mainline kernel is powerless against the proofs of concept for dangerous kernel holes which are discussed once in every while on LWN, while a well-configured PaX/grsecurity kernel kills them immediately, because:</p>
+<ul>
+<li>the kernel exploit proofs of concept usually dereference ops structs in user space directly, so they trip UDEREF, which is a strict superset of e.g. the SMAP of Intel's most recent processors, available for a wide range of processors for over a decade, instead of just that narrow SMAP-supporting subset;</li>
+<li>they execute payloads directly in user space, so they'd trip KERNEXEC anyway if UDEREF hadn't caught them earlier (say, because whoever compiled the kernel disabled that feature). KERNEXEC is a superset of the SMEP of Intel's recent processors, available on a wide range of processors for over a decade;</li>
+<li>they fairly often target ops structs that PaX/grsecurity makes constant (CONSTIFY) but mainline doesn't, and therefore end up in segfaults;</li>
+<li>the binary forms of the PoC assume the standard layout of the structs, which the RANDSTRUCT feature randomizes, yielding a segfault in most cases.</li>
+</ul>
+<p>Two recent holes in mainline kernels are based on reference count overflows, which PaX's REFCOUNT has been protecting against for years - simply killing the process upon an attempt to exploit a refcount overflow.</p>
+<p>I could also mention the better randomization of ASLR + mmap, the ability to randomize the kernel stack base, memory sanitization of areas that mainline doesn't sanitize (and therefore elimination of various information leaks or use-after-free errors), usercopy hardening, protection against a number of integer overflows, or the eviction of recent features whose insecure implementation yields a stream of vulnerabilities, such as the eBPF JIT. SELinux or the other "policy" frameworks provide none of those features.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Patterson</p>
+        <p class="legacy-comment-meta-pub_date">January 17, 2016 02:58 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>A note here for anyone who chooses to use apt-get for the pre-compiled package linux-image-4.3.0-1-grsec-amd64, rather than compiling the kernel. It seems that grsec's sysctl interface isn't enabled (I find /proc/sys/kernel/grsecurity/chroot_deny_sysctl=1 in the package; more at [0]). It would be enabled if you were to compile it with your steps. Runtime changes to grsec kernel params such as tpe (which I needed to disable to run torbrowser-launcher or any personal scripts; still figuring that part out) are then denied at your 'sudo sysctl -p' step.</p>
+<p>Please correct me if I'm wrong, I thought this info should make it here early in case others are deterred by this step Google didn't hit the answer very quickly). Thanks Micah, love your work! This article pushed me finally to try grsec and more.</p>
+<p>[0]<a href="https://en.wikibooks.org/wiki/Grsecurity/Configuring_and_Installing_grsecurity#Configuring_grsecurity_and_PaX_Features">https://en.wikibooks.org/wiki/Grsecurity/Configuring_and_Installing_grsecurity#Configuring_grsecurity_and_PaX_Features</a></p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">David man</p>
+        <p class="legacy-comment-meta-pub_date">January 14, 2018 09:46 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Hello,
+Are the test patch have any valuable , and can be used  (compared to release patch) ?</p>
+<p>Thank you,</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Anon</p>
+        <p class="legacy-comment-meta-pub_date">October 2, 2016 12:45 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Saw you tweeted "Though I'm not sure why "Return to function (memcpy)" is vulnerable in this VM, when grsec kills the process on other systems". Can you please update here if you figure out why? My setup's been giving me the same warnings on both memcpy tests and I've been trying to figure it out for a few days now. Happens on both the repository grsec kernel and compiling my own per above.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Anon</p>
+        <p class="legacy-comment-meta-pub_date">October 4, 2016 02:33 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Looks like the difference might be due to a bug in paxtest before v0.9.14. I was able to recreate this by running an older version (0.9.11) of paxtest that claimed the memcpy's were Killed. When I run the newer version of paxtest, the memcpy's are again vulnerable. This appears to be intended behavior to show that this class of attack is hard to defend against: <a href="https://forums.grsecurity.net/viewtopic.php?t=1420&amp;amp;highlight=strcpy">https://forums.grsecurity.net/viewtopic.php?t=1420&amp;amp;highlight=strcpy</a>.</p>
+<p>The latest version of paxtest can be downloaded from <a href="https://www.grsecurity.net/~spender/">https://www.grsecurity.net/~spender/</a>. Currently it's paxtest-0.9.15.tar.gz. The ChangeLog inside details the bugfix, at least, I think it's this one:</p>
+<p>paxtest (0.9.14-1) stable; urgency=low</p>
+<ul>
+<li>Various fixes/cleanups including ensuring an overflowing strcpy/memcpy isn't
+optimized away, from Mathias Krause</li>
+</ul>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
         <p class="legacy-comment-meta-author">Rick Valenzuela</p>
         <p class="legacy-comment-meta-pub_date">November 3, 2016 11:09 PM</p>
       </div>
@@ -909,183 +1435,6 @@ Are the test patch have any valuable , and can be used  (compared to release pat
 
     </div>
   </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">luis</p>
-        <p class="legacy-comment-meta-pub_date">October 19, 2016 04:09 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>After all the procedures i came across another problem when compiling the kernel. Can anyone plz give a look at the erros i got and try to give me some explanation? 
-<a href="http://beta.pastee.com/4ubju">http://beta.pastee.com/4ubju</a></p>
-<p>Thanks</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Tomas</p>
-        <p class="legacy-comment-meta-pub_date">October 29, 2016 10:24 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Have you read the article? This should fix it for you:</p>
-<h1>apt-get install kernel-package</h1>
-
-    </div>
-  </div>
-  
-
-        
-      
-    </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Kevin Gallagher</p>
-        <p class="legacy-comment-meta-pub_date">January 15, 2016 05:03 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Also, the next level of hardening is using the grsecurity <a href="https://en.wikibooks.org/wiki/Grsecurity/The_RBAC_System" rel="nofollow">RBAC</a>, which is extremely powerful. It  has a utility called <a href="https://grsecurity.net/stable/gradm-3.1-201507191652.tar.gz" rel="nofollow">gradm</a> which you can put in learning mode, then use your computer as you normally would and it will write a ton of data relating to your usage patterns and every permission/role/access/capability that is required. Then, it can write a policy file for the RBAC based on this data, which, when you enable it, will explicitly grant access only to the things you need to do. It's super cool!</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">pablo</p>
-        <p class="legacy-comment-meta-pub_date">March 9, 2017 04:57 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Don't forget that in order to have a FULL protection with RBAC you must not perform any administrative task (e.g. install new packages, enable/disable services....), even if you're root. Maybe an effective protection with RBAC is something too strict for a Desktop use, but I agree that is extremely powerful</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">pablo</p>
-        <p class="legacy-comment-meta-pub_date">March 9, 2017 04:58 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>I mean during Learning Mode*</p>
-
-    </div>
-  </div>
-  
-
-        
-      
-    </div>
-  
-
-        
-      
-    </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">unknown</p>
-        <p class="legacy-comment-meta-pub_date">February 14, 2016 10:52 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Make sure  add HTTPS repo , before downloading torbrowser bundle , and add Debian tor Debian repo
-(As explained by ioerror ) 
-Commenting from place where anonymous dangerous than normal</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Micah Lee</p>
-        <p class="legacy-comment-meta-pub_date">February 15, 2016 11:45 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Using https repos and including the Tor repo installing of installing it from Debian are good things to do, but aren't necessary for security. Tor Browser Launcher (used in this blog post) downloads Tor Browser over https with certificate pinning, and verifies the PGP signature for you.</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">anon</p>
-        <p class="legacy-comment-meta-pub_date">February 16, 2016 12:15 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Agree, but what if tor download sites are blocked , tor browser launcher is great ( security wise )  , for first time to download tor we need rely on Debian repo tor (system tor option ) , but I'm afraid when I download tor from Debian http repo MITM guys can know I'm downloading tor ( once I download tor I use obfs proxy for connect and download through tor browser launcher ) so my traffic doesn't look like tor , sorry if I'm going off traffic</p>
-
-    </div>
-  </div>
-  
-
-        
-      
-    </div>
-  
-
-        
-      
-    </div>
   
 
             
@@ -1161,6 +1510,44 @@ apt-get install paxtest paxctl</p>
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
+        <p class="legacy-comment-meta-author">JT. Flemin</p>
+        <p class="legacy-comment-meta-pub_date">August 10, 2018 06:07 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>any possibility to do this in debian stretch without installing jessie unstable? no?</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">phil</p>
+        <p class="legacy-comment-meta-pub_date">June 20, 2017 06:42 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>shame there is no grsec binary kernel in stable. I dont want to use sid.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
         <p class="legacy-comment-meta-author">kekec</p>
         <p class="legacy-comment-meta-pub_date">January 16, 2016 12:04 AM</p>
       </div>
@@ -1208,403 +1595,16 @@ apt-get install paxtest paxctl</p>
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">Patterson</p>
-        <p class="legacy-comment-meta-pub_date">January 17, 2016 02:58 AM</p>
+        <p class="legacy-comment-meta-author">asdf</p>
+        <p class="legacy-comment-meta-pub_date">August 15, 2016 02:39 AM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>A note here for anyone who chooses to use apt-get for the pre-compiled package linux-image-4.3.0-1-grsec-amd64, rather than compiling the kernel. It seems that grsec's sysctl interface isn't enabled (I find /proc/sys/kernel/grsecurity/chroot_deny_sysctl=1 in the package; more at [0]). It would be enabled if you were to compile it with your steps. Runtime changes to grsec kernel params such as tpe (which I needed to disable to run torbrowser-launcher or any personal scripts; still figuring that part out) are then denied at your 'sudo sysctl -p' step.</p>
-<p>Please correct me if I'm wrong, I thought this info should make it here early in case others are deterred by this step Google didn't hit the answer very quickly). Thanks Micah, love your work! This article pushed me finally to try grsec and more.</p>
-<p>[0]<a href="https://en.wikibooks.org/wiki/Grsecurity/Configuring_and_Installing_grsecurity#Configuring_grsecurity_and_PaX_Features">https://en.wikibooks.org/wiki/Grsecurity/Configuring_and_Installing_grsecurity#Configuring_grsecurity_and_PaX_Features</a></p>
+      <p>I can't verify the kernel. It's signed by FF992F6D and not the official signing key. I've tried re-downloading a bunch of times.</p>
+<p>Wtf is going on? Am I doing something wrong?</p>
 
     </div>
   </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Joni</p>
-        <p class="legacy-comment-meta-pub_date">February 11, 2016 01:12 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Do you think Grsecurity is better than SELinux?</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Lionel</p>
-        <p class="legacy-comment-meta-pub_date">February 14, 2016 07:50 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>SELinux is of the "policy " class: it denies some operations to some programs. Most distros have sub-par support for SELinux and many people disable it because it's too annoying for their particular use case.
-PaX/grsecurity is of the "anti-exploitation" class: its wide set of features provides various means to prevent vulnerabilities from being successfully exploited at all, or at least making attackers' lives exploiting vulnerabilities very much harder.</p>
-<p>SELinux on a mainline kernel is powerless against the proofs of concept for dangerous kernel holes which are discussed once in every while on LWN, while a well-configured PaX/grsecurity kernel kills them immediately, because:</p>
-<ul>
-<li>the kernel exploit proofs of concept usually dereference ops structs in user space directly, so they trip UDEREF, which is a strict superset of e.g. the SMAP of Intel's most recent processors, available for a wide range of processors for over a decade, instead of just that narrow SMAP-supporting subset;</li>
-<li>they execute payloads directly in user space, so they'd trip KERNEXEC anyway if UDEREF hadn't caught them earlier (say, because whoever compiled the kernel disabled that feature). KERNEXEC is a superset of the SMEP of Intel's recent processors, available on a wide range of processors for over a decade;</li>
-<li>they fairly often target ops structs that PaX/grsecurity makes constant (CONSTIFY) but mainline doesn't, and therefore end up in segfaults;</li>
-<li>the binary forms of the PoC assume the standard layout of the structs, which the RANDSTRUCT feature randomizes, yielding a segfault in most cases.</li>
-</ul>
-<p>Two recent holes in mainline kernels are based on reference count overflows, which PaX's REFCOUNT has been protecting against for years - simply killing the process upon an attempt to exploit a refcount overflow.</p>
-<p>I could also mention the better randomization of ASLR + mmap, the ability to randomize the kernel stack base, memory sanitization of areas that mainline doesn't sanitize (and therefore elimination of various information leaks or use-after-free errors), usercopy hardening, protection against a number of integer overflows, or the eviction of recent features whose insecure implementation yields a stream of vulnerabilities, such as the eBPF JIT. SELinux or the other "policy" frameworks provide none of those features.</p>
-
-    </div>
-  </div>
-  
-
-        
-      
-    </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Zaki Manian</p>
-        <p class="legacy-comment-meta-pub_date">January 16, 2016 09:30 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Another usability consideration I can think of is that Qubes doesn't provide GPU access outside dom0, webGL is kinda nice and half the CPU die is GPU, it's kind of a shame not to use it</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">griffin</p>
-        <p class="legacy-comment-meta-pub_date">May 26, 2016 01:00 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>I use xfce, how do I replace below gnome line for xfce4?
-" $ sudo paxctl -cm /usr/bin/gnome-shell "</p>
-<p>thank you.</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">mrlynch</p>
-        <p class="legacy-comment-meta-pub_date">June 24, 2016 09:52 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>sudo paxctl -cm /usr/bin/xfce4-session</p>
-<p>that might do the trick</p>
-<p>cheers</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Mike</p>
-        <p class="legacy-comment-meta-pub_date">November 28, 2016 01:48 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Anybody know the corresponding command for kde desktop?
-I've tried 'sudo paxctl -cm /usr/bin/startkde'
-doesn't seem to want to work
-BTW I followed this tutorial using Arch Linux, and was able to get a gnome desktop working... Just like me some plasma better.</p>
-<p>Great write up Micah</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Mike</p>
-        <p class="legacy-comment-meta-pub_date">December 9, 2016 08:41 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>(SOLVED)
-sudo paxctl -cm /usr/bin/plasmashell
-For KDE Plasma Desktop</p>
-
-    </div>
-  </div>
-  
-
-        
-      
-    </div>
-  
-
-        
-      
-    </div>
-  
-
-        
-      
-    </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Dg</p>
-        <p class="legacy-comment-meta-pub_date">February 7, 2016 07:43 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Thanks for an intersting article.
-However, I take issue with the use of stock Linux kernel. The inclusion of proprietary firmware means that there is the possibility of backdoors, and if such a malicious firmware program managed to fool the system into thinking it was something else, it could in theory run some code in kernel space. So why use the stock kernel over the Debian kernel or Linux-libre? You could for example just buy a (freedom-respecting) USB wireless adaptor so you can have WiFi. Could grsecurity stop suspicious action by malicious firmware programs? I am not sure but I suspect it would not be effective for such a scenario.
-Regards</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">phil</p>
-        <p class="legacy-comment-meta-pub_date">June 20, 2017 06:42 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>shame there is no grsec binary kernel in stable. I dont want to use sid.</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Patrick</p>
-        <p class="legacy-comment-meta-pub_date">January 31, 2016 02:13 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Great article.  To help some users with firmware, here's excellent reference:</p>
-<p><a href="https://www.linux.com/learn/tutorials/806072-how-to-install-firmware-in-debian-to-enable-wireless-video-or-sound/">https://www.linux.com/learn/tutorials/806072-how-to-install-firmware-in-debian-to-enable-wireless-video-or-sound/</a></p>
-<p>Also, I recommend users to edit  /etc/apt/sources.list  to have the following -</p>
-<p>deb <a href="http://ftp.it.debian.org/debian/">http://ftp.it.debian.org/debian/</a> sid main contrib non-free
-deb-src <a href="http://ftp.it.debian.org/debian/">http://ftp.it.debian.org/debian/</a> sid main contrib non-free</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Newsletter CyberSécurité semaine 4 - Adacis</p>
-        <p class="legacy-comment-meta-pub_date">January 23, 2016 12:23 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>[&#8230;] HOT ! Retour d&rsquo;expérience sur le durcissement Debian avec GrSecurity [&#8230;]</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Corsac</p>
-        <p class="legacy-comment-meta-pub_date">January 17, 2016 06:51 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>The sysctl interface <em>is</em> enabled.</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Patterson</p>
-        <p class="legacy-comment-meta-pub_date">January 17, 2016 03:47 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>OK, thanks Corsac. There must be something else keeping my machine from working with exactly these steps.</p>
-
-    </div>
-  </div>
-  
-
-        
-      
-    </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Anon</p>
-        <p class="legacy-comment-meta-pub_date">October 2, 2016 12:45 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Saw you tweeted "Though I'm not sure why "Return to function (memcpy)" is vulnerable in this VM, when grsec kills the process on other systems". Can you please update here if you figure out why? My setup's been giving me the same warnings on both memcpy tests and I've been trying to figure it out for a few days now. Happens on both the repository grsec kernel and compiling my own per above.</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Anon</p>
-        <p class="legacy-comment-meta-pub_date">October 4, 2016 02:33 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Looks like the difference might be due to a bug in paxtest before v0.9.14. I was able to recreate this by running an older version (0.9.11) of paxtest that claimed the memcpy's were Killed. When I run the newer version of paxtest, the memcpy's are again vulnerable. This appears to be intended behavior to show that this class of attack is hard to defend against: <a href="https://forums.grsecurity.net/viewtopic.php?t=1420&amp;amp;highlight=strcpy">https://forums.grsecurity.net/viewtopic.php?t=1420&amp;amp;highlight=strcpy</a>.</p>
-<p>The latest version of paxtest can be downloaded from <a href="https://www.grsecurity.net/~spender/">https://www.grsecurity.net/~spender/</a>. Currently it's paxtest-0.9.15.tar.gz. The ChangeLog inside details the bugfix, at least, I think it's this one:</p>
-<p>paxtest (0.9.14-1) stable; urgency=low</p>
-<ul>
-<li>Various fixes/cleanups including ensuring an overflowing strcpy/memcpy isn't
-optimized away, from Mathias Krause</li>
-</ul>
-
-    </div>
-  </div>
-  
-
-        
-      
-    </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Luis</p>
-        <p class="legacy-comment-meta-pub_date">October 18, 2016 06:42 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Hi,
-I tried to install grsec on my disto Debian Jessie 8 Stable.  I did the exactly steps, changed the sources.list did the apt-get dist-upgrade etc (..) reboot. However when I start to compile and try to install dependencies ( $ sudo apt-get install libncurses5-dev build-essential fakeroot kernel-package gcc-5 gcc-5-plugin-dev make ) I get this error <a href="http://beta.pastee.com/29ck9">http://beta.pastee.com/29ck9</a>.</p>
-<p>Can someone help me to get pass this step?</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">luis</p>
-        <p class="legacy-comment-meta-pub_date">October 19, 2016 04:07 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Problem solved. 
-The repositories on sources.list were not correct.</p>
-
-    </div>
-  </div>
-  
-
-        
-      
-    </div>
   
 
             
