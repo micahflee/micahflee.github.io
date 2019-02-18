@@ -2,13 +2,25 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title type="text">feed.xml</title>
   <id>urn:uuid:959328ec-e9a1-37eb-afd8-885cf5087cef</id>
-  <updated>2019-01-11T00:00:00Z</updated>
+  <updated>2019-02-10T00:00:00Z</updated>
   <link href="https://micahflee.com/" />
   <link href="https://micahflee.com/feed.xml" rel="self" />
   <author>
     <name></name>
   </author>
   <generator uri="https://github.com/ajdavis/lektor-atom" version="0.3">Lektor Atom Plugin</generator>
+  <entry xml:base="https://micahflee.com/2019/02/onionshare-2/">
+    <title type="text">OnionShare 2 adds anonymous dropboxes, supports new Tor addresses, and is translated into a dozen new languages</title>
+    <id>urn:uuid:ae54520e-cf72-3c39-a783-a704643b9b01</id>
+    <updated>2019-02-10T00:00:00Z</updated>
+    <link href="https://micahflee.com/2019/02/onionshare-2/" />
+    <author>
+      <name>Micah Lee</name>
+    </author>
+    <content type="html">&lt;p&gt;After nearly a year of work from a &lt;a href=&quot;https://github.com/micahflee/onionshare/wiki/Developing-OnionShare&quot;&gt;growing community&lt;/a&gt; of developers, designers, and translators, I'm excited that OnionShare 2 is finally ready. You can download it from &lt;a href=&quot;https://onionshare.org/&quot;&gt;onionshare.org&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;OnionShare is an open source tool for securely and anonymously sending and receiving files using Tor onion services. It works by starting a web server directly on your laptop and making it accessible as an unguessable Tor web address that others can load in Tor Browser to download files from you, or upload files to you. It doesn't require setting up a separate server, using a third party file-sharing service, or even logging into an account. Unlike services like Google Drive, DropBox, WeTransfer, or nearly any other way people typically send files to each other, when you use OnionShare don't give any companies access to the files that you're sharing. So long as you share the unguessable web address in a secure way (like pasting it in an encrypted messaging app), &lt;em&gt;no one&lt;/em&gt; but you and the person you're sharing files with can access them.&lt;/p&gt;
+</content>
+  </entry>
   <entry xml:base="https://micahflee.com/2019/01/lies-that-wikileaks-tells-you/">
     <title type="text">Lies That WikiLeaks Tells You</title>
     <id>urn:uuid:8f6b235f-5327-3546-ba94-555b1f7a08f3</id>
