@@ -90,7 +90,9 @@ article p.meta a.tag {
 
 article pre {
   overflow: auto;
-  padding: 5px;
+  padding: 10px;
+  font-size: 0.9em;
+  border: 1px solid #DDDDDD;
 }
 
 article iframe {
