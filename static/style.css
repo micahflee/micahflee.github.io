@@ -194,6 +194,12 @@ div.sidebar ul.sidebar-items li i {
   vertical-align: middle;
 }
 
+div.sidebar p.license {
+  font-size: 0.8em;
+  color: #666666;
+  margin-top: 6em;
+}
+
 header h1 {
     color: #169bbd;
     margin: 0;

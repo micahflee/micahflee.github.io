@@ -82,6 +82,86 @@
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
+        <p class="legacy-comment-meta-author">Anthony</p>
+        <p class="legacy-comment-meta-pub_date">April 14, 2014 05:39 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Can you boot Tails in an AppVM in the Qubes OS?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">micah</p>
+        <p class="legacy-comment-meta-pub_date">April 14, 2014 07:33 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Yes, though technically it's an HVM not an AppVM (you can boot to any ISO in an HVM). You can't do stuff like secure file transfer or secure copy/paste between the Tails HVM and other AppVMs though. And of course Tails warns you that you're running in a VM, and creating a persistent volume is hard. But it's certainly doable.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Qubes OS Pronto Va Ganando La Confianza De Muchos Defensores De La Privacidad | Geek&amp;#039;s RooM</p>
+        <p class="legacy-comment-meta-pub_date">March 12, 2016 08:50 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>[&#8230;] de la privacidad, incluidos Edward Snowden y varios periodistas, entre los que se encuentra Micah Lee de la publicación The [&#8230;]</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">anon</p>
+        <p class="legacy-comment-meta-pub_date">May 2, 2014 03:05 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>What about Whonix?</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
         <p class="legacy-comment-meta-author">Timely</p>
         <p class="legacy-comment-meta-pub_date">April 14, 2014 09:38 AM</p>
       </div>
@@ -127,12 +207,30 @@
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">Anthony</p>
-        <p class="legacy-comment-meta-pub_date">April 14, 2014 05:39 AM</p>
+        <p class="legacy-comment-meta-author">anon64351</p>
+        <p class="legacy-comment-meta-pub_date">April 10, 2014 02:58 PM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>Can you boot Tails in an AppVM in the Qubes OS?</p>
+      <p>What about something like LXC?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">jaseg</p>
+        <p class="legacy-comment-meta-pub_date">April 14, 2014 03:17 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Qubes OS has a stronger security requirement. With LXC, you still have a shared kernel. The reason Qubes OS has VMs for things like storage and network is that it even distrusts your kernel. If a bug in your ethernet card's driver is found, Qubes OS's VM isolation will contain the breach. Even if your ethernet adapter contains a hardware backdoor or your wifi adaptor contains malicious firmware, Qubes OS will use your IOMMU to prevent these from accessing anything outside the NetVM.</p>
 
     </div>
   </div>
@@ -146,11 +244,11 @@
       <i class="fas fa-mask"></i>
       <div>
         <p class="legacy-comment-meta-author">micah</p>
-        <p class="legacy-comment-meta-pub_date">April 14, 2014 07:33 AM</p>
+        <p class="legacy-comment-meta-pub_date">April 14, 2014 07:21 AM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>Yes, though technically it's an HVM not an AppVM (you can boot to any ISO in an HVM). You can't do stuff like secure file transfer or secure copy/paste between the Tails HVM and other AppVMs though. And of course Tails warns you that you're running in a VM, and creating a persistent volume is hard. But it's certainly doable.</p>
+      <p>When I was first looking into this sort of isolation security stuff a lot of people recommended both Qubes and LXC. I actually haven't tried LXC at all myself, but this is the same impression that I get.</p>
 
     </div>
   </div>
@@ -159,64 +257,6 @@
         
       
     </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Hardening Debian for the Desktop Using Grsecurity | Micah Lee&amp;#039;s Blog</p>
-        <p class="legacy-comment-meta-pub_date">February 15, 2016 11:42 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>[&#8230;] written in the past about how awesome Qubes is, which is also a reasonably secure operating system. So how does it [&#8230;]</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Dave</p>
-        <p class="legacy-comment-meta-pub_date">April 14, 2014 04:47 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>As long as the Von Neumann model is followed, i.e. code and data in the same memory space is continued to be used, nothing is "secure."  It's not necessarily the OS's problem, it's the processor's problem.</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Andrew Cady</p>
-        <p class="legacy-comment-meta-pub_date">April 14, 2014 11:56 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>You remind me of a fellow that insisted that as long as you can get a pointer, you can do anything on a system.  His mental model of computers was based on pre-386 machines without an MMU.  He didn't realize that paging meant that pointers were virtual, and having one doesn't grant you any access to real hardware memory.</p>
-<p>I'm not sure if you're making that exact error, or if you're making a similar one.  In any case, the VMX CPUs (i.e., Intel's VT-x and AMD's AMD-V) do the same thing for the CPU that the 386 did for memory.  All CPU access is now virtualized.  The "guest" OS does not have access to the hardware address space, whether that means memory or the system bus, and it does not have hardware access to privileged CPU instructions.</p>
-<p>So the CPU is already providing the security support that is necessary.  There are still some tactics for VMs to leak information between one another through cache invalidation and CPU usage, which can be observed cross-VM, but the kind of attack you are suggesting is not possible with modern hardware.</p>
-
-    </div>
-  </div>
   
 
         
@@ -275,50 +315,12 @@ A noob question here. The base OS can still be compromised by a virus transferre
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">Qubes OS Pronto Va Ganando La Confianza De Muchos Defensores De La Privacidad | Geek&amp;#039;s RooM</p>
-        <p class="legacy-comment-meta-pub_date">March 12, 2016 08:50 AM</p>
+        <p class="legacy-comment-meta-author">lance</p>
+        <p class="legacy-comment-meta-pub_date">April 14, 2014 01:57 AM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>[&#8230;] de la privacidad, incluidos Edward Snowden y varios periodistas, entre los que se encuentra Micah Lee de la publicación The [&#8230;]</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">etaye</p>
-        <p class="legacy-comment-meta-pub_date">April 9, 2015 07:41 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>can't copy &amp; paste from vmware or (ubuntu)   to Tails  browser help</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">anon</p>
-        <p class="legacy-comment-meta-pub_date">May 2, 2014 03:05 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>What about Whonix?</p>
+      <p>Take a look at mempo. All in one. Still in early process though.</p>
 
     </div>
   </div>
@@ -384,6 +386,50 @@ What if you are owned when u try to download Qubes?</p>
         
       
     </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Dave</p>
+        <p class="legacy-comment-meta-pub_date">April 14, 2014 04:47 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>As long as the Von Neumann model is followed, i.e. code and data in the same memory space is continued to be used, nothing is "secure."  It's not necessarily the OS's problem, it's the processor's problem.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Andrew Cady</p>
+        <p class="legacy-comment-meta-pub_date">April 14, 2014 11:56 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>You remind me of a fellow that insisted that as long as you can get a pointer, you can do anything on a system.  His mental model of computers was based on pre-386 machines without an MMU.  He didn't realize that paging meant that pointers were virtual, and having one doesn't grant you any access to real hardware memory.</p>
+<p>I'm not sure if you're making that exact error, or if you're making a similar one.  In any case, the VMX CPUs (i.e., Intel's VT-x and AMD's AMD-V) do the same thing for the CPU that the 386 did for memory.  All CPU access is now virtualized.  The "guest" OS does not have access to the hardware address space, whether that means memory or the system bus, and it does not have hardware access to privileged CPU instructions.</p>
+<p>So the CPU is already providing the security support that is necessary.  There are still some tactics for VMs to leak information between one another through cache invalidation and CPU usage, which can be observed cross-VM, but the kind of attack you are suggesting is not possible with modern hardware.</p>
+
+    </div>
+  </div>
   
 
         
@@ -466,12 +512,12 @@ What if you are owned when u try to download Qubes?</p>
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">lance</p>
-        <p class="legacy-comment-meta-pub_date">April 14, 2014 01:57 AM</p>
+        <p class="legacy-comment-meta-author">Hardening Debian for the Desktop Using Grsecurity | Micah Lee&amp;#039;s Blog</p>
+        <p class="legacy-comment-meta-pub_date">February 15, 2016 11:42 AM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>Take a look at mempo. All in one. Still in early process though.</p>
+      <p>[&#8230;] written in the past about how awesome Qubes is, which is also a reasonably secure operating system. So how does it [&#8230;]</p>
 
     </div>
   </div>
@@ -485,61 +531,15 @@ What if you are owned when u try to download Qubes?</p>
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">anon64351</p>
-        <p class="legacy-comment-meta-pub_date">April 10, 2014 02:58 PM</p>
+        <p class="legacy-comment-meta-author">etaye</p>
+        <p class="legacy-comment-meta-pub_date">April 9, 2015 07:41 AM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>What about something like LXC?</p>
+      <p>can't copy &amp; paste from vmware or (ubuntu)   to Tails  browser help</p>
 
     </div>
   </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">jaseg</p>
-        <p class="legacy-comment-meta-pub_date">April 14, 2014 03:17 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Qubes OS has a stronger security requirement. With LXC, you still have a shared kernel. The reason Qubes OS has VMs for things like storage and network is that it even distrusts your kernel. If a bug in your ethernet card's driver is found, Qubes OS's VM isolation will contain the breach. Even if your ethernet adapter contains a hardware backdoor or your wifi adaptor contains malicious firmware, Qubes OS will use your IOMMU to prevent these from accessing anything outside the NetVM.</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">micah</p>
-        <p class="legacy-comment-meta-pub_date">April 14, 2014 07:21 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>When I was first looking into this sort of isolation security stuff a lot of people recommended both Qubes and LXC. I actually haven't tried LXC at all myself, but this is the same impression that I get.</p>
-
-    </div>
-  </div>
-  
-
-        
-      
-    </div>
-  
-
-        
-      
-    </div>
   
 
             
@@ -654,6 +654,13 @@ What if you are owned when u try to download Qubes?</p>
   
   </ul>
 
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" src="../../../static/images/cc-by-nc.png"></a>
+        <br/>
+        <br/>
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must make it clear that it has been modified.
+      </p>
     </div>
   </div>
 </body>
