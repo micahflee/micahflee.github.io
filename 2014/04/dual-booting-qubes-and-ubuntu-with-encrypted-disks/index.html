@@ -109,14 +109,16 @@ sudo grub2-install /dev/sda
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">Sam</p>
-        <p class="legacy-comment-meta-pub_date">February 4, 2016 12:31 PM</p>
+        <p class="legacy-comment-meta-author">Tschernobyl</p>
+        <p class="legacy-comment-meta-pub_date">April 15, 2016 12:45 PM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>I am installing Ubuntu 14 and qubes r3 on an external USB HDD. I partitioned a 2tb HDD with /root then ubuntu ext4 1tb, then unallocated space, then 500 gb fat32 /dos.</p>
-<p>I installed ubuntu without any problems. When installing Qubes all goes well, it finds the 500gb free space and starts installing until it gets to Dom0 making the swap partition and it crashes. I do not use a swap partition in Ubuntu. Apparently there is some bug with going without a swap partition in Qubes or making it on an external usb hdd. Can I manually partition Qubes to install without a swap partition? Or anyother solution?</p>
-<p>Sam.</p>
+      <p>The menuentry Ubuntu in Grub won't load. Are you sure this piece of code is correct? Is the hd0,1 part generic, and if not, where will you find your own parameters for this?</p>
+<p>menuentry "Ubuntu" {
+set root=(hd0,1)
+chainloader +1
+}</p>
 
     </div>
   </div>
@@ -173,272 +175,6 @@ sudo grub2-install /dev/sda
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">Mich</p>
-        <p class="legacy-comment-meta-pub_date">November 2, 2015 12:05 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Hello, I have a question, because I did some "mistakes".
-I installed SolydX and Qubes as described. Everything worked fine. After time I had some problems with qubes, so I decided to reinstall them. In SolydX I deleted Qubes partitions (with knowledge that there is SolydX grub in /dev/sda1). Then I did same steps like before.
-Now I am not able to boot SolydX. Nothing is happen in this option. I can boot only Qubes.
-Can you help me?
-TA+BR, Mich</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">hardbox</p>
-        <p class="legacy-comment-meta-pub_date">April 23, 2014 08:35 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>typo:
-menuenty "Ubuntu" {</p>
-<p>should be:
-menuentry "Ubuntu" {</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">micah</p>
-        <p class="legacy-comment-meta-pub_date">April 24, 2014 11:56 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Thanks, fixed.</p>
-
-    </div>
-  </div>
-  
-
-        
-      
-    </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Anonymous</p>
-        <p class="legacy-comment-meta-pub_date">May 9, 2016 05:14 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>How can i get this small change (concept) to get it to work:</p>
-<p>Note: I am asking what i must write on /boot/grub/grug.cfg to chainload to the Linux bootloader.</p>
-<p>I prefer to have an encrypted /boot partition, with Grub2 on it with a manual edited /boot/grub/grug.cfg file (i get it working with GRUB_ENABLE_DISKCRYPT=t on /etc/default/grub prior to do grub-install with /boot encrypted partition mounted on /boot).</p>
-<p>If i boot the PC, it loads Grub2 from inside encrypted partition perfectly well.</p>
-<p>What i need is to chainload the other Linux distros (i know how when they are not encrypted).</p>
-<p>Beware i only have one partition per Linux (all is inside that partition), so each Linux distro /boot is a folder inside that partition.</p>
-<p>Think partition scheme as this:
-/dev/sda1 (Windows1, not encrypted yet)
-/dev/sda2 (Windows2, not encrypted yet)
-/dev/sda3 (Windows3, not encrypted yet)
-/dev/sda4 (extended)
-/dev/sda5 (for Grub2 - encrypted)
-/dev/sda6 (for Linux1 - encrypted)
-/dev/sda7 (for Linux2 - encrypted)
-...etc..</p>
-<p>And LUKS as this:
-/dev/sda5 - LUKS (password0)
-/dev/sda6 - LUKS (password1)
-/dev/sda7 - LUKS (password2)</p>
-<p>Then over such LUKS, LVM as this:
-/dev/mapper/Grub2_crypt with one volume group inside it, with one logical partition formated as Ext4
-/dev/mapper/Linux1_crypt with one volume group inside it, with two logical partitions SWAP + / formated as Ext4
-/dev/mapper/Linux2_crypt with one volume group inside it, with two logical partitions  SWAP + / formated as Ext4</p>
-<p>How can i cahinload to Linux1 and Linux2 bootloaders that are installed on their respective /boot folders from /boot Grub2, what i must write on grub.cfg file?</p>
-<p>lsblk (when all is 'open' looks like this):
-sda
-+-sda1
-+-sda2
-+-sda3
-+-sda4
-+-sda5
-  +-Grub2_crypt
-     +-Grub2_vg_crypt-Grub2_lg_crypt
-+-sda6
-  +-Linux1_crypt
-     +-Linux1_vg_crypt-Linux1swap_lg_crypt
-     +-Linux1_vg_crypt-Linux1_lg_crypt
-+-sda7
-  +-Linux2_crypt
-     +-Linux2_vg_crypt-Linux2swap_lg_crypt
-     +-Linux2_vg_crypt-Linux2_lg_crypt</p>
-<p>First things i want: 
-How can i install Grub2 onto Linux1_vg_crypt-Linux1_lg_crypt?
-How can i install Grub2 onto Linux2_vg_crypt-Linux2_lg_crypt?</p>
-<p>Second thing i want:
-What must i write inside grub.cfg file that is inside Grub2_vg_crypt-Grub2_lg_crypt?</p>
-<p>In other words, how to chain from Grub2 menu to a /boot folder inside a LVM partition over LUKS?</p>
-<p>I know how to chainload if i have a separate /boot partition for each Linux and they are not encrypted.</p>
-<p>But i want unencrypted only the MBR and 62 consecutives sectors, the rest of the disk all encrypted... beware i put three primary partitions telling there is Windows, but it is not, it is to make all inside an extended partition... i could had say the same without any primary partition... ah!, yes BIOS - MBR mode.</p>
-<p>After getting on Grub load the others, i will try the same but in a UEFI mode... i am trying to get knownledge on how to do it all by hand, without even install any Linux, that is very important.</p>
-<p>Just in case it helps, for a step by step, i am trying all this by starting a Linux LiveCD called SystemRescueCD in pure console mode, the hard way, i know!</p>
-<p>Thanks!</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Sam</p>
-        <p class="legacy-comment-meta-pub_date">February 4, 2016 12:34 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>/boot, not /root</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Tschernobyl</p>
-        <p class="legacy-comment-meta-pub_date">April 15, 2016 12:45 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>The menuentry Ubuntu in Grub won't load. Are you sure this piece of code is correct? Is the hd0,1 part generic, and if not, where will you find your own parameters for this?</p>
-<p>menuentry "Ubuntu" {
-set root=(hd0,1)
-chainloader +1
-}</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Dual-booting Qubes and Ubuntu (encrypted disks) | 0ddn1x: tricks with *nix</p>
-        <p class="legacy-comment-meta-pub_date">February 26, 2016 01:00 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>[&#8230;] <a href="https://micahflee.com/2014/04/dual-booting-qubes-and-ubuntu-with-encrypted-disks/">https://micahflee.com/2014/04/dual-booting-qubes-and-ubuntu-with-encrypted-disks/</a> [&#8230;]</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Garrett</p>
-        <p class="legacy-comment-meta-pub_date">August 1, 2016 10:17 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>How do you go about booting qubes from grub2? I've literally spent hours editing, updating and rebooting and I keep running into an error with dracut.</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Benjamin</p>
-        <p class="legacy-comment-meta-pub_date">June 8, 2017 09:26 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>I have the exact some problem.</p>
-<p>I also get an error right at the beginning of installation process:</p>
-<p>efi: EFI_MEMMAP is not enabled.
-esrt: ESRT header is not in the memory map.
-...</p>
-<p>How can I solve this ?</p>
-
-    </div>
-  </div>
-  
-
-        
-      
-    </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">davee</p>
-        <p class="legacy-comment-meta-pub_date">May 21, 2015 05:49 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Thanks for posting this HOWTO: this is exactly what I was planning to do myself and you've laid out the procedure perfectly. Cheers :-)</p>
-<p>Dave.</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
         <p class="legacy-comment-meta-author">robotnumber401</p>
         <p class="legacy-comment-meta-pub_date">September 19, 2015 04:32 PM</p>
       </div>
@@ -448,48 +184,6 @@ esrt: ESRT header is not in the memory map.
 
     </div>
   </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">ThisGuy</p>
-        <p class="legacy-comment-meta-pub_date">November 1, 2014 03:26 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Have you ever thought of doing a post or video on how to install qubes with the most secure settings for journalists when they are not using TAILS? How to set up NETVMs for a VPN, TOR, and how to route them to each APPVM etc? I'd seriously send you $100 bucks if you did ha.</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Tony R.</p>
-        <p class="legacy-comment-meta-pub_date">April 21, 2015 04:35 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>How does one pronounce "$100 bucks"?  Is it one hundred dollars-bucks, or is it one hundred bucks-bucks?</p>
-
-    </div>
-  </div>
-  
-
-        
-      
-    </div>
   
 
             
@@ -572,6 +266,152 @@ esrt: ESRT header is not in the memory map.
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
+        <p class="legacy-comment-meta-author">ThisGuy</p>
+        <p class="legacy-comment-meta-pub_date">November 1, 2014 03:26 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Have you ever thought of doing a post or video on how to install qubes with the most secure settings for journalists when they are not using TAILS? How to set up NETVMs for a VPN, TOR, and how to route them to each APPVM etc? I'd seriously send you $100 bucks if you did ha.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Tony R.</p>
+        <p class="legacy-comment-meta-pub_date">April 21, 2015 04:35 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>How does one pronounce "$100 bucks"?  Is it one hundred dollars-bucks, or is it one hundred bucks-bucks?</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">hardbox</p>
+        <p class="legacy-comment-meta-pub_date">April 23, 2014 08:35 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>typo:
+menuenty "Ubuntu" {</p>
+<p>should be:
+menuentry "Ubuntu" {</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">micah</p>
+        <p class="legacy-comment-meta-pub_date">April 24, 2014 11:56 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Thanks, fixed.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">rz</p>
+        <p class="legacy-comment-meta-pub_date">May 15, 2015 06:37 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Hey, thanks a lot for this! I've just installed Qubes R3 and Ubuntu 14.04 LTS with dual-boot and it worked fine.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Sam</p>
+        <p class="legacy-comment-meta-pub_date">February 4, 2016 12:31 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I am installing Ubuntu 14 and qubes r3 on an external USB HDD. I partitioned a 2tb HDD with /root then ubuntu ext4 1tb, then unallocated space, then 500 gb fat32 /dos.</p>
+<p>I installed ubuntu without any problems. When installing Qubes all goes well, it finds the 500gb free space and starts installing until it gets to Dom0 making the swap partition and it crashes. I do not use a swap partition in Ubuntu. Apparently there is some bug with going without a swap partition in Qubes or making it on an external usb hdd. Can I manually partition Qubes to install without a swap partition? Or anyother solution?</p>
+<p>Sam.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Sam</p>
+        <p class="legacy-comment-meta-pub_date">February 4, 2016 12:34 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>/boot, not /root</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
         <p class="legacy-comment-meta-author">Reader</p>
         <p class="legacy-comment-meta-pub_date">December 12, 2015 04:17 PM</p>
       </div>
@@ -597,15 +437,175 @@ esrt: ESRT header is not in the memory map.
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">rz</p>
-        <p class="legacy-comment-meta-pub_date">May 15, 2015 06:37 AM</p>
+        <p class="legacy-comment-meta-author">davee</p>
+        <p class="legacy-comment-meta-pub_date">May 21, 2015 05:49 AM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>Hey, thanks a lot for this! I've just installed Qubes R3 and Ubuntu 14.04 LTS with dual-boot and it worked fine.</p>
+      <p>Thanks for posting this HOWTO: this is exactly what I was planning to do myself and you've laid out the procedure perfectly. Cheers :-)</p>
+<p>Dave.</p>
 
     </div>
   </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Dual-booting Qubes and Ubuntu (encrypted disks) | 0ddn1x: tricks with *nix</p>
+        <p class="legacy-comment-meta-pub_date">February 26, 2016 01:00 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>[&#8230;] <a href="https://micahflee.com/2014/04/dual-booting-qubes-and-ubuntu-with-encrypted-disks/">https://micahflee.com/2014/04/dual-booting-qubes-and-ubuntu-with-encrypted-disks/</a> [&#8230;]</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Anonymous</p>
+        <p class="legacy-comment-meta-pub_date">May 9, 2016 05:14 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>How can i get this small change (concept) to get it to work:</p>
+<p>Note: I am asking what i must write on /boot/grub/grug.cfg to chainload to the Linux bootloader.</p>
+<p>I prefer to have an encrypted /boot partition, with Grub2 on it with a manual edited /boot/grub/grug.cfg file (i get it working with GRUB_ENABLE_DISKCRYPT=t on /etc/default/grub prior to do grub-install with /boot encrypted partition mounted on /boot).</p>
+<p>If i boot the PC, it loads Grub2 from inside encrypted partition perfectly well.</p>
+<p>What i need is to chainload the other Linux distros (i know how when they are not encrypted).</p>
+<p>Beware i only have one partition per Linux (all is inside that partition), so each Linux distro /boot is a folder inside that partition.</p>
+<p>Think partition scheme as this:
+/dev/sda1 (Windows1, not encrypted yet)
+/dev/sda2 (Windows2, not encrypted yet)
+/dev/sda3 (Windows3, not encrypted yet)
+/dev/sda4 (extended)
+/dev/sda5 (for Grub2 - encrypted)
+/dev/sda6 (for Linux1 - encrypted)
+/dev/sda7 (for Linux2 - encrypted)
+...etc..</p>
+<p>And LUKS as this:
+/dev/sda5 - LUKS (password0)
+/dev/sda6 - LUKS (password1)
+/dev/sda7 - LUKS (password2)</p>
+<p>Then over such LUKS, LVM as this:
+/dev/mapper/Grub2_crypt with one volume group inside it, with one logical partition formated as Ext4
+/dev/mapper/Linux1_crypt with one volume group inside it, with two logical partitions SWAP + / formated as Ext4
+/dev/mapper/Linux2_crypt with one volume group inside it, with two logical partitions  SWAP + / formated as Ext4</p>
+<p>How can i cahinload to Linux1 and Linux2 bootloaders that are installed on their respective /boot folders from /boot Grub2, what i must write on grub.cfg file?</p>
+<p>lsblk (when all is 'open' looks like this):
+sda
++-sda1
++-sda2
++-sda3
++-sda4
++-sda5
+  +-Grub2_crypt
+     +-Grub2_vg_crypt-Grub2_lg_crypt
++-sda6
+  +-Linux1_crypt
+     +-Linux1_vg_crypt-Linux1swap_lg_crypt
+     +-Linux1_vg_crypt-Linux1_lg_crypt
++-sda7
+  +-Linux2_crypt
+     +-Linux2_vg_crypt-Linux2swap_lg_crypt
+     +-Linux2_vg_crypt-Linux2_lg_crypt</p>
+<p>First things i want: 
+How can i install Grub2 onto Linux1_vg_crypt-Linux1_lg_crypt?
+How can i install Grub2 onto Linux2_vg_crypt-Linux2_lg_crypt?</p>
+<p>Second thing i want:
+What must i write inside grub.cfg file that is inside Grub2_vg_crypt-Grub2_lg_crypt?</p>
+<p>In other words, how to chain from Grub2 menu to a /boot folder inside a LVM partition over LUKS?</p>
+<p>I know how to chainload if i have a separate /boot partition for each Linux and they are not encrypted.</p>
+<p>But i want unencrypted only the MBR and 62 consecutives sectors, the rest of the disk all encrypted... beware i put three primary partitions telling there is Windows, but it is not, it is to make all inside an extended partition... i could had say the same without any primary partition... ah!, yes BIOS - MBR mode.</p>
+<p>After getting on Grub load the others, i will try the same but in a UEFI mode... i am trying to get knownledge on how to do it all by hand, without even install any Linux, that is very important.</p>
+<p>Just in case it helps, for a step by step, i am trying all this by starting a Linux LiveCD called SystemRescueCD in pure console mode, the hard way, i know!</p>
+<p>Thanks!</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Mich</p>
+        <p class="legacy-comment-meta-pub_date">November 2, 2015 12:05 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Hello, I have a question, because I did some "mistakes".
+I installed SolydX and Qubes as described. Everything worked fine. After time I had some problems with qubes, so I decided to reinstall them. In SolydX I deleted Qubes partitions (with knowledge that there is SolydX grub in /dev/sda1). Then I did same steps like before.
+Now I am not able to boot SolydX. Nothing is happen in this option. I can boot only Qubes.
+Can you help me?
+TA+BR, Mich</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Garrett</p>
+        <p class="legacy-comment-meta-pub_date">August 1, 2016 10:17 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>How do you go about booting qubes from grub2? I've literally spent hours editing, updating and rebooting and I keep running into an error with dracut.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Benjamin</p>
+        <p class="legacy-comment-meta-pub_date">June 8, 2017 09:26 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I have the exact some problem.</p>
+<p>I also get an error right at the beginning of installation process:</p>
+<p>efi: EFI_MEMMAP is not enabled.
+esrt: ESRT header is not in the memory map.
+...</p>
+<p>How can I solve this ?</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
   
 
             
