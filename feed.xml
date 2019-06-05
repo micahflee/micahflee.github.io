@@ -2,13 +2,81 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title type="text">feed.xml</title>
   <id>urn:uuid:4ab1e642-9ac1-3522-957e-8ada3d3fd794</id>
-  <updated>2019-02-18T00:00:00Z</updated>
+  <updated>2019-06-05T00:00:00Z</updated>
   <link href="https://micahflee.com/" />
   <link href="https://micahflee.com/feed.xml" rel="self" />
   <author>
     <name></name>
   </author>
   <generator uri="https://github.com/ajdavis/lektor-atom" version="0.3">Lektor Atom Plugin</generator>
+  <entry xml:base="https://micahflee.com/2019/06/semiphemeral-automatically-delete-your-old-tweets-except-for-the-ones-you-want-to-keep/">
+    <title type="text">Semiphemeral: Automatically delete your old tweets, except for the ones you want to keep</title>
+    <id>urn:uuid:26cb8a46-49a3-3beb-b77a-5655a515411a</id>
+    <updated>2019-06-05T00:00:00Z</updated>
+    <link href="https://micahflee.com/2019/06/semiphemeral-automatically-delete-your-old-tweets-except-for-the-ones-you-want-to-keep/" />
+    <author>
+      <name>Micah Lee</name>
+    </author>
+    <content type="html">&lt;p&gt;In the almost 10 years that I've been using Twitter, I tweeted about 13,700 times, retweeted about 9,000 tweets, and liked (or &quot;favorited&quot;, as we called liking back in the day) about 14,000 tweets. I decided to delete most of them using a tool I just finished programming called &lt;a href=&quot;https://github.com/micahflee/semiphemeral&quot;&gt;semiphemeral&lt;/a&gt;. Here is why, and how.&lt;/p&gt;
+&lt;p&gt;A lot of my classic tweets were... let's just say not exactly the highest quality.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/06/semiphemeral-automatically-delete-your-old-tweets-except-for-the-ones-you-want-to-keep/tweet-coffee-pants.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;But more than just low quality, I simply don't see many benefits to having a decade-long timeline that anyone who wishes to stalk me can easily access and use against me. For example, in response to me criticizing WikiLeaks, a troll searched my Twitter history for the word &quot;jew&quot;, dug up this 2011 tweet about me attending a Jewish wedding, and tweeted it to me with some nonsense about my &quot;tribe&quot;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/06/semiphemeral-automatically-delete-your-old-tweets-except-for-the-ones-you-want-to-keep/tweet-jewish-wedding.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;And finally, in addition to mediocre tweets and the potential for harassment, I'm sure I've had some bad takes over the years.&lt;/p&gt;
+&lt;p&gt;I care deeply about privacy. My default search engine is DuckDuckGo. At the moment, I carry an Android phone that doesn't have any Google apps on it. I host my email &lt;a href=&quot;https://theintercept.com/2019/04/30/helm-email-server/&quot;&gt;from my house&lt;/a&gt;. When I text with people on Signal I always set disappearing messages to one week, no matter the conversation. So... why should my social media posts be on the internet forever?&lt;/p&gt;
+&lt;p&gt;There are plenty of apps that make your tweets &quot;ephemeral&quot;, where you can tweet like normal but everything older than, say, a month gets automatically deleted. I also found plenty of simple scripts on GitHub that do this, for those who don't want to give a third party access to their Twitter account.&lt;/p&gt;
+&lt;p&gt;I looked into a few options but realized none of them would work for me because I don't actually want to delete &lt;em&gt;all&lt;/em&gt; of my old tweets. Some of them I'm quite proud of. Like &lt;a href=&quot;https://theintercept.com/2014/10/28/smuggling-snowden-secrets/&quot;&gt;that time&lt;/a&gt; I secretly &lt;a href=&quot;https://twitter.com/micahflee/status/296119710485979136&quot;&gt;tweeted&lt;/a&gt; the PGP fingerprint for Laura Poitras, at the request of Edward Snowden in the early stages of his whisleblowing, so he could be more confident that his communications with her weren't getting man-in-the-middled.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/06/semiphemeral-automatically-delete-your-old-tweets-except-for-the-ones-you-want-to-keep/tweet-fingerprint.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;I've also written several twitter threads that I like and don't want to delete, and that even get cited by others. I wrote a massive thread full of the &lt;a href=&quot;https://twitter.com/micahflee/status/963852295271104512&quot;&gt;sick misogynist details&lt;/a&gt; from leaked internal WikiLeaks DMs; a short thread about the time police broke into Chelsea Manning's house &lt;a href=&quot;https://twitter.com/micahflee/status/1004006878446153728&quot;&gt;with guns drawn&lt;/a&gt; for a &quot;wellness check&quot;; a thread detailing everything that is publicly known about &lt;a href=&quot;https://twitter.com/micahflee/status/1088511697550172160&quot;&gt;supply chain attacks&lt;/a&gt;; a thread about a 2-year-long &lt;a href=&quot;https://twitter.com/micahflee/status/990265575711617030&quot;&gt;honeypot laptop&lt;/a&gt; project I did to try to detect evil maid attacks; among many others. And there are other tweets I don't want to delete too -- I don't mean to brag but occasionally I say something incredibly clever. And there's the &lt;a href=&quot;https://twitter.com/micahflee/status/908390382882373632&quot;&gt;tweet&lt;/a&gt; that cryptographically proves that the person who controls my Keybase account also controls my Twitter account.&lt;/p&gt;
+&lt;p&gt;I realized that I didn't want ephemeral tweets, I wanted &lt;em&gt;semiphemeral&lt;/em&gt; tweets. I want to automatically delete my old tweets except for those that meet specific criteria: if a tweet has more than a specific thresholds of retweets or likes, keep it. Also keep any other tweets that are part of a thread that includes a tweet I'm preserving -- I don't want to only keep the first tweet that passes the tweet/like threshold but then delete all the replies, or otherwise lose context. And of course, I wanted a way to tag specific tweets for exclusion from deletion.&lt;/p&gt;
+&lt;p&gt;So, I programmed semiphemeral to do just that. &lt;a href=&quot;https://github.com/micahflee/semiphemeral&quot;&gt;The code&lt;/a&gt; is licensed under MIT and programmed in python. Everyone is welcome to use it, but you'll need some tech skills to do so. It's a command line tool, not a service. And to use it, you need to generate Twitter API credentials with your Twitter account (roughly following &lt;a href=&quot;https://python-twitter.readthedocs.io/en/latest/getting_started.html&quot;&gt;these instructions&lt;/a&gt;) -- this means you'll be interfacing with the Twitter API directly, rather than giving some third party permission to access your Twitter account. It will work fine to run on your laptop, but if you want to make it automatically delete old tweets going forward, you'll probably want to schedule it to run on a daily cron job on a server somewhere.&lt;/p&gt;
+&lt;p&gt;You can install it with pip:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ pip3 install semiphemeral
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here's how to use it:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ semiphemeral 
+Usage: semiphemeral [OPTIONS] COMMAND [ARGS]...
+
+  Automatically delete your old tweets, except for the ones you want to keep
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  configure  Start the web server to configure semiphemeral
+  delete     Delete tweets that aren't automatically or manually excluded
+  fetch      Download all tweets
+  stats      Show stats about tweets in the database
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;When you run &lt;code&gt;semiphemeral configure&lt;/code&gt;, a local web app starts (powered by &lt;a href=&quot;http://flask.pocoo.org/&quot;&gt;flask&lt;/a&gt;) which you load in a web browser. From here you can configure semipheral with both your Twitter API credentials, as well as the settings you want to use -- how old tweets are when they should get automatically deleted, what the retweet and like thresholds should be, as well as when to automatically unretweet and unlike old tweets.&lt;/p&gt;
+&lt;p&gt;Here's what the settings web page looks like:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/06/semiphemeral-automatically-delete-your-old-tweets-except-for-the-ones-you-want-to-keep/semiphemeral-settings.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;This web app also has an interface that lets you view all tweets that are staged for deletion a page at a time, filter the text of the tweets for words and phrases to quickly find specific ones, and manually exclude any tweets you choose from deletion.&lt;/p&gt;
+&lt;p&gt;After configuring your API creds, you must download your entire timeline from Twitter by running &lt;code&gt;semiphemeral fetch&lt;/code&gt;. This may take a very long time the first time if you have a lot of tweets. Semiphemeral will automatically pause, sometimes for up to 15 minutes at a time, when it hits the Twitter API's rate limit. (All the Twitter API code is powered by &lt;a href=&quot;https://tweepy.readthedocs.io/en/latest/&quot;&gt;tweepy&lt;/a&gt;), and it saves your entire history of tweets, as well as all the tweets from threads you've interacted with, in a sqlite database. The database code is powered by &lt;a href=&quot;https://www.sqlalchemy.org/&quot;&gt;SQLAlchemy&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;(Side note: Did you know that Twitter &quot;threads&quot; are actually trees, from a data structure perspective? If a tweet is not replying to any other tweet, it's the root of the tree. It can have an arbitrary number of replies, and each of those replies can have an arbitrary number of replies of their own, which are the branches. If I replied to someone but their account has since been suspended or they deleted the tweet I replied to, my tweet is an orphan, and there's no easy way to determine what the root of its thread actually was.)&lt;/p&gt;
+&lt;p&gt;And finally, after you're sure you've configured the settings you want and have sifted through all your old tweets and manually excluded any specific tweets from deletion, you may want to &lt;a href=&quot;https://help.twitter.com/en/managing-your-account/how-to-download-your-twitter-archive&quot;&gt;download your Twitter archive&lt;/a&gt; for safe keeping. Then, run &lt;code&gt;semiphemeral delete&lt;/code&gt; to delete all of your old tweets, except for the ones you want to keep. This, too, might take a long time the first run. I've designed it to put &lt;code&gt;semiphemeral delete&lt;/code&gt; in a daily cron job, to continue to delete old tweets going forward.&lt;/p&gt;
+&lt;p&gt;At the moment tweepy has &lt;a href=&quot;https://github.com/tweepy/tweepy/issues/1081&quot;&gt;a bug&lt;/a&gt; that prevents the direct message API from working. But once that's fixed (or maybe before, if I have time and am feeling adventurous) I plan on adding a feature to also automatically delete all old direct messages.&lt;/p&gt;
+&lt;p&gt;Settings are stored in &lt;code&gt;~/.semiphemeral/settings.json&lt;/code&gt;. All tweets (including exceptions, and deleted tweets) are stored in a sqlite database &lt;code&gt;~/.semiphemeral/tweets.db&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Now that I've deleted about 90% of my tweets, and all retweets that are newer than the past month, I feel like my Twitter account is in a much cleaner state than it was before, and there's so much less historical information about my daily likes and politics available to anyone who chooses to look than there used to be. I think I'm going to enjoy semiphemeral tweeting.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ semiphemeral stats
+semiphemeral 0.1
+Statistics
+{
+  &quot;is_configured&quot;: true,
+  &quot;last_fetch&quot;: &quot;2019-06-05 07:39AM&quot;,
+  &quot;my_tweets&quot;: 1353,
+  &quot;my_retweets&quot;: 127,
+  &quot;my_likes&quot;: 3987,
+  &quot;deleted_tweets&quot;: 12005,
+  &quot;deleted_retweets&quot;: 8917,
+  &quot;unliked_tweets&quot;: 2365,
+  &quot;excluded_tweets&quot;: 192,
+  &quot;other_tweets&quot;: 9537,
+  &quot;threads&quot;: 3949
+}
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+  </entry>
   <entry xml:base="https://micahflee.com/2019/02/onionshare-2/">
     <title type="text">OnionShare 2 adds anonymous dropboxes, supports new Tor addresses, and is translated into a dozen new languages</title>
     <id>urn:uuid:4dffee1b-7e5b-3a17-a870-cb51477398e2</id>

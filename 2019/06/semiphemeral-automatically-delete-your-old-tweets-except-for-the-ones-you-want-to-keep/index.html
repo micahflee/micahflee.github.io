@@ -1,0 +1,225 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>Semiphemeral: Automatically delete your old tweets, except for the ones you want to keep</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@micahflee" />
+  <meta name="twitter:creator" content="@micahflee" />
+  <meta property="og:url" content="https://micahflee.com/2019/06/semiphemeral-automatically-delete-your-old-tweets-except-for-the-ones-you-want-to-keep" />
+  <meta property="og:title" content="Semiphemeral: Automatically delete your old tweets, except for the ones you want to keep" />
+  <meta property="og:image" content="https://micahflee.com/2019/06/semiphemeral-automatically-delete-your-old-tweets-except-for-the-ones-you-want-to-keep/semiphemeral.png" />
+
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="../../../2019/06/semiphemeral-automatically-delete-your-old-tweets-except-for-the-ones-you-want-to-keep/semiphemeral.png" />
+    </p>
+    
+    
+      <h1 class="article-title">Semiphemeral: Automatically delete your old tweets, except for the ones you want to keep</h1>
+    
+    <p class="meta">
+      Posted June 5, 2019
+      
+        in
+        
+          <a class="tag" href="../../../tags/code">code</a>
+        
+      
+    </p>
+    
+      <p>In the almost 10 years that I've been using Twitter, I tweeted about 13,700 times, retweeted about 9,000 tweets, and liked (or "favorited", as we called liking back in the day) about 14,000 tweets. I decided to delete most of them using a tool I just finished programming called <a href="https://github.com/micahflee/semiphemeral">semiphemeral</a>. Here is why, and how.</p>
+<p>A lot of my classic tweets were... let's just say not exactly the highest quality.</p>
+<p><img src="../../../2019/06/semiphemeral-automatically-delete-your-old-tweets-except-for-the-ones-you-want-to-keep/tweet-coffee-pants.png" alt=""></p>
+<p>But more than just low quality, I simply don't see many benefits to having a decade-long timeline that anyone who wishes to stalk me can easily access and use against me. For example, in response to me criticizing WikiLeaks, a troll searched my Twitter history for the word "jew", dug up this 2011 tweet about me attending a Jewish wedding, and tweeted it to me with some nonsense about my "tribe".</p>
+<p><img src="../../../2019/06/semiphemeral-automatically-delete-your-old-tweets-except-for-the-ones-you-want-to-keep/tweet-jewish-wedding.png" alt=""></p>
+<p>And finally, in addition to mediocre tweets and the potential for harassment, I'm sure I've had some bad takes over the years.</p>
+<p>I care deeply about privacy. My default search engine is DuckDuckGo. At the moment, I carry an Android phone that doesn't have any Google apps on it. I host my email <a href="https://theintercept.com/2019/04/30/helm-email-server/">from my house</a>. When I text with people on Signal I always set disappearing messages to one week, no matter the conversation. So... why should my social media posts be on the internet forever?</p>
+<p>There are plenty of apps that make your tweets "ephemeral", where you can tweet like normal but everything older than, say, a month gets automatically deleted. I also found plenty of simple scripts on GitHub that do this, for those who don't want to give a third party access to their Twitter account.</p>
+<p>I looked into a few options but realized none of them would work for me because I don't actually want to delete <em>all</em> of my old tweets. Some of them I'm quite proud of. Like <a href="https://theintercept.com/2014/10/28/smuggling-snowden-secrets/">that time</a> I secretly <a href="https://twitter.com/micahflee/status/296119710485979136">tweeted</a> the PGP fingerprint for Laura Poitras, at the request of Edward Snowden in the early stages of his whisleblowing, so he could be more confident that his communications with her weren't getting man-in-the-middled.</p>
+<p><img src="../../../2019/06/semiphemeral-automatically-delete-your-old-tweets-except-for-the-ones-you-want-to-keep/tweet-fingerprint.png" alt=""></p>
+<p>I've also written several twitter threads that I like and don't want to delete, and that even get cited by others. I wrote a massive thread full of the <a href="https://twitter.com/micahflee/status/963852295271104512">sick misogynist details</a> from leaked internal WikiLeaks DMs; a short thread about the time police broke into Chelsea Manning's house <a href="https://twitter.com/micahflee/status/1004006878446153728">with guns drawn</a> for a "wellness check"; a thread detailing everything that is publicly known about <a href="https://twitter.com/micahflee/status/1088511697550172160">supply chain attacks</a>; a thread about a 2-year-long <a href="https://twitter.com/micahflee/status/990265575711617030">honeypot laptop</a> project I did to try to detect evil maid attacks; among many others. And there are other tweets I don't want to delete too -- I don't mean to brag but occasionally I say something incredibly clever. And there's the <a href="https://twitter.com/micahflee/status/908390382882373632">tweet</a> that cryptographically proves that the person who controls my Keybase account also controls my Twitter account.</p>
+<p>I realized that I didn't want ephemeral tweets, I wanted <em>semiphemeral</em> tweets. I want to automatically delete my old tweets except for those that meet specific criteria: if a tweet has more than a specific thresholds of retweets or likes, keep it. Also keep any other tweets that are part of a thread that includes a tweet I'm preserving -- I don't want to only keep the first tweet that passes the tweet/like threshold but then delete all the replies, or otherwise lose context. And of course, I wanted a way to tag specific tweets for exclusion from deletion.</p>
+<p>So, I programmed semiphemeral to do just that. <a href="https://github.com/micahflee/semiphemeral">The code</a> is licensed under MIT and programmed in python. Everyone is welcome to use it, but you'll need some tech skills to do so. It's a command line tool, not a service. And to use it, you need to generate Twitter API credentials with your Twitter account (roughly following <a href="https://python-twitter.readthedocs.io/en/latest/getting_started.html">these instructions</a>) -- this means you'll be interfacing with the Twitter API directly, rather than giving some third party permission to access your Twitter account. It will work fine to run on your laptop, but if you want to make it automatically delete old tweets going forward, you'll probably want to schedule it to run on a daily cron job on a server somewhere.</p>
+<p>You can install it with pip:</p>
+<pre><code>$ pip3 install semiphemeral
+</code></pre>
+<p>Here's how to use it:</p>
+<pre><code>$ semiphemeral 
+Usage: semiphemeral [OPTIONS] COMMAND [ARGS]...
+
+  Automatically delete your old tweets, except for the ones you want to keep
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  configure  Start the web server to configure semiphemeral
+  delete     Delete tweets that aren't automatically or manually excluded
+  fetch      Download all tweets
+  stats      Show stats about tweets in the database
+</code></pre>
+<p>When you run <code>semiphemeral configure</code>, a local web app starts (powered by <a href="http://flask.pocoo.org/">flask</a>) which you load in a web browser. From here you can configure semipheral with both your Twitter API credentials, as well as the settings you want to use -- how old tweets are when they should get automatically deleted, what the retweet and like thresholds should be, as well as when to automatically unretweet and unlike old tweets.</p>
+<p>Here's what the settings web page looks like:</p>
+<p><img src="../../../2019/06/semiphemeral-automatically-delete-your-old-tweets-except-for-the-ones-you-want-to-keep/semiphemeral-settings.png" alt=""></p>
+<p>This web app also has an interface that lets you view all tweets that are staged for deletion a page at a time, filter the text of the tweets for words and phrases to quickly find specific ones, and manually exclude any tweets you choose from deletion.</p>
+<p>After configuring your API creds, you must download your entire timeline from Twitter by running <code>semiphemeral fetch</code>. This may take a very long time the first time if you have a lot of tweets. Semiphemeral will automatically pause, sometimes for up to 15 minutes at a time, when it hits the Twitter API's rate limit. (All the Twitter API code is powered by <a href="https://tweepy.readthedocs.io/en/latest/">tweepy</a>), and it saves your entire history of tweets, as well as all the tweets from threads you've interacted with, in a sqlite database. The database code is powered by <a href="https://www.sqlalchemy.org/">SQLAlchemy</a>.</p>
+<p>(Side note: Did you know that Twitter "threads" are actually trees, from a data structure perspective? If a tweet is not replying to any other tweet, it's the root of the tree. It can have an arbitrary number of replies, and each of those replies can have an arbitrary number of replies of their own, which are the branches. If I replied to someone but their account has since been suspended or they deleted the tweet I replied to, my tweet is an orphan, and there's no easy way to determine what the root of its thread actually was.)</p>
+<p>And finally, after you're sure you've configured the settings you want and have sifted through all your old tweets and manually excluded any specific tweets from deletion, you may want to <a href="https://help.twitter.com/en/managing-your-account/how-to-download-your-twitter-archive">download your Twitter archive</a> for safe keeping. Then, run <code>semiphemeral delete</code> to delete all of your old tweets, except for the ones you want to keep. This, too, might take a long time the first run. I've designed it to put <code>semiphemeral delete</code> in a daily cron job, to continue to delete old tweets going forward.</p>
+<p>At the moment tweepy has <a href="https://github.com/tweepy/tweepy/issues/1081">a bug</a> that prevents the direct message API from working. But once that's fixed (or maybe before, if I have time and am feeling adventurous) I plan on adding a feature to also automatically delete all old direct messages.</p>
+<p>Settings are stored in <code>~/.semiphemeral/settings.json</code>. All tweets (including exceptions, and deleted tweets) are stored in a sqlite database <code>~/.semiphemeral/tweets.db</code>.</p>
+<p>Now that I've deleted about 90% of my tweets, and all retweets that are newer than the past month, I feel like my Twitter account is in a much cleaner state than it was before, and there's so much less historical information about my daily likes and politics available to anyone who chooses to look than there used to be. I think I'm going to enjoy semiphemeral tweeting.</p>
+<pre><code>$ semiphemeral stats
+semiphemeral 0.1
+Statistics
+{
+  "is_configured": true,
+  "last_fetch": "2019-06-05 07:39AM",
+  "my_tweets": 1353,
+  "my_retweets": 127,
+  "my_likes": 3987,
+  "deleted_tweets": 12005,
+  "deleted_retweets": 8917,
+  "unliked_tweets": 2365,
+  "excluded_tweets": 192,
+  "other_tweets": 9537,
+  "threads": 3949
+}
+</code></pre>
+
+
+      <div id="commento"></div>
+      <script src="https://cdn.commento.io/js/commento.js"></script>
+
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name"><a href="../../../">Micah Lee's blog</a></p>
+      <p><img class="coffee" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../../../static/images/reality.png"></a></p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?<p><p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" src="../../../static/images/cc-by-nc.png"></a>
+        <br/>
+        <br/>
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>
