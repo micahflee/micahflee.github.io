@@ -1,17 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title type="text">feed.xml</title>
-  <id>urn:uuid:4ab1e642-9ac1-3522-957e-8ada3d3fd794</id>
-  <updated>2019-06-05T00:00:00Z</updated>
+  <id>urn:uuid:959328ec-e9a1-37eb-afd8-885cf5087cef</id>
+  <updated>2019-07-21T00:00:00Z</updated>
   <link href="https://micahflee.com/" />
   <link href="https://micahflee.com/feed.xml" rel="self" />
   <author>
     <name></name>
   </author>
   <generator uri="https://github.com/ajdavis/lektor-atom" version="0.3">Lektor Atom Plugin</generator>
+  <entry xml:base="https://micahflee.com/2019/07/with-semiphemeral-you-can-delete-your-old-twitter-likes-but-its-noisy/">
+    <title type="text">With Semiphemeral you can delete your old Twitter likes, but it's noisy</title>
+    <id>urn:uuid:9d61e92a-f60d-34e9-8093-379d93341693</id>
+    <updated>2019-07-21T00:00:00Z</updated>
+    <link href="https://micahflee.com/2019/07/with-semiphemeral-you-can-delete-your-old-twitter-likes-but-its-noisy/" />
+    <author>
+      <name>Micah Lee</name>
+    </author>
+    <content type="html">&lt;p&gt;I don't know if others use Twitter the same way that I do, but I tend to like things quite a bit more frequently than I tweet or retweet things. I'd imagine that if you analyzed my last 10 years of Twitter likes, you could learn much more about me than just by looking at my timeline. My likes probably reveal exactly which political, technical, and social arguments I followed, and which sides I took in all of them.&lt;/p&gt;
+&lt;p&gt;I recently programmed a tool called &lt;a href=&quot;https://micahflee.com/2019/06/semiphemeral-automatically-delete-your-old-tweets-except-for-the-ones-you-want-to-keep/&quot;&gt;semiphemeral&lt;/a&gt;  to automate deleting all of my old tweets (except for ones that I want to keep), and it also goes back and unlikes all of the tweets that I liked more than 60 days ago  -- or, so I initially thought. It soon became clear that semiphemeral only actually deleted the most recent 4,000 likes.&lt;/p&gt;
+&lt;p&gt;I just released a new version that allows you to delete &lt;em&gt;all&lt;/em&gt; of your old likes, but unfortunately there are some... caveats. (You can install semiphemeral with &lt;code&gt;pip3 install semiphemeral&lt;/code&gt;, and if you already have it installed you can upgrade to the latest version with &lt;code&gt;pip3 install --upgrade semiphemeral&lt;/code&gt;.)&lt;/p&gt;
+&lt;p&gt;Twitter works in mysterious ways. If you have a very long like history, the only way to delete your old ones is to first &lt;em&gt;relike&lt;/em&gt; those tweets (yes, the tweets that you already liked), and &lt;em&gt;then&lt;/em&gt; you can unlike them. This means that your friends (and strangers) will get notifications that you, for example,  liked a random tweet from 2014 but by the time they open Twitter the notification will be gone, and you won't be listed in their likes for that tweet. And on top of that, running this script may take &lt;em&gt;weeks&lt;/em&gt;. Twitter only allows you to like up to 1,000 tweets per day, so if you need to relike/unlike about 10,000 tweets (this is what I did), it will take about 10 days to run. I had maybe a dozen different people contact me wondering if my account was hacked.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/07/with-semiphemeral-you-can-delete-your-old-twitter-likes-but-its-noisy/twitter-deleting-likes.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;But why?&lt;/p&gt;
+&lt;p&gt;It turns out that the Twitter &lt;a href=&quot;https://developer.twitter.com/en/docs/tweets/post-and-engage/api-reference/get-favorites-list.html&quot;&gt;API call&lt;/a&gt; for getting a list of tweets that a user has liked, &lt;code&gt;GET favorites/list&lt;/code&gt; , doesn't work as you'd expect. It only returns the most recent 4,000 likes -- and even if you delete those and wait several days, it never returns any that are older than those. In fact, there doesn't seem to be any way at all to get the API to give you a complete list of IDs for old tweets that you liked.&lt;/p&gt;
+&lt;p&gt;In order to get a list of all of your old likes (since the Twitter API won't give it to you), you must go to &lt;a href=&quot;https://twitter.com/settings/your_twitter_data&quot;&gt;https://twitter.com/settings/your_twitter_data&lt;/a&gt; and download your Twitter data (note that this is different than your &quot;Twitter archive&quot;, which doesn't include information about your likes). Twitter will email you a link to a zip file. When you unzip it there will be many files, including a file called &lt;code&gt;like.js&lt;/code&gt;. Run this command, with the path to your &lt;code&gt;like.js&lt;/code&gt;, for example:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;semiphemeral unlike --filename ~/path/to/like.js
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Using the &lt;code&gt;like.js&lt;/code&gt; file from your Twitter data, this will first fetch all of the tweets that you liked, then it with relike and unlike each one of them. Each relike will trigger a notification, but at the end of the process your likes will have actually been deleted.&lt;/p&gt;
+&lt;p&gt;Each time it hits the 1,000 likes/day rate limit, semiphemeral will pause for 24 hours before continuing (if the command crashes or you cancel in the middle for any reason, it's safe to run it again to continue where you left off). If possible, I recommend you run this in a &lt;code&gt;screen&lt;/code&gt; or &lt;code&gt;tmux&lt;/code&gt; session on a server somewhere so that it doesn't get interrupted when you suspend your laptop. And if you're running semiphemeral on a cron job, I recommend that you disable it first, and then start it up again when it's finished.&lt;/p&gt;
+&lt;p&gt;New likes don't have this problem, so as long as you regularly run &lt;code&gt;semiphemeral delete&lt;/code&gt;, your new likes will automatically get deleted.&lt;/p&gt;
+&lt;p&gt;You can find the source code and readme for semiphemeral on it's &lt;a href=&quot;https://github.com/micahflee/semiphemeral&quot;&gt;github project page&lt;/a&gt;.&lt;/p&gt;
+</content>
+  </entry>
   <entry xml:base="https://micahflee.com/2019/06/semiphemeral-automatically-delete-your-old-tweets-except-for-the-ones-you-want-to-keep/">
     <title type="text">Semiphemeral: Automatically delete your old tweets, except for the ones you want to keep</title>
-    <id>urn:uuid:26cb8a46-49a3-3beb-b77a-5655a515411a</id>
+    <id>urn:uuid:9ff7b28c-acf2-3865-9f73-9b818e225233</id>
     <updated>2019-06-05T00:00:00Z</updated>
     <link href="https://micahflee.com/2019/06/semiphemeral-automatically-delete-your-old-tweets-except-for-the-ones-you-want-to-keep/" />
     <author>
@@ -79,7 +103,7 @@ Statistics
   </entry>
   <entry xml:base="https://micahflee.com/2019/02/onionshare-2/">
     <title type="text">OnionShare 2 adds anonymous dropboxes, supports new Tor addresses, and is translated into a dozen new languages</title>
-    <id>urn:uuid:4dffee1b-7e5b-3a17-a870-cb51477398e2</id>
+    <id>urn:uuid:ae54520e-cf72-3c39-a783-a704643b9b01</id>
     <updated>2019-02-18T00:00:00Z</updated>
     <link href="https://micahflee.com/2019/02/onionshare-2/" />
     <author>
@@ -190,7 +214,7 @@ Received: /home/user/OnionShare/2019-02-18/10.48.18/2016_tax_return.pdf
   </entry>
   <entry xml:base="https://micahflee.com/2019/01/lies-that-wikileaks-tells-you/">
     <title type="text">Lies That WikiLeaks Tells You</title>
-    <id>urn:uuid:ea4faa98-50d9-3968-bb37-fa6728f0269b</id>
+    <id>urn:uuid:8f6b235f-5327-3546-ba94-555b1f7a08f3</id>
     <updated>2019-01-11T00:00:00Z</updated>
     <link href="https://micahflee.com/2019/01/lies-that-wikileaks-tells-you/" />
     <author>
@@ -331,7 +355,7 @@ Received: /home/user/OnionShare/2019-02-18/10.48.18/2016_tax_return.pdf
   </entry>
   <entry xml:base="https://micahflee.com/2018/12/do-you-want-to-contribute-to-the-next-major-version-of-onionshare/">
     <title type="text">Do you want to contribute to the next major version of OnionShare?</title>
-    <id>urn:uuid:1a07c588-a39d-3d6f-bb35-91a286a6e1b2</id>
+    <id>urn:uuid:eb17c382-3c88-3208-b051-b0abf183da85</id>
     <updated>2018-12-22T00:00:00Z</updated>
     <link href="https://micahflee.com/2018/12/do-you-want-to-contribute-to-the-next-major-version-of-onionshare/" />
     <author>
@@ -349,7 +373,7 @@ Received: /home/user/OnionShare/2019-02-18/10.48.18/2016_tax_return.pdf
   </entry>
   <entry xml:base="https://micahflee.com/2018/02/onionshare-has-some-exciting-new-features/">
     <title type="text">OnionShare has some exciting new features</title>
-    <id>urn:uuid:6ab2e72d-209d-3be9-9871-3ab0a86c55f4</id>
+    <id>urn:uuid:375a08c5-fcc1-3d01-a90e-9e4ea3e1fc76</id>
     <updated>2018-02-26T00:00:00Z</updated>
     <link href="https://micahflee.com/2018/02/onionshare-has-some-exciting-new-features/" />
     <author>
@@ -390,7 +414,7 @@ Received: /home/user/OnionShare/2019-02-18/10.48.18/2016_tax_return.pdf
   </entry>
   <entry xml:base="https://micahflee.com/2017/04/breaking-the-security-model-of-subgraph-os/">
     <title type="text">Breaking the Security Model of Subgraph OS</title>
-    <id>urn:uuid:6925d42e-d044-3397-b534-91cac8547575</id>
+    <id>urn:uuid:e536e456-a2c5-3d4a-9baf-caef9f18427f</id>
     <updated>2017-04-11T00:00:00Z</updated>
     <link href="https://micahflee.com/2017/04/breaking-the-security-model-of-subgraph-os/" />
     <author>
@@ -520,7 +544,7 @@ echo &amp;gt;&amp;gt; $HOME/pwnlog.txt;
   </entry>
   <entry xml:base="https://micahflee.com/2016/12/qubes-tip-making-yubikey-openpgp-smart-cards-slightly-more-usable/">
     <title type="text">Qubes Tip: Making Yubikey OpenPGP smart cards slightly more usable</title>
-    <id>urn:uuid:5a001f2a-b545-3976-a2a2-bac57c60c32c</id>
+    <id>urn:uuid:8eb26bbe-a7e1-3f01-b8a2-f26c958cc9a2</id>
     <updated>2016-12-01T00:00:00Z</updated>
     <link href="https://micahflee.com/2016/12/qubes-tip-making-yubikey-openpgp-smart-cards-slightly-more-usable/" />
     <author>
@@ -555,7 +579,7 @@ $anyvm $anyvm ask
   </entry>
   <entry xml:base="https://micahflee.com/2016/07/how-qubes-makes-handling-pdfs-way-safer/">
     <title type="text">How Qubes makes handling PDFs way safer</title>
-    <id>urn:uuid:c1383c38-c3c9-3d7e-af3f-4046ec2fda5a</id>
+    <id>urn:uuid:6c659bea-a841-3b9e-ad37-c4c2c24f603c</id>
     <updated>2016-07-21T00:00:00Z</updated>
     <link href="https://micahflee.com/2016/07/how-qubes-makes-handling-pdfs-way-safer/" />
     <author>
@@ -612,7 +636,7 @@ $anyvm $anyvm ask
   </entry>
   <entry xml:base="https://micahflee.com/2016/06/qubes-tip-opening-links-in-your-preferred-appvm/">
     <title type="text">Qubes Tip: Opening links in your preferred AppVM</title>
-    <id>urn:uuid:63be43bc-4fa2-303e-a79b-d249d2a82e08</id>
+    <id>urn:uuid:d89856fb-9652-3ed0-bdab-eb866ecc7bd2</id>
     <updated>2016-06-22T00:00:00Z</updated>
     <link href="https://micahflee.com/2016/06/qubes-tip-opening-links-in-your-preferred-appvm/" />
     <author>
@@ -649,7 +673,7 @@ MimeType=x-scheme-handler/unknown;x-scheme-handler/about;text/html;text/xml;appl
   </entry>
   <entry xml:base="https://micahflee.com/2016/02/backdoored-linux-mint-and-the-perils-of-checksums/">
     <title type="text">Backdoored Linux Mint, and the Perils of Checksums</title>
-    <id>urn:uuid:b342af9f-03ce-3260-8cc6-13b275c33979</id>
+    <id>urn:uuid:8ee8cd60-7c98-3a5c-82af-87fd13a010c8</id>
     <updated>2016-02-20T00:00:00Z</updated>
     <link href="https://micahflee.com/2016/02/backdoored-linux-mint-and-the-perils-of-checksums/" />
     <author>
@@ -680,7 +704,7 @@ sub   elg2048/0F346519 2009-04-29 [E]
   </entry>
   <entry xml:base="https://micahflee.com/2016/02/usable-crypto-capture-the-flag-challenge/">
     <title type="text">Usable Crypto Capture the Flag Challenge</title>
-    <id>urn:uuid:eeb29e35-eefa-37f3-9106-5670101a5c8d</id>
+    <id>urn:uuid:a893e129-d942-3871-919a-f371e7826a34</id>
     <updated>2016-02-06T00:00:00Z</updated>
     <link href="https://micahflee.com/2016/02/usable-crypto-capture-the-flag-challenge/" />
     <author>
@@ -692,7 +716,7 @@ sub   elg2048/0F346519 2009-04-29 [E]
   </entry>
   <entry xml:base="https://micahflee.com/2016/01/debian-grsecurity/">
     <title type="text">Hardening Debian for the Desktop Using Grsecurity</title>
-    <id>urn:uuid:c765364e-c605-31ec-80a6-961b8c760ac0</id>
+    <id>urn:uuid:2d1d4697-cc3d-3b9d-99ba-e4db6bdb0195</id>
     <updated>2016-01-15T00:00:00Z</updated>
     <link href="https://micahflee.com/2016/01/debian-grsecurity/" />
     <author>
@@ -994,7 +1018,7 @@ $ torbrowser-launcher
   </entry>
   <entry xml:base="https://micahflee.com/2015/11/some-thoughts-on-faraday-bags-and-operational-security/">
     <title type="text">Some Thoughts on Faraday Bags and Operational Security</title>
-    <id>urn:uuid:5ec05c31-7fa2-370f-b782-87720da3d5bb</id>
+    <id>urn:uuid:1202b137-1310-303b-8884-f6566228febf</id>
     <updated>2015-11-25T00:00:00Z</updated>
     <link href="https://micahflee.com/2015/11/some-thoughts-on-faraday-bags-and-operational-security/" />
     <author>
@@ -1022,7 +1046,7 @@ $ torbrowser-launcher
   </entry>
   <entry xml:base="https://micahflee.com/2015/09/why-i-say-linux-instead-of-gnulinux/">
     <title type="text">Why I say Linux instead of GNU/Linux</title>
-    <id>urn:uuid:0d481b36-103f-3fb3-8690-a58875f5d38b</id>
+    <id>urn:uuid:546f50b8-939e-31b6-8df3-a2eef4051d86</id>
     <updated>2015-09-18T00:00:00Z</updated>
     <link href="https://micahflee.com/2015/09/why-i-say-linux-instead-of-gnulinux/" />
     <author>
@@ -1043,7 +1067,7 @@ $ torbrowser-launcher
   </entry>
   <entry xml:base="https://micahflee.com/2015/08/transitioning-pgp-keys/">
     <title type="text">Transitioning PGP keys</title>
-    <id>urn:uuid:d073306c-beb5-3e84-99b6-9eefeb86cd46</id>
+    <id>urn:uuid:9ee16fdc-5a6b-3f32-8a3b-5d17869328b7</id>
     <updated>2015-08-17T00:00:00Z</updated>
     <link href="https://micahflee.com/2015/08/transitioning-pgp-keys/" />
     <author>
@@ -1074,7 +1098,7 @@ sub   4096R/5D5F1356 2015-08-14 [expires: 2016-08-13]
   </entry>
   <entry xml:base="https://micahflee.com/2014/12/fact-checking-pandos-smears-against-tor/">
     <title type="text">Fact-checking Pando’s smears against Tor</title>
-    <id>urn:uuid:e3732102-32e0-34ba-b3d0-c5dd3bde0968</id>
+    <id>urn:uuid:78349c67-0766-3bc7-8ca7-09a3d1ef6c55</id>
     <updated>2014-12-11T00:00:00Z</updated>
     <link href="https://micahflee.com/2014/12/fact-checking-pandos-smears-against-tor/" />
     <author>
@@ -1143,7 +1167,7 @@ sub   4096R/5D5F1356 2015-08-14 [expires: 2016-08-13]
   </entry>
   <entry xml:base="https://micahflee.com/2014/07/security-advisory-upgrade-to-onionshare-0-4-immediately/">
     <title type="text">Security Advisory: Upgrade to OnionShare 0.4 Immediately</title>
-    <id>urn:uuid:db0bb692-2285-36bb-8080-cb088f07b8b0</id>
+    <id>urn:uuid:9139c758-8f74-3d63-acb0-ff5e592125bd</id>
     <updated>2014-07-16T00:00:00Z</updated>
     <link href="https://micahflee.com/2014/07/security-advisory-upgrade-to-onionshare-0-4-immediately/" />
     <author>
@@ -1179,7 +1203,7 @@ sub   4096R/5D5F1356 2015-08-14 [expires: 2016-08-13]
   </entry>
   <entry xml:base="https://micahflee.com/2014/06/the-universe-believes-in-encryption/">
     <title type="text">The Universe Believes in Encryption</title>
-    <id>urn:uuid:c27198d9-8432-383c-8f59-73112d0514ec</id>
+    <id>urn:uuid:04ce37d1-9f40-3ba9-a29f-4cfdfb8c27a8</id>
     <updated>2014-06-05T00:00:00Z</updated>
     <link href="https://micahflee.com/2014/06/the-universe-believes-in-encryption/" />
     <author>
@@ -1208,7 +1232,7 @@ sub   4096R/5D5F1356 2015-08-14 [expires: 2016-08-13]
   </entry>
   <entry xml:base="https://micahflee.com/2014/05/using-tor-browser-launcher-in-qubes/">
     <title type="text">Using Tor Browser Launcher in Qubes</title>
-    <id>urn:uuid:fe059bc7-c31d-334b-844b-9589f64bd7aa</id>
+    <id>urn:uuid:f590a302-f7c5-347d-ab99-fe78f82c2a0d</id>
     <updated>2014-05-09T00:00:00Z</updated>
     <link href="https://micahflee.com/2014/05/using-tor-browser-launcher-in-qubes/" />
     <author>
@@ -1238,7 +1262,7 @@ rm -r QubesIncoming
   </entry>
   <entry xml:base="https://micahflee.com/2014/04/dual-booting-qubes-and-ubuntu-with-encrypted-disks/">
     <title type="text">Dual-booting Qubes and Ubuntu with Encrypted Disks</title>
-    <id>urn:uuid:f16dbbe2-ac9c-31ca-9f45-dd6078c2eea0</id>
+    <id>urn:uuid:b46ef910-4332-39af-b280-7f363eaffd13</id>
     <updated>2014-04-23T00:00:00Z</updated>
     <link href="https://micahflee.com/2014/04/dual-booting-qubes-and-ubuntu-with-encrypted-disks/" />
     <author>
@@ -1300,7 +1324,7 @@ sudo grub2-install /dev/sda
   </entry>
   <entry xml:base="https://micahflee.com/2014/04/the-operating-system-that-can-protect-you-even-if-you-get-hacked/">
     <title type="text">The Operating System That Can Protect You Even if You Get Hacked</title>
-    <id>urn:uuid:6eb92ad0-1066-338b-b41f-ba7b7c9848aa</id>
+    <id>urn:uuid:6ede8916-f159-3ef0-a74d-38b681ba8617</id>
     <updated>2014-04-10T00:00:00Z</updated>
     <link href="https://micahflee.com/2014/04/the-operating-system-that-can-protect-you-even-if-you-get-hacked/" />
     <author>
@@ -1333,7 +1357,7 @@ sudo grub2-install /dev/sda
   </entry>
   <entry xml:base="https://micahflee.com/2014/04/ubuntu-is-finally-taking-privacy-seriously/">
     <title type="text">Ubuntu is finally taking privacy seriously</title>
-    <id>urn:uuid:c97c71e6-c8de-3d7e-9bae-d9218e8bb690</id>
+    <id>urn:uuid:9bcd3c36-89a8-3d49-b7a9-1379ec963c82</id>
     <updated>2014-04-03T00:00:00Z</updated>
     <link href="https://micahflee.com/2014/04/ubuntu-is-finally-taking-privacy-seriously/" />
     <author>
@@ -1351,7 +1375,7 @@ sudo grub2-install /dev/sda
   </entry>
   <entry xml:base="https://micahflee.com/2013/12/two-really-simple-things-microsoft-can-do-to-make-windows-more-secure-against-nsa/">
     <title type="text">Two really simple things Microsoft can do to make Windows more secure against NSA</title>
-    <id>urn:uuid:a84f4935-7730-3b32-8452-994fe6821a18</id>
+    <id>urn:uuid:c1ae7afc-b383-3c51-9d24-48cd316f37f7</id>
     <updated>2013-12-29T00:00:00Z</updated>
     <link href="https://micahflee.com/2013/12/two-really-simple-things-microsoft-can-do-to-make-windows-more-secure-against-nsa/" />
     <author>
@@ -1379,7 +1403,7 @@ sudo grub2-install /dev/sda
   </entry>
   <entry xml:base="https://micahflee.com/2013/12/how-i-want-mailpile-to-handle-openpgp/">
     <title type="text">How Mailpile can implement opportunistic PGP email encryption</title>
-    <id>urn:uuid:e9d0f49f-73a7-308c-934f-6dbe5828cd9b</id>
+    <id>urn:uuid:f53ec6a5-31fa-3f87-974e-9af0e2163b64</id>
     <updated>2013-12-02T00:00:00Z</updated>
     <link href="https://micahflee.com/2013/12/how-i-want-mailpile-to-handle-openpgp/" />
     <author>
@@ -1428,7 +1452,7 @@ sudo grub2-install /dev/sda
   </entry>
   <entry xml:base="https://micahflee.com/2013/11/leaving-eff-and-joining-a-fearless-team-of-journalists/">
     <title type="text">Leaving EFF and joining a fearless team of journalists</title>
-    <id>urn:uuid:71ee6da6-834c-3a4d-95a9-5527999ef8e1</id>
+    <id>urn:uuid:8acc526f-0d69-38bd-95cc-83dea61a3f08</id>
     <updated>2013-11-15T00:00:00Z</updated>
     <link href="https://micahflee.com/2013/11/leaving-eff-and-joining-a-fearless-team-of-journalists/" />
     <author>
@@ -1451,7 +1475,7 @@ sudo grub2-install /dev/sda
   </entry>
   <entry xml:base="https://micahflee.com/2013/11/canonical-shouldnt-abuse-trademark-law-to-silence-critics-of-its-privacy-decisions/">
     <title type="text">Canonical shouldn’t abuse trademark law to silence critics of its privacy decisions</title>
-    <id>urn:uuid:550f13ed-5957-3c95-b824-6cf001806422</id>
+    <id>urn:uuid:299aee32-f7c0-383b-93c6-6d7e72a55eed</id>
     <updated>2013-11-07T00:00:00Z</updated>
     <link href="https://micahflee.com/2013/11/canonical-shouldnt-abuse-trademark-law-to-silence-critics-of-its-privacy-decisions/" />
     <author>
@@ -1499,7 +1523,7 @@ sudo grub2-install /dev/sda
   </entry>
   <entry xml:base="https://micahflee.com/2013/09/html-email-attachments-and-flowed-text-in-enigmail/">
     <title type="text">HTML email, attachments, and flowed text in Enigmail</title>
-    <id>urn:uuid:253f9b1a-b597-3d34-975d-64c4d88dd618</id>
+    <id>urn:uuid:e9febfc2-f19d-3e88-bcdd-15e9d5df8399</id>
     <updated>2013-09-19T00:00:00Z</updated>
     <link href="https://micahflee.com/2013/09/html-email-attachments-and-flowed-text-in-enigmail/" />
     <author>
@@ -1521,7 +1545,7 @@ sudo grub2-install /dev/sda
   </entry>
   <entry xml:base="https://micahflee.com/2013/09/dont-succumb-to-security-nihilism/">
     <title type="text">Don’t Succumb to Security Nihilism</title>
-    <id>urn:uuid:010b4ef4-389f-3974-a812-9eba07a14b1c</id>
+    <id>urn:uuid:0b73ee50-8fb6-39fe-8121-125c649d211b</id>
     <updated>2013-09-05T00:00:00Z</updated>
     <link href="https://micahflee.com/2013/09/dont-succumb-to-security-nihilism/" />
     <author>
@@ -1537,7 +1561,7 @@ sudo grub2-install /dev/sda
   </entry>
   <entry xml:base="https://micahflee.com/2013/08/its-2013-were-all-being-spied-on-why-do-security-software-websites-not-use-https/">
     <title type="text">It’s 2013. We’re all being spied on. Why do security software websites not use HTTPS?</title>
-    <id>urn:uuid:fe8c807c-c1ec-3545-85f1-79f70573d625</id>
+    <id>urn:uuid:7444e854-e39c-30ca-8f09-27d6177e0a67</id>
     <updated>2013-08-28T00:00:00Z</updated>
     <link href="https://micahflee.com/2013/08/its-2013-were-all-being-spied-on-why-do-security-software-websites-not-use-https/" />
     <author>
@@ -1585,7 +1609,7 @@ sudo grub2-install /dev/sda
   </entry>
   <entry xml:base="https://micahflee.com/2013/07/despite-googles-statement-they-still-have-access-to-your-wifi-passwords/">
     <title type="text">Despite Google’s statement, they still have access to your wifi passwords</title>
-    <id>urn:uuid:b059e54f-aa61-3de8-b297-6a7813c664d8</id>
+    <id>urn:uuid:5081c118-f9e2-3ae7-bdc0-3572ee1d62a9</id>
     <updated>2013-07-19T00:00:00Z</updated>
     <link href="https://micahflee.com/2013/07/despite-googles-statement-they-still-have-access-to-your-wifi-passwords/" />
     <author>
@@ -1615,7 +1639,7 @@ sudo grub2-install /dev/sda
   </entry>
   <entry xml:base="https://micahflee.com/2013/07/use-android-youre-probably-giving-google-all-your-wifi-passwords/">
     <title type="text">Use Android? You’re Probably Giving Google All Your Wifi Passwords</title>
-    <id>urn:uuid:f4b485d7-f2e1-3cac-b811-e2abd527f0eb</id>
+    <id>urn:uuid:ac5d0d0d-44a8-35b7-b53c-138f81ec07f0</id>
     <updated>2013-07-11T00:00:00Z</updated>
     <link href="https://micahflee.com/2013/07/use-android-youre-probably-giving-google-all-your-wifi-passwords/" />
     <author>
@@ -1635,7 +1659,7 @@ sudo grub2-install /dev/sda
   </entry>
   <entry xml:base="https://micahflee.com/2013/06/opportunistic-encryption-to-combat-dragnet-surveillance/">
     <title type="text">Opportunistic Encryption to Combat Dragnet Surveillance</title>
-    <id>urn:uuid:4c87b832-97b5-3aef-96e4-73ab0ff642e5</id>
+    <id>urn:uuid:68372a7e-af4e-3023-abad-c22389092a6c</id>
     <updated>2013-06-29T00:00:00Z</updated>
     <link href="https://micahflee.com/2013/06/opportunistic-encryption-to-combat-dragnet-surveillance/" />
     <author>
@@ -1654,7 +1678,7 @@ sudo grub2-install /dev/sda
   </entry>
   <entry xml:base="https://micahflee.com/2013/05/swatting-is-not-the-same-as-doxing/">
     <title type="text">Swatting is Not the Same as Doxing</title>
-    <id>urn:uuid:4f0f2576-9790-3475-8083-9068af2bea16</id>
+    <id>urn:uuid:af0cbb1a-e56e-3fb5-855d-ffb1231cb417</id>
     <updated>2013-05-09T00:00:00Z</updated>
     <link href="https://micahflee.com/2013/05/swatting-is-not-the-same-as-doxing/" />
     <author>
@@ -1672,7 +1696,7 @@ sudo grub2-install /dev/sda
   </entry>
   <entry xml:base="https://micahflee.com/2013/04/sudo-apt-get-install-torbrowser/">
     <title type="text">sudo apt-get install torbrowser</title>
-    <id>urn:uuid:17249603-2b5a-3ca8-92de-e20b0c6e6abf</id>
+    <id>urn:uuid:b1e2a5ad-5381-319a-b091-cd85322d067e</id>
     <updated>2013-04-09T00:00:00Z</updated>
     <link href="https://micahflee.com/2013/04/sudo-apt-get-install-torbrowser/" />
     <author>
@@ -1725,7 +1749,7 @@ cd torbrowser-launcher
   </entry>
   <entry xml:base="https://micahflee.com/2013/03/how-to-get-a-tor-project-t-shirt-for-less-than-65/">
     <title type="text">How to Get a Tor Project T-Shirt For Less Than $65</title>
-    <id>urn:uuid:966585c9-be66-32e2-8a1d-49b5fe18ea89</id>
+    <id>urn:uuid:438109d0-7197-381d-9305-629eedf8b5b9</id>
     <updated>2013-03-19T00:00:00Z</updated>
     <link href="https://micahflee.com/2013/03/how-to-get-a-tor-project-t-shirt-for-less-than-65/" />
     <author>
@@ -1746,7 +1770,7 @@ cd torbrowser-launcher
   </entry>
   <entry xml:base="https://micahflee.com/2013/03/bradley-mannings-statement-shows-that-us-intelligence-analysts-are-trained-in-using-tor/">
     <title type="text">Bradley Manning's statement shows that US intelligence analysts are trained in using Tor</title>
-    <id>urn:uuid:1af4032f-124b-387e-ba29-4115d94c5ae8</id>
+    <id>urn:uuid:ab928353-8868-3f3e-9eee-d0d15d1f828b</id>
     <updated>2013-03-12T00:00:00Z</updated>
     <link href="https://micahflee.com/2013/03/bradley-mannings-statement-shows-that-us-intelligence-analysts-are-trained-in-using-tor/" />
     <author>
@@ -1765,7 +1789,7 @@ cd torbrowser-launcher
   </entry>
   <entry xml:base="https://micahflee.com/2013/02/using-gajim-instead-of-pidgin-for-more-secure-otr-chat/">
     <title type="text">Using Gajim Instead of Pidgin for More Secure OTR Chat</title>
-    <id>urn:uuid:181ad758-8499-31f0-85ea-07b5bf8f2ad5</id>
+    <id>urn:uuid:9078b004-8465-3ed3-bd2f-f8b0a71fcf21</id>
     <updated>2013-02-20T00:00:00Z</updated>
     <link href="https://micahflee.com/2013/02/using-gajim-instead-of-pidgin-for-more-secure-otr-chat/" />
     <author>
@@ -1793,7 +1817,7 @@ cd torbrowser-launcher
   </entry>
   <entry xml:base="https://micahflee.com/2013/02/unity-vs-windows-8/">
     <title type="text">Unity vs. Windows 8</title>
-    <id>urn:uuid:4c5fd188-144a-3c42-97c0-025a7d5181dc</id>
+    <id>urn:uuid:5207b7c7-3aeb-39a0-8d5d-bc0dac67c3a1</id>
     <updated>2013-02-02T00:00:00Z</updated>
     <link href="https://micahflee.com/2013/02/unity-vs-windows-8/" />
     <author>
@@ -1812,7 +1836,7 @@ cd torbrowser-launcher
   </entry>
   <entry xml:base="https://micahflee.com/2013/02/mobile-location-anonymity-proxying-twitter-im-and-email-through-tor-on-android/">
     <title type="text">Mobile Location Anonymity: Proxying Twitter, IM, and Email through Tor on Android</title>
-    <id>urn:uuid:ea590743-9e69-33fd-add8-b466a5a2a3ec</id>
+    <id>urn:uuid:2139ad63-9203-35bf-a491-e961720f4612</id>
     <updated>2013-02-01T00:00:00Z</updated>
     <link href="https://micahflee.com/2013/02/mobile-location-anonymity-proxying-twitter-im-and-email-through-tor-on-android/" />
     <author>
@@ -1869,7 +1893,7 @@ cd torbrowser-launcher
   </entry>
   <entry xml:base="https://micahflee.com/2013/01/why-im-leaving-ubuntu-for-debian/">
     <title type="text">Why I'm Leaving Ubuntu for Debian</title>
-    <id>urn:uuid:937922ba-41dc-39ae-8109-de11fec78d9d</id>
+    <id>urn:uuid:9849406d-629f-3c6e-a4bb-2a57a71a1ebb</id>
     <updated>2013-01-27T00:00:00Z</updated>
     <link href="https://micahflee.com/2013/01/why-im-leaving-ubuntu-for-debian/" />
     <author>
@@ -1896,7 +1920,7 @@ cd torbrowser-launcher
   </entry>
   <entry xml:base="https://micahflee.com/2013/01/no-really-the-nsa-cant-break-your-crypto/">
     <title type="text">No Really, the NSA Can’t Brute Force Your Crypto</title>
-    <id>urn:uuid:daa687dc-35e9-30a0-819f-a19f743917c8</id>
+    <id>urn:uuid:d2477327-eb29-329b-8b8f-4099b830e2ef</id>
     <updated>2013-01-23T00:00:00Z</updated>
     <link href="https://micahflee.com/2013/01/no-really-the-nsa-cant-break-your-crypto/" />
     <author>
@@ -1933,7 +1957,7 @@ Which is 53,951,415,354,030 years.
   </entry>
   <entry xml:base="https://micahflee.com/2013/01/beefing-up-security-on-your-ssh-server/">
     <title type="text">Beefing Up Security on Your SSH Server</title>
-    <id>urn:uuid:f9e30a9e-e0c8-39ba-bc6e-5dac47735a05</id>
+    <id>urn:uuid:edcaf947-5897-35cd-8db7-b91de1a6f730</id>
     <updated>2013-01-20T00:00:00Z</updated>
     <link href="https://micahflee.com/2013/01/beefing-up-security-on-your-ssh-server/" />
     <author>
