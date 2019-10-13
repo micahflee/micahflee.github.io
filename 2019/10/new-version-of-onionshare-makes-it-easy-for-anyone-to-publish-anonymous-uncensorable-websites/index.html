@@ -1,0 +1,191 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>New version of OnionShare makes it easy for anyone to publish anonymous, uncensorable websites</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@micahflee" />
+  <meta name="twitter:creator" content="@micahflee" />
+  <meta property="og:url" content="https://micahflee.com/2019/10/new-version-of-onionshare-makes-it-easy-for-anyone-to-publish-anonymous-uncensorable-websites" />
+  <meta property="og:title" content="New version of OnionShare makes it easy for anyone to publish anonymous, uncensorable websites" />
+  <meta property="og:image" content="https://micahflee.com/2019/10/new-version-of-onionshare-makes-it-easy-for-anyone-to-publish-anonymous-uncensorable-websites/onionshare-website-mode.png" />
+
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="../../../2019/10/new-version-of-onionshare-makes-it-easy-for-anyone-to-publish-anonymous-uncensorable-websites/onionshare-website-mode.png" />
+    </p>
+    
+    
+      <h1 class="article-title">New version of OnionShare makes it easy for anyone to publish anonymous, uncensorable websites</h1>
+    
+    <p class="meta">
+      Posted October 13, 2019
+      
+        in
+        
+          <a class="tag" href="../../../tags/onionshare">onionshare</a>
+        
+          <a class="tag" href="../../../tags/code">code</a>
+        
+      
+    </p>
+    
+      <p>I’m excited to announce that OnionShare 2.2 is released! You can download it from <a href="https://onionshare.org/">onionshare.org</a>.</p>
+<p>When I first wrote OnionShare in 2014, it let you anonymously and securely send files to people. It worked like this: OnionShare zips up the files, starts a local web server on your computer with a link to this zip file, makes this website accessible as a Tor onion service, and shows you the URL of the web server. You send someone this .onion URL, they load it in Tor Browser (loading the website hosted directly on your computer), and then they can download the zip file. As soon as the download is complete, OnionShare shuts down the web service.</p>
+<p>In the years since then it has gotten a whole lot better (largely thanks to a <a href="https://github.com/micahflee/onionshare/wiki/Developing-OnionShare">growing community</a> of volunteer contributors). Instead of just sending files, you can use it to receive files now, allowing you to turn your computer into an <a href="https://micahflee.com/2019/02/onionshare-2/">anonymous dropbox</a>. But it has always worked the same way: hosting an anonymous website locally on your computer. But since OnionShare hosts a website on your computer anyway, why not use it to <em>host actual websites</em>?</p>
+<p><img src="../../../2019/10/new-version-of-onionshare-makes-it-easy-for-anyone-to-publish-anonymous-uncensorable-websites/onionshare-website-mode.png" alt=""></p>
+<p>In addition to the “Share Files” and “Receive Files” tabs, OnionShare 2.2 introduces the “Publish Website” tab. You drag all of the files that make up your website into the OnionShare window and click “Start sharing.” It will start a web server to host your static website and give you a .onion URL. This website is only accessible from the Tor network, so people will need Tor Browser to visit it. People who visit your website will have no idea who you are – they won’t have access to your IP address, and they won’t know your identity or your location. And, so long as your website visitors are able to access the Tor network, the website can’t be censored.</p>
+<p>Here are some things to keep in mind about how website publishing in OnionShare works:</p>
+<p>If any folder in the website that you’re sharing includes an <code>index.html</code> file, then when someone loads that folder in Tor Browser it will load that html file. If any folder doesn’t include an <code>index.html</code> file, it will show a directory listing instead. So you could, for example, publish a website that’s just a bunch of files without any html, and people who load it in Tor Browser will able to browse your files and folders and download individual files.</p>
+<p><img src="../../../2019/10/new-version-of-onionshare-makes-it-easy-for-anyone-to-publish-anonymous-uncensorable-websites/onionshare-directory-listing.png" alt=""></p>
+<p>When sharing something that’s not public, OnionShare now uses HTTP basic authentication. So the URLs that you share look like <code>http://onionshare:[password]@[address].onion</code> now. When someone loads the URL in Tor Browser, it will ask them if they want to login first, like this:</p>
+<p><img src="../../../2019/10/new-version-of-onionshare-makes-it-easy-for-anyone-to-publish-anonymous-uncensorable-websites/onionshare-basic-auth.png" alt=""></p>
+<p>When they click OK, the URL in the address bar no longer contains the <code>onionshare:[password]</code> part, and just looks like a normal website. (This protects against shoulder surfing, where an attacker looks at someone’s screen to see the OnionShare URL and visit it themselves.)</p>
+<p><img src="../../../2019/10/new-version-of-onionshare-makes-it-easy-for-anyone-to-publish-anonymous-uncensorable-websites/onionshare-basic-auth-loaded.png" alt=""></p>
+<p>If you want to publish your website for anyone to see, you can always go to settings and enable “public mode”, which simply doesn’t use a username and password anymore.</p>
+<p>If you want to use OnionShare to publish a website that you intend to remain online for a long time, it’s important to remember that your computer itself is literally the web server. If you turn off your computer, or even just suspend your laptop, the website will go down. To prevent this, you’ll have to use a computer that’s always turned on for this. You’ll also probably want to go into settings and check “Use a persistent address” – this means that if you close OnionShare and re-open it again (for example, if you have to install updates on the computer and reboot it), the URL will stay the same the next time you start the server. If you don’t use a persistent address, every URL is temporary, and there’s no way to re-use an old URL.</p>
+<p>Another thing that’s new is that OnionShare will now show you exactly what web requests people are making to your website (you get to see this when sharing and receiving files too, not just for publishing websites). For example, here’s a website hosted by OnionShare getting scanned with the <a href="https://cirt.net/nikto2">nikto</a> web vulnerability scanner.</p>
+<p><img src="../../../2019/10/new-version-of-onionshare-makes-it-easy-for-anyone-to-publish-anonymous-uncensorable-websites/onionshare-nikto.png" alt=""></p>
+<p>And finally, since we put in all of the work to make it so you can browse through directory listings when publishing a website, we also made it so you can similarly browse through folders that are being shared when just sharing files, so people can see exactly what files they’re about to download before downloading them.</p>
+<p><img src="../../../2019/10/new-version-of-onionshare-makes-it-easy-for-anyone-to-publish-anonymous-uncensorable-websites/onionshare-share-directory-listing.png" alt=""></p>
+<p>And if you go into settings and uncheck “Stop sharing after files have been sent” (this is the setting that makes the server shutdown after the first person downloads the files you’re sharing), then people will also be able to download individual files that you’re sharing, instead of only having the option to download everything at once.</p>
+<p>I hope you enjoy the new OnionShare!</p>
+
+
+      <div id="commento"></div>
+      <script src="https://cdn.commento.io/js/commento.js"></script>
+
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name"><a href="../../../">Micah Lee's blog</a></p>
+      <p><img class="coffee" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../../../static/images/reality.png"></a></p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?<p><p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" src="../../../static/images/cc-by-nc.png"></a>
+        <br/>
+        <br/>
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

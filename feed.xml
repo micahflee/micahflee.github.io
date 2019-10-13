@@ -2,13 +2,43 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title type="text">feed.xml</title>
   <id>urn:uuid:959328ec-e9a1-37eb-afd8-885cf5087cef</id>
-  <updated>2019-07-21T00:00:00Z</updated>
+  <updated>2019-10-13T00:00:00Z</updated>
   <link href="https://micahflee.com/" />
   <link href="https://micahflee.com/feed.xml" rel="self" />
   <author>
     <name></name>
   </author>
   <generator uri="https://github.com/ajdavis/lektor-atom" version="0.3">Lektor Atom Plugin</generator>
+  <entry xml:base="https://micahflee.com/2019/10/new-version-of-onionshare-makes-it-easy-for-anyone-to-publish-anonymous-uncensorable-websites/">
+    <title type="text">New version of OnionShare makes it easy for anyone to publish anonymous, uncensorable websites</title>
+    <id>urn:uuid:5728aeab-9394-3d87-8845-db2a13d7622e</id>
+    <updated>2019-10-13T00:00:00Z</updated>
+    <link href="https://micahflee.com/2019/10/new-version-of-onionshare-makes-it-easy-for-anyone-to-publish-anonymous-uncensorable-websites/" />
+    <author>
+      <name>Micah Lee</name>
+    </author>
+    <content type="html">&lt;p&gt;I’m excited to announce that OnionShare 2.2 is released! You can download it from &lt;a href=&quot;https://onionshare.org/&quot;&gt;onionshare.org&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;When I first wrote OnionShare in 2014, it let you anonymously and securely send files to people. It worked like this: OnionShare zips up the files, starts a local web server on your computer with a link to this zip file, makes this website accessible as a Tor onion service, and shows you the URL of the web server. You send someone this .onion URL, they load it in Tor Browser (loading the website hosted directly on your computer), and then they can download the zip file. As soon as the download is complete, OnionShare shuts down the web service.&lt;/p&gt;
+&lt;p&gt;In the years since then it has gotten a whole lot better (largely thanks to a &lt;a href=&quot;https://github.com/micahflee/onionshare/wiki/Developing-OnionShare&quot;&gt;growing community&lt;/a&gt; of volunteer contributors). Instead of just sending files, you can use it to receive files now, allowing you to turn your computer into an &lt;a href=&quot;https://micahflee.com/2019/02/onionshare-2/&quot;&gt;anonymous dropbox&lt;/a&gt;. But it has always worked the same way: hosting an anonymous website locally on your computer. But since OnionShare hosts a website on your computer anyway, why not use it to &lt;em&gt;host actual websites&lt;/em&gt;?&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/10/new-version-of-onionshare-makes-it-easy-for-anyone-to-publish-anonymous-uncensorable-websites/onionshare-website-mode.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;In addition to the “Share Files” and “Receive Files” tabs, OnionShare 2.2 introduces the “Publish Website” tab. You drag all of the files that make up your website into the OnionShare window and click “Start sharing.” It will start a web server to host your static website and give you a .onion URL. This website is only accessible from the Tor network, so people will need Tor Browser to visit it. People who visit your website will have no idea who you are – they won’t have access to your IP address, and they won’t know your identity or your location. And, so long as your website visitors are able to access the Tor network, the website can’t be censored.&lt;/p&gt;
+&lt;p&gt;Here are some things to keep in mind about how website publishing in OnionShare works:&lt;/p&gt;
+&lt;p&gt;If any folder in the website that you’re sharing includes an &lt;code&gt;index.html&lt;/code&gt; file, then when someone loads that folder in Tor Browser it will load that html file. If any folder doesn’t include an &lt;code&gt;index.html&lt;/code&gt; file, it will show a directory listing instead. So you could, for example, publish a website that’s just a bunch of files without any html, and people who load it in Tor Browser will able to browse your files and folders and download individual files.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/10/new-version-of-onionshare-makes-it-easy-for-anyone-to-publish-anonymous-uncensorable-websites/onionshare-directory-listing.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;When sharing something that’s not public, OnionShare now uses HTTP basic authentication. So the URLs that you share look like &lt;code&gt;http://onionshare:[password]@[address].onion&lt;/code&gt; now. When someone loads the URL in Tor Browser, it will ask them if they want to login first, like this:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/10/new-version-of-onionshare-makes-it-easy-for-anyone-to-publish-anonymous-uncensorable-websites/onionshare-basic-auth.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;When they click OK, the URL in the address bar no longer contains the &lt;code&gt;onionshare:[password]&lt;/code&gt; part, and just looks like a normal website. (This protects against shoulder surfing, where an attacker looks at someone’s screen to see the OnionShare URL and visit it themselves.)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/10/new-version-of-onionshare-makes-it-easy-for-anyone-to-publish-anonymous-uncensorable-websites/onionshare-basic-auth-loaded.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;If you want to publish your website for anyone to see, you can always go to settings and enable “public mode”, which simply doesn’t use a username and password anymore.&lt;/p&gt;
+&lt;p&gt;If you want to use OnionShare to publish a website that you intend to remain online for a long time, it’s important to remember that your computer itself is literally the web server. If you turn off your computer, or even just suspend your laptop, the website will go down. To prevent this, you’ll have to use a computer that’s always turned on for this. You’ll also probably want to go into settings and check “Use a persistent address” – this means that if you close OnionShare and re-open it again (for example, if you have to install updates on the computer and reboot it), the URL will stay the same the next time you start the server. If you don’t use a persistent address, every URL is temporary, and there’s no way to re-use an old URL.&lt;/p&gt;
+&lt;p&gt;Another thing that’s new is that OnionShare will now show you exactly what web requests people are making to your website (you get to see this when sharing and receiving files too, not just for publishing websites). For example, here’s a website hosted by OnionShare getting scanned with the &lt;a href=&quot;https://cirt.net/nikto2&quot;&gt;nikto&lt;/a&gt; web vulnerability scanner.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/10/new-version-of-onionshare-makes-it-easy-for-anyone-to-publish-anonymous-uncensorable-websites/onionshare-nikto.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;And finally, since we put in all of the work to make it so you can browse through directory listings when publishing a website, we also made it so you can similarly browse through folders that are being shared when just sharing files, so people can see exactly what files they’re about to download before downloading them.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/10/new-version-of-onionshare-makes-it-easy-for-anyone-to-publish-anonymous-uncensorable-websites/onionshare-share-directory-listing.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;And if you go into settings and uncheck “Stop sharing after files have been sent” (this is the setting that makes the server shutdown after the first person downloads the files you’re sharing), then people will also be able to download individual files that you’re sharing, instead of only having the option to download everything at once.&lt;/p&gt;
+&lt;p&gt;I hope you enjoy the new OnionShare!&lt;/p&gt;
+</content>
+  </entry>
   <entry xml:base="https://micahflee.com/2019/07/with-semiphemeral-you-can-delete-your-old-twitter-likes-but-its-noisy/">
     <title type="text">With Semiphemeral you can delete your old Twitter likes, but it's noisy</title>
     <id>urn:uuid:9d61e92a-f60d-34e9-8093-379d93341693</id>
