@@ -71,12 +71,61 @@
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">[tecnota] Pidgin: alguns detalhes |</p>
-        <p class="legacy-comment-meta-pub_date">March 15, 2017 02:59 AM</p>
+        <p class="legacy-comment-meta-author">Chris P.</p>
+        <p class="legacy-comment-meta-pub_date">February 20, 2013 10:30 PM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>[&#8230;] * <a href="https://micahflee.com/2013/02/using-gajim-instead-of-pidgin-for-more-secure-otr-chat/">https://micahflee.com/2013/02/using-gajim-instead-of-pidgin-for-more-secure-otr-chat/</a>     &laquo; Lançamento do novo site do CMI [&#8230;]</p>
+      <p>Presumably it relies on libxml2 for handling XMPP at some point, right? :]</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">micah</p>
+        <p class="legacy-comment-meta-pub_date">February 20, 2013 10:38 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Actually it doesn't look like it. At least, libxml2 isn't a dependency.</p>
+<p><code>[micah@spock] ~$ apt-cache show gajim
+Package: gajim
+Version: 0.15.1-4
+Installed-Size: 13505
+Maintainer: Yann Leboulanger <asterix@lagaule.org>
+Architecture: all
+Depends: python (>= 2.6.6-7~), python-gtk2 (>= 2.22.0), dnsutils</code></p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">[tecnota] Pidgin: alguns detalhes |</p>
+        <p class="legacy-comment-meta-pub_date">May 7, 2017 04:55 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>[&#8230;] * <a href="https://micahflee.com/2013/02/using-gajim-instead-of-pidgin-for-more-secure-otr-chat/">https://micahflee.com/2013/02/using-gajim-instead-of-pidgin-for-more-secure-otr-chat/</a>     &laquo; Lançamento do novo site do CMI Brasil! CryptoRave 2017 &#8211; 4º boletim [&#8230;]</p>
 
     </div>
   </div>
@@ -90,12 +139,37 @@
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">Mallory</p>
-        <p class="legacy-comment-meta-pub_date">March 4, 2013 02:52 PM</p>
+        <p class="legacy-comment-meta-author">jooe</p>
+        <p class="legacy-comment-meta-pub_date">April 7, 2015 01:15 AM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>What about jit.si as compared to Gajim? Any experience or thoughts?</p>
+      <p>Have been using gajim for a while after you suggestion.
+Two major concerns:</p>
+<ul>
+<li>Logs cannot be completely deactivated - start and stop of each otr session are recorded. This is a serious issue to plausible deniability. Bug report: <a href="https://trac.gajim.org/ticket/7953">https://trac.gajim.org/ticket/7953</a></li>
+<li>When running in Windows 7, shutting down the computer causes incorrect shutdown of gajim. At restart, all gajim settings (accounts etc.) are lost.</li>
+</ul>
+<p>So I am returning to pidgin for now.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Manuel</p>
+        <p class="legacy-comment-meta-pub_date">March 18, 2017 08:36 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Writing programs in Python is a lot safer than writing them in C? Not true. Python has eval, so there is your arbitrary code execution. (There seem to be people who try to write calculator web apps using eval, which is a bad idea.) Python programs need to abstain from eval (and probably a few other features as well) in order to be safe. This seems to be given for gajim-otr, though.</p>
 
     </div>
   </div>
@@ -228,18 +302,12 @@ Would appreciate your reply on this</p>
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">jooe</p>
-        <p class="legacy-comment-meta-pub_date">April 7, 2015 01:15 AM</p>
+        <p class="legacy-comment-meta-author">[tecnota] Pidgin: alguns detalhes |</p>
+        <p class="legacy-comment-meta-pub_date">March 15, 2017 02:59 AM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>Have been using gajim for a while after you suggestion.
-Two major concerns:</p>
-<ul>
-<li>Logs cannot be completely deactivated - start and stop of each otr session are recorded. This is a serious issue to plausible deniability. Bug report: <a href="https://trac.gajim.org/ticket/7953">https://trac.gajim.org/ticket/7953</a></li>
-<li>When running in Windows 7, shutting down the computer causes incorrect shutdown of gajim. At restart, all gajim settings (accounts etc.) are lost.</li>
-</ul>
-<p>So I am returning to pidgin for now.</p>
+      <p>[&#8230;] * <a href="https://micahflee.com/2013/02/using-gajim-instead-of-pidgin-for-more-secure-otr-chat/">https://micahflee.com/2013/02/using-gajim-instead-of-pidgin-for-more-secure-otr-chat/</a>     &laquo; Lançamento do novo site do CMI [&#8230;]</p>
 
     </div>
   </div>
@@ -253,12 +321,12 @@ Two major concerns:</p>
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">droopy</p>
-        <p class="legacy-comment-meta-pub_date">June 8, 2013 08:37 AM</p>
+        <p class="legacy-comment-meta-author">Mallory</p>
+        <p class="legacy-comment-meta-pub_date">March 4, 2013 02:52 PM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>I have use Jitsi a lot and works perfect.</p>
+      <p>What about jit.si as compared to Gajim? Any experience or thoughts?</p>
 
     </div>
   </div>
@@ -317,80 +385,12 @@ Two major concerns:</p>
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">Chris P.</p>
-        <p class="legacy-comment-meta-pub_date">February 20, 2013 10:30 PM</p>
+        <p class="legacy-comment-meta-author">droopy</p>
+        <p class="legacy-comment-meta-pub_date">June 8, 2013 08:37 AM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>Presumably it relies on libxml2 for handling XMPP at some point, right? :]</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">micah</p>
-        <p class="legacy-comment-meta-pub_date">February 20, 2013 10:38 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Actually it doesn't look like it. At least, libxml2 isn't a dependency.</p>
-<p><code>[micah@spock] ~$ apt-cache show gajim
-Package: gajim
-Version: 0.15.1-4
-Installed-Size: 13505
-Maintainer: Yann Leboulanger <asterix@lagaule.org>
-Architecture: all
-Depends: python (>= 2.6.6-7~), python-gtk2 (>= 2.22.0), dnsutils</code></p>
-
-    </div>
-  </div>
-  
-
-        
-      
-    </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Manuel</p>
-        <p class="legacy-comment-meta-pub_date">March 18, 2017 08:36 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Writing programs in Python is a lot safer than writing them in C? Not true. Python has eval, so there is your arbitrary code execution. (There seem to be people who try to write calculator web apps using eval, which is a bad idea.) Python programs need to abstain from eval (and probably a few other features as well) in order to be safe. This seems to be given for gajim-otr, though.</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">[tecnota] Pidgin: alguns detalhes |</p>
-        <p class="legacy-comment-meta-pub_date">May 7, 2017 04:55 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>[&#8230;] * <a href="https://micahflee.com/2013/02/using-gajim-instead-of-pidgin-for-more-secure-otr-chat/">https://micahflee.com/2013/02/using-gajim-instead-of-pidgin-for-more-secure-otr-chat/</a>     &laquo; Lançamento do novo site do CMI Brasil! CryptoRave 2017 &#8211; 4º boletim [&#8230;]</p>
+      <p>I have use Jitsi a lot and works perfect.</p>
 
     </div>
   </div>

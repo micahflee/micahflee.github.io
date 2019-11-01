@@ -17,6 +17,35 @@
   <div class="blog-post">
     
     <p class="feature-image">
+      <img src="./2019/11/using-mullvad-in-qubes/mullvad-qubes.png" />
+    </p>
+    
+    
+      <h1 class="article-title"><a href="./2019/11/using-mullvad-in-qubes/">Using Mullvad VPN in Qubes</a></h1>
+    
+    <p class="meta">
+      Posted November 1, 2019
+      
+        in
+        
+          <a class="tag" href="./tags/qubes">qubes</a>
+        
+      
+    </p>
+    
+      <p>A friend wanted my help configuring <a href="https://mullvad.net/en/">Mullvad VPN</a> on their Qubes computer. Instead of just helping them, I decided to write a quick blog post explaining how I normally set up VPNs in Qubes. There are many different ways -- Mullvad even has its own <a href="https://mullvad.net/en/help/qubes-os-4-and-mullvad-vpn/">Qubes guide</a> -- but I prefer using NetworkManager system tray applets, so I can always see if my VPN is connected or not. I also use a simple script that I set to run when my AppVM boots to automatically connect to the VPN, and reconnect if it disconnects, and Qubes firewall rules to prevent non-VPN internet traffic from sneaking by.</p>
+
+      <p><a href="./2019/11/using-mullvad-in-qubes/">Continue reading →</a></p>
+    
+  </div>
+
+    
+  
+    
+      
+  <div class="blog-post">
+    
+    <p class="feature-image">
       <img src="./2019/10/new-version-of-onionshare-makes-it-easy-for-anyone-to-publish-anonymous-uncensorable-websites/onionshare-website-mode.png" />
     </p>
     
@@ -297,36 +326,6 @@
       <p>Qubes 3.2 has support for <a href="https://www.qubes-os.org/doc/usb/#attaching-a-single-usb-device-to-a-qube-usb-passthrough">USB passthrough</a>. This one feature has made Qubes <em>so much</em> more useful for me. It means that a wide variety of devices — from my laptop’s internal webcam, to plugging in smartphones to transfer data or do Android development — are finally supported. I used to have to use a separate non-Qubes computer for several tasks that I can now more conveniently and securely do within Qubes.</p>
 
       <p><a href="./2016/12/qubes-tip-making-yubikey-openpgp-smart-cards-slightly-more-usable/">Continue reading →</a></p>
-    
-  </div>
-
-    
-  
-    
-      
-  <div class="blog-post">
-    
-    <p class="feature-image">
-      <img src="./2016/07/how-qubes-makes-handling-pdfs-way-safer/gellman-tweet.png" />
-    </p>
-    
-    
-      <h1 class="article-title"><a href="./2016/07/how-qubes-makes-handling-pdfs-way-safer/">How Qubes makes handling PDFs way safer</a></h1>
-    
-    <p class="meta">
-      Posted July 21, 2016
-      
-        in
-        
-          <a class="tag" href="./tags/qubes">qubes</a>
-        
-      
-    </p>
-    
-      <p>Bart Gellman asked me on Twitter how to make PDFs safe to open. This is an excellent question, especially for a Pulitzer-winning surveillance/national security reporter who needs to open documents from random people on the internet, who may be trying to hack him or may be a valuable new source. PDFs, and all other document formats, can be terribly dangerous, and opening a malicious one can let an attacker take over your computer.</p>
-<p>He was specifically asking if <a href="https://firstlook.org/code/project/pdf-redact-tools/">PDF Redact Tools</a>, a tool that I developed to securely redact documents, could be used in Tails to safely sanitize potentially-malicious PDFs before opening them. Yes you can, but Qubes offers some built-in tools that do a better job of this, in a safer manner, with less hassle, and that’s quicker and easier.</p>
-
-      <p><a href="./2016/07/how-qubes-makes-handling-pdfs-way-safer/">Continue reading →</a></p>
     
   </div>
 

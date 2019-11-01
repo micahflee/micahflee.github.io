@@ -1,0 +1,238 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>Using Mullvad VPN in Qubes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@micahflee" />
+  <meta name="twitter:creator" content="@micahflee" />
+  <meta property="og:url" content="https://micahflee.com/2019/10/using-mullvad-in-qubes" />
+  <meta property="og:title" content="Using Mullvad VPN in Qubes" />
+  <meta property="og:image" content="https://micahflee.com/2019/10/using-mullvad-in-qubes/mullvad-qubes.png" />
+
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="../../../2019/10/using-mullvad-in-qubes/mullvad-qubes.png" />
+    </p>
+    
+    
+      <h1 class="article-title">Using Mullvad VPN in Qubes</h1>
+    
+    <p class="meta">
+      Posted October 31, 2019
+      
+        in
+        
+          <a class="tag" href="../../../tags/qubes">qubes</a>
+        
+      
+    </p>
+    
+      <p>A friend wanted my help configuring <a href="https://mullvad.net/en/">Mullvad VPN</a> on their Qubes computer. Instead of just helping them, I decided to write a quick blog post explaining how I normally set up VPNs in Qubes. There are many different ways -- Mullvad even has its own <a href="https://mullvad.net/en/help/qubes-os-4-and-mullvad-vpn/">Qubes guide</a> -- but I prefer using NetworkManager system tray applets, so I can always if my VPN is connected or not. I also use a simple script that I set to run when my AppVM boots to automatically connect to the VPN, and reconnect if it disconnects.</p>
+<p>First, create a new VM called <code>vpn-mullvad</code>. Use the latest Fedora template you have (<code>fedora-30</code> in my case), and make sure to set networking to <code>sys-firewall</code> and not <code>default (sys-firewall)</code>. Finally, check both the "provides network" and "launch settings after creation" boxes. ("Provides network" means this new VM will be able to provide internet access to other VMs.)</p>
+<p><img src="../../../2019/10/using-mullvad-in-qubes/qubes-mullvad-create.png" alt=""></p>
+<p>When the <code>vpn-mullvad</code> settings open, switch to the "Services" tab and add a service called <code>network-manager</code>. This will make it so that when this VM boots up, you'll have a NetworkManager system tray applet in the top-right corner of your screen.</p>
+<p><img src="../../../2019/10/using-mullvad-in-qubes/qubes-mullvad-services.png" alt=""></p>
+<p>Now, open a web browser in a disposable VM (click the Qubes menu, then <code>Disposable: fedora-30-dvm</code>, <code>fedora-30-dvm: Firefox</code>), and <a href="https://mullvad.net/en/account/login/">login</a> to your Mullvad account at mullvad.net. Once you're logged in, go to Mullvad's <a href="https://mullvad.net/en/download/config/">OpenVPN configuration file generator</a>. Set your platform to <code>Linux</code>, choose a location, and make sure to check <code>Use IP addresses</code>. Then click download. (In my case, since I'm setting up this VPN to go to Canada, I'm downloading the file <code>mullvad_config_linux_ca.zip</code>.)</p>
+<p><img src="../../../2019/10/using-mullvad-in-qubes/qubes-mullvad-openvpn-config-generator.png" alt=""></p>
+<p>Now open a file manager in your disposable VM that contains the file you just downloaded.</p>
+<p><img src="../../../2019/10/using-mullvad-in-qubes/qubes-mullvad-open-folder.png" alt=""></p>
+<p>And copy it to your <code>vpn-mullvad</code> VM. (This will probably boot that VM for the first time.)</p>
+<p><img src="../../../2019/10/using-mullvad-in-qubes/qubes-mullvad-copy1.png" alt="">
+<img src="../../../2019/10/using-mullvad-in-qubes/qubes-mullvad-copy2.png" alt=""></p>
+<p>Now open a file manager in your <code>vpn-mullvad</code> VM (click the Qubes menu, <code>Service: vpn-mullvad&lt;/code,</code>vpn-mullvad: Files<code>). Navigate to the</code>QubesIncoming<code>folder, then the folder inside that that's the name of your disposable VM (in my case,</code>disp9309<code>). You should see the zip file with the Mullvad OpenVPN config. Right-click on it and choose "Extract Here". Then drag the extracted folder (</code>mullvad_config_linux_ca<code>, in my case) to</code>Documents`. Then, navigate inside this folder, and you should see your VPN config files.</p>
+<p><img src="../../../2019/10/using-mullvad-in-qubes/qubes-mullvad-files.png" alt=""></p>
+<p>Also, you might notice that when your <code>vpn-mullvad</code> VM booted up, there is a new NetworkManager applet in your system tray. Click on it, go to <code>VPN Connections</code>, <code>Add a VPN connection...</code>.</p>
+<p><img src="../../../2019/10/using-mullvad-in-qubes/qubes-mullvad-systray.png" alt=""></p>
+<p>Then choose <code>Import a saved VPN configuration...</code> from the dropdown list, and click Create.</p>
+<p><img src="../../../2019/10/using-mullvad-in-qubes/qubes-mullvad-import-vpn1.png" alt=""></p>
+<p>Then browse for the Mullvad <code>.conf</code> file in your <code>Documents</code> folder.</p>
+<p>Back in your file manager, double click on <code>mullvad_userpass.txt</code> -- this will should you what to put into the username and password fields.</p>
+<p><img src="../../../2019/10/using-mullvad-in-qubes/qubes-mullvad-import-vpn2.png" alt=""></p>
+<p>Then click save. This will popup a window asking you to choose a password for the default keyring -- you can just leave it blank and click continue, and click continue again to confirm you want to store passwords unencrypted. (Everything on your computer is actually encrypted with full disk encryption, and you won't be running any other software in this VM that could access these files.)</p>
+<p><img src="../../../2019/10/using-mullvad-in-qubes/qubes-mullvad-keyring-password.png" alt=""></p>
+<p>Now you should be able to click the <code>vpn-mullvad</code> NetworkManager system tray icon, click <code>VPN Connections</code>, and connect to the new VPN you just added. It should attempt to connect, and if all goes well you should see a notification that says, "VPN connection has been successfully established," and the NetworkManager icon should have a little lock next to it.</p>
+<p><img src="../../../2019/10/using-mullvad-in-qubes/qubes-mullvad-connect.png" alt=""></p>
+<p>Now, let's make this VPN automatically connect whenever it boots up. Open a terminal in <code>vpn-mullvad</code> (click Qubes, <code>Service: vpn-mullvad</code>, <code>vpn-mullvad: Terminal</code>), and run:</p>
+<pre><code>sudo gedit /rw/config/autovpn.sh
+</code></pre>
+<p>This will open up a blank file using gedit (feel free to use whatever text editor you prefer). Copy and paste this script into it. You may need to chance the line that says <code>nmcli con up mullvad_ca</code> to use the name of the VPN config that you added, assuming you chose a location other than Canada.</p>
+<pre><code>#!/bin/bash
+while [ "true" ]
+do
+  if nmcli con |grep -Fq tun0
+  then
+    echo "Already connected, sleeping 5"
+    sleep 5
+  else
+    echo "Connecting"
+    nmcli con up mullvad_ca
+  fi
+done
+</code></pre>
+<p>Then save this file and quit the editor. This script basically checks to see if you're connected to the VPN. If you are, it waits 5 seconds and checks again. If you're not, it connects you to the VPN. And it loops forever -- so that if you ever get disconnected, it will detect this and automatically reconnect.</p>
+<p>Back in your terminal, make it executable:</p>
+<pre><code>sudo chmod +x /rw/config/autovpn.sh
+</code></pre>
+<p>And now edit your <code>rc.local</code> file:</p>
+<pre><code>sudo gedit /rw/config/rc.local
+</code></pre>
+<p>Add <code>sudo -u user /rw/config/autovpn.sh &amp;</code> to the end of this file, and save and exit.</p>
+<p><img src="../../../2019/10/using-mullvad-in-qubes/qubes-mullvad-rclocal.png" alt=""></p>
+<p>The <code>rc.local</code> script, which gets run every time the VM boots up, will now run the <code>autovpn.sh</code> script in the background.</p>
+<p>Go ahead and try it out! Power off the <code>vpn-mullvad</code> VM (click the Qubes logo in the system tray, then <code>vpn-mullvad</code>, <code>Shutdown</code>), and then power it on again (you can open the file manager in that VM again). The VPN should automatically connect.</p>
+<p>Now, let's prevent some leaks. It's common for programs on your computer to try to do stuff on the internet while your VPN isn't connected -- maybe it hasn't connected yet, or it got disconnected for some reason. We can use Qubes firewall rules to prevent the <code>vpn-mullvad</code> from communicating with anything except for the VPN servers that it's configured to connect to.</p>
+<p>In a file manager in <code>vpn-mullvad</code>, go to the folder that contains your Mullvad OpenVPN config files, and open the <code>.conf</code> file. You'll see a list of lines that start with <code>remote</code> -- these are the various OpenVPN servers that Mullvad is configured to try connecting to. (In my case, these are in Montreal, Toronto, and Vancouver.)</p>
+<p><img src="../../../2019/10/using-mullvad-in-qubes/qubes-mullvad-remotes.png" alt=""></p>
+<p>Now open the settings for <code>vpn-mullvad</code> (click the Qubes menu, go to <code>Service: vpn-mullvad</code>, <code>vpn-mullvad: Qubes Settings</code>) and switch to the "Firewall rules" tab. You can add a new rule to allow each of these IP addresses through, and blocking all other IPs.</p>
+<p>But before we do, a quick note about Qubes firewall rules. For some reason, Qubes seems to choke if you have too many of them (more than maybe 20). So for example, if you set up Mullvad to choose servers in the US, then there will be way too many servers in the list. So, before proceeding, delete some of them from this file to bring it down to a more managable number of servers. If you do this, make sure to delete your VPN in NetworkManager and then add it again.</p>
+<p>And also a quick note on copy and paste. There's no easy way to copy something from a VM and then paste it into <code>dom0</code>. There are good security reasons for this, but it will make this tedious work. So if you want to copy and paste, you can actually just view this file directly from <code>dom0</code>. Open a terminal in <code>dom0</code> (click the Qubes menu, and open <code>Terminal Emulator</code>). Then run this:</p>
+<pre><code>qvm-run --pass-io vpn-mullvad 'cat ~/Documents/mullvad_*/*.conf' | grep "remote "
+</code></pre>
+<p>This will show you all of the <code>remote</code> lines from your OpenVPN config file, but inside your <code>dom0</code> terminal, and you <em>can</em> copy from this window to paste into the Qubes firewall rules.</p>
+<p>Now, back in the <code>vpn-mullvad</code> settings window, in the firewall rules tab, select "Limit outgoing Internet connections to ...". Then click the plus button, and add a rule for each IP address, copying and pasting from the <code>dom0</code> terminal if you'd like. It's fine to set the protocol to "Any" for each rule.</p>
+<p><img src="../../../2019/10/using-mullvad-in-qubes/qubes-mullvad-firewall.png" alt=""></p>
+<p>When you click ok, you're done setting up <code>vpn-mullvad</code>! It uses the NetworkManager applet, it automatically connects if it gets disconnected, and thanks to the firewall rules, as long as you set <code>vpn-mullvad</code> as your networking VM, none of your downstream VMs will make any internet connections that don't go through this VM.</p>
+<p>If you want all of your VMs use Mullvad by default, open Qubes Global Settings (Qubes menu, <code>System Tools</code>, <code>Qubes Global Settings</code>) and change "Default netVM" from <code>sys-firewall</code> to <code>vpn-mullvad</code> and click ok.</p>
+<p>And finally, you may want the ability to open a browser window while not using a VPN -- like, if you connect to a public wifi network and need to click through a captive portal. I solve this problem by making a disposable VM template specifically for this purpose.</p>
+<p>Open the settings for <code>fedora-30-dvm</code> (Qubes menu, <code>Displable: fedora-30-dvm</code>, <code>fedora-30-dvm: Qube Settings</code>) and click "Clone qube" -- rename this clone to <code>fedora-30-clearnet-dvm</code>. No open the settings for <code>fedora-30-clearnet-dvm</code>, and change "Networking" from <code>default (vpn-mullvad)</code> to <code>sys-firewall</code>, and click ok.</p>
+<p>Now, if you need to click through a captive portal, you can just open a browser in a <code>fedora-30-clearnet-dvm</code> disposable VM to click through it, and as soon as you have internet <code>vpn-mullvad</code> will automatically connect to Mullvad, and internet will start working on in the rest of your VMs.</p>
+
+
+      <div id="commento"></div>
+      <script src="https://cdn.commento.io/js/commento.js"></script>
+
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name"><a href="../../../">Micah Lee's blog</a></p>
+      <p><img class="coffee" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../../../static/images/reality.png"></a></p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?<p><p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" src="../../../static/images/cc-by-nc.png"></a>
+        <br/>
+        <br/>
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

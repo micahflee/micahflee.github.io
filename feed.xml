@@ -2,13 +2,94 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title type="text">feed.xml</title>
   <id>urn:uuid:959328ec-e9a1-37eb-afd8-885cf5087cef</id>
-  <updated>2019-10-13T00:00:00Z</updated>
+  <updated>2019-11-01T00:00:00Z</updated>
   <link href="https://micahflee.com/" />
   <link href="https://micahflee.com/feed.xml" rel="self" />
   <author>
     <name></name>
   </author>
   <generator uri="https://github.com/ajdavis/lektor-atom" version="0.3">Lektor Atom Plugin</generator>
+  <entry xml:base="https://micahflee.com/2019/11/using-mullvad-in-qubes/">
+    <title type="text">Using Mullvad VPN in Qubes</title>
+    <id>urn:uuid:46f0c2e2-aecb-350a-a9b1-7caccaa7bb0c</id>
+    <updated>2019-11-01T00:00:00Z</updated>
+    <link href="https://micahflee.com/2019/11/using-mullvad-in-qubes/" />
+    <author>
+      <name>Micah Lee</name>
+    </author>
+    <content type="html">&lt;p&gt;A friend wanted my help configuring &lt;a href=&quot;https://mullvad.net/en/&quot;&gt;Mullvad VPN&lt;/a&gt; on their Qubes computer. Instead of just helping them, I decided to write a quick blog post explaining how I normally set up VPNs in Qubes. There are many different ways -- Mullvad even has its own &lt;a href=&quot;https://mullvad.net/en/help/qubes-os-4-and-mullvad-vpn/&quot;&gt;Qubes guide&lt;/a&gt; -- but I prefer using NetworkManager system tray applets, so I can always see if my VPN is connected or not. I also use a simple script that I set to run when my AppVM boots to automatically connect to the VPN, and reconnect if it disconnects, and Qubes firewall rules to prevent non-VPN internet traffic from sneaking by.&lt;/p&gt;
+&lt;p&gt;First, create a new VM called &lt;code&gt;vpn-mullvad&lt;/code&gt;. Use the latest Fedora template you have (&lt;code&gt;fedora-30&lt;/code&gt; in my case), and make sure to set networking to &lt;code&gt;sys-firewall&lt;/code&gt; and not &lt;code&gt;default (sys-firewall)&lt;/code&gt;. Finally, check both the &quot;provides network&quot; and &quot;launch settings after creation&quot; boxes. (&quot;Provides network&quot; means this new VM will be able to provide internet access to other VMs.)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/11/using-mullvad-in-qubes/qubes-mullvad-create.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;When the &lt;code&gt;vpn-mullvad&lt;/code&gt; settings open, switch to the &quot;Services&quot; tab and add a service called &lt;code&gt;network-manager&lt;/code&gt;, and click ok. This will make it so that when this VM boots up, you'll have a NetworkManager system tray applet in the top-right corner of your screen.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/11/using-mullvad-in-qubes/qubes-mullvad-services.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Now, open a web browser in a disposable VM (click the Qubes menu, then &lt;code&gt;Disposable: fedora-30-dvm&lt;/code&gt;, &lt;code&gt;fedora-30-dvm: Firefox&lt;/code&gt;), and &lt;a href=&quot;https://mullvad.net/en/account/login/&quot;&gt;login&lt;/a&gt; to your Mullvad account at mullvad.net. Once you're logged in, go to Mullvad's &lt;a href=&quot;https://mullvad.net/en/download/config/&quot;&gt;OpenVPN configuration file generator&lt;/a&gt;. Set your platform to &lt;code&gt;Linux&lt;/code&gt;, choose a location, and make sure to check &lt;code&gt;Use IP addresses&lt;/code&gt;. Then click download. (In my case, since I'm setting up this VPN to go to Canada, I'm downloading the file &lt;code&gt;mullvad_config_linux_ca.zip&lt;/code&gt;.)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/11/using-mullvad-in-qubes/qubes-mullvad-openvpn-config-generator.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Now open a file manager in your disposable VM that contains the file you just downloaded.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/11/using-mullvad-in-qubes/qubes-mullvad-open-folder.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;And copy it to your &lt;code&gt;vpn-mullvad&lt;/code&gt; VM. (This will probably boot that VM for the first time.)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/11/using-mullvad-in-qubes/qubes-mullvad-copy1.png&quot; alt=&quot;&quot;&gt;
+&lt;img src=&quot;../../../2019/11/using-mullvad-in-qubes/qubes-mullvad-copy2.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Now open a file manager in your &lt;code&gt;vpn-mullvad&lt;/code&gt; VM (click the Qubes menu, &lt;code&gt;Service: vpn-mullvad&lt;/code&gt;, &lt;code&gt;vpn-mullvad: Files&lt;/code&gt;). Navigate to the &lt;code&gt;QubesIncoming&lt;/code&gt; folder, then the folder inside that that's the name of your disposable VM (in my case, &lt;code&gt;disp9309&lt;/code&gt;). You should see the zip file with the Mullvad OpenVPN config. Right-click on it and choose &quot;Extract Here&quot;. Then drag the extracted folder (&lt;code&gt;mullvad_config_linux_ca&lt;/code&gt;, in my case) to &lt;code&gt;Documents&lt;/code&gt;. Then, navigate inside this folder, and you should see your VPN config files.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/11/using-mullvad-in-qubes/qubes-mullvad-files.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Also, you might notice that when your &lt;code&gt;vpn-mullvad&lt;/code&gt; VM booted up, there is a new NetworkManager applet in your system tray. Click on it, go to &lt;code&gt;VPN Connections&lt;/code&gt;, &lt;code&gt;Add a VPN connection...&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/11/using-mullvad-in-qubes/qubes-mullvad-systray.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Then choose &lt;code&gt;Import a saved VPN configuration...&lt;/code&gt; from the dropdown list, and click Create.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/11/using-mullvad-in-qubes/qubes-mullvad-import-vpn1.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Then browse for the Mullvad &lt;code&gt;.conf&lt;/code&gt; file in your &lt;code&gt;Documents&lt;/code&gt; folder.&lt;/p&gt;
+&lt;p&gt;Back in your file manager, double click on &lt;code&gt;mullvad_userpass.txt&lt;/code&gt; -- this will should you what to put into the username and password fields.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/11/using-mullvad-in-qubes/qubes-mullvad-import-vpn2.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Then click save. This will popup a window asking you to choose a password for the default keyring -- you can just leave it blank and click continue, and click continue again to confirm you want to store passwords unencrypted. (Everything on your computer is actually encrypted with full disk encryption, and you won't be running any other software in this VM that could access these files.)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/11/using-mullvad-in-qubes/qubes-mullvad-keyring-password.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Now you should be able to click the &lt;code&gt;vpn-mullvad&lt;/code&gt; NetworkManager system tray icon, click &lt;code&gt;VPN Connections&lt;/code&gt;, and connect to the new VPN you just added. It should attempt to connect, and if all goes well you should see a notification that says, &quot;VPN connection has been successfully established,&quot; and the NetworkManager icon should have a little lock next to it.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/11/using-mullvad-in-qubes/qubes-mullvad-connect.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Now, let's make this VPN automatically connect whenever it boots up. Open a terminal in &lt;code&gt;vpn-mullvad&lt;/code&gt; (click Qubes, &lt;code&gt;Service: vpn-mullvad&lt;/code&gt;, &lt;code&gt;vpn-mullvad: Terminal&lt;/code&gt;), and run:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo gedit /rw/config/autovpn.sh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This will open up a blank file using gedit (feel free to use whatever text editor you prefer). Copy and paste this script into it. You may need to change the line that says &lt;code&gt;nmcli con up mullvad_ca&lt;/code&gt; to use the name of the VPN config that you added, assuming you chose a location other than Canada.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+while [ &quot;true&quot; ]
+do
+  if nmcli con |grep -Fq tun0
+  then
+    echo &quot;Already connected, sleeping 5&quot;
+    sleep 5
+  else
+    echo &quot;Connecting&quot;
+    nmcli con up mullvad_ca
+  fi
+done
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then save this file and quit the editor. This script basically checks to see if you're connected to the VPN. If you are, it waits 5 seconds and checks again. If you're not, it connects you to the VPN. And it loops forever -- so that if you ever get disconnected, it will detect this and automatically reconnect.&lt;/p&gt;
+&lt;p&gt;Back in your terminal, make it executable:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo chmod +x /rw/config/autovpn.sh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And now edit your &lt;code&gt;rc.local&lt;/code&gt; file:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo gedit /rw/config/rc.local
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Add &lt;code&gt;sudo -u user /rw/config/autovpn.sh &amp;amp;&lt;/code&gt; to the end of this file, and save and exit.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/11/using-mullvad-in-qubes/qubes-mullvad-rclocal.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;rc.local&lt;/code&gt; script, which gets run every time the VM boots up, will now run the &lt;code&gt;autovpn.sh&lt;/code&gt; script in the background.&lt;/p&gt;
+&lt;p&gt;Go ahead and try it out! Power off the &lt;code&gt;vpn-mullvad&lt;/code&gt; VM (click the Qubes logo in the system tray, then &lt;code&gt;vpn-mullvad&lt;/code&gt;, &lt;code&gt;Shutdown&lt;/code&gt;), and then power it on again (you can open the file manager in that VM again). The VPN should automatically connect.&lt;/p&gt;
+&lt;p&gt;Now, let's prevent some leaks. It's common for programs on your computer to try to do stuff on the internet while your VPN isn't connected -- maybe it hasn't connected yet, or it got disconnected for some reason. We can use Qubes firewall rules to prevent the &lt;code&gt;vpn-mullvad&lt;/code&gt; from communicating with anything except for the VPN servers that it's configured to connect to, so if (for example) your VPN gets disconnected but you have a web browser open, your browser won't load anything from your real IP address -- that traffic will get dropped by the firewall.&lt;/p&gt;
+&lt;p&gt;In a file manager in &lt;code&gt;vpn-mullvad&lt;/code&gt;, go to the folder that contains your Mullvad OpenVPN config files, and open the &lt;code&gt;.conf&lt;/code&gt; file. You'll see a list of lines that start with &lt;code&gt;remote&lt;/code&gt; -- these are the various OpenVPN servers that Mullvad is configured to try connecting to. (In my case, these are in Montreal, Toronto, and Vancouver.)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/11/using-mullvad-in-qubes/qubes-mullvad-remotes.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Now open the settings for &lt;code&gt;vpn-mullvad&lt;/code&gt; (click the Qubes menu, go to &lt;code&gt;Service: vpn-mullvad&lt;/code&gt;, &lt;code&gt;vpn-mullvad: Qubes Settings&lt;/code&gt;) and switch to the &quot;Firewall rules&quot; tab. You can add a new rule to allow each of these IP addresses through, and blocking all other IPs.&lt;/p&gt;
+&lt;p&gt;But before we do, a quick note about Qubes firewall rules. For some reason, Qubes seems to choke if you have too many of them (more than maybe 20). So for example, if you set up Mullvad to choose servers in the US, then there will be way too many servers in the list. So, before proceeding, delete some of them from this file to bring it down to a more managable number of servers. If you do this, make sure to delete your VPN in NetworkManager and then add it again.&lt;/p&gt;
+&lt;p&gt;And also a quick note on copy and paste. There's no easy way to copy something from a VM and then paste it into &lt;code&gt;dom0&lt;/code&gt;. There are good security reasons for this, but it will make this tedious work. So if you want to copy and paste, you can actually just view this file directly from &lt;code&gt;dom0&lt;/code&gt;. Open a terminal in &lt;code&gt;dom0&lt;/code&gt; (click the Qubes menu, and open &lt;code&gt;Terminal Emulator&lt;/code&gt;). Then run this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;qvm-run --pass-io vpn-mullvad 'cat ~/Documents/mullvad_*/*.conf' | grep &quot;remote &quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This will show you all of the &lt;code&gt;remote&lt;/code&gt; lines from your OpenVPN config file, but inside your &lt;code&gt;dom0&lt;/code&gt; terminal, and you &lt;em&gt;can&lt;/em&gt; copy from this window to paste into the Qubes firewall rules.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/11/using-mullvad-in-qubes/qubes-mullvad-remotes-dom0.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Now, back in the &lt;code&gt;vpn-mullvad&lt;/code&gt; settings window, in the firewall rules tab, select &quot;Limit outgoing Internet connections to ...&quot;. Then click the plus button, and add a rule for each IP address, copying and pasting from the &lt;code&gt;dom0&lt;/code&gt; terminal if you'd like. It's fine to set the protocol to &quot;Any&quot; for each rule.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/11/using-mullvad-in-qubes/qubes-mullvad-firewall.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;When you click ok, you're done setting up &lt;code&gt;vpn-mullvad&lt;/code&gt;! It uses the NetworkManager applet, it automatically connects if it gets disconnected, and thanks to the firewall rules, as long as you set &lt;code&gt;vpn-mullvad&lt;/code&gt; as your networking VM, none of your downstream VMs will make any internet connections that don't go through the VPN you just set up.&lt;/p&gt;
+&lt;p&gt;If you want all of your VMs use Mullvad by default, open Qubes Global Settings (Qubes menu, &lt;code&gt;System Tools&lt;/code&gt;, &lt;code&gt;Qubes Global Settings&lt;/code&gt;) and change &quot;Default netVM&quot; from &lt;code&gt;sys-firewall&lt;/code&gt; to &lt;code&gt;vpn-mullvad&lt;/code&gt; and click ok.&lt;/p&gt;
+&lt;p&gt;And finally, you may want the ability to open a browser window while not using a VPN -- like, if you connect to a public wifi network and need to click through a captive portal. I solve this problem by making a disposable VM template specifically for this purpose.&lt;/p&gt;
+&lt;p&gt;Open the settings for &lt;code&gt;fedora-30-dvm&lt;/code&gt; (Qubes menu, &lt;code&gt;Displable: fedora-30-dvm&lt;/code&gt;, &lt;code&gt;fedora-30-dvm: Qube Settings&lt;/code&gt;) and click &quot;Clone qube&quot; -- rename this clone to &lt;code&gt;fedora-30-clearnet-dvm&lt;/code&gt;. Now open the settings for &lt;code&gt;fedora-30-clearnet-dvm&lt;/code&gt;, and change &quot;Networking&quot; from &lt;code&gt;default (vpn-mullvad)&lt;/code&gt; to &lt;code&gt;sys-firewall&lt;/code&gt;, and click ok.&lt;/p&gt;
+&lt;p&gt;Now, if you need to click through a captive portal, you can just open a browser in a &lt;code&gt;fedora-30-clearnet-dvm&lt;/code&gt; disposable VM to click through it, and as soon as you have internet &lt;code&gt;vpn-mullvad&lt;/code&gt; will automatically connect to Mullvad, and internet will start working on in the rest of your VMs.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../../../2019/11/using-mullvad-in-qubes/qubes-mullvad-connected.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+</content>
+  </entry>
   <entry xml:base="https://micahflee.com/2019/10/new-version-of-onionshare-makes-it-easy-for-anyone-to-publish-anonymous-uncensorable-websites/">
     <title type="text">New version of OnionShare makes it easy for anyone to publish anonymous, uncensorable websites</title>
     <id>urn:uuid:5728aeab-9394-3d87-8845-db2a13d7622e</id>
