@@ -1,0 +1,153 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>Legacy Comments</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="../../../../static/style.css">
+  <link rel="stylesheet" href="../../../../static/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Alan Eliasen</p>
+        <p class="legacy-comment-meta-pub_date">September 19, 2013 02:45 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I've had people ask me why Enigmail stops their ability to send HTML-formatted e-mail, and I noticed, when walking someone else through the Enigmail wizard, that it asks to turn off HTML formatting.  This is a good guide to re-enabling it, so thanks.  I always just said "If you need HTML, don't let it turn it off in the wizard."  Actually, I recommend not using the Enigmail wizard at all, but generating your keys directly in the gpg command-line tool, as some of its options are broader and the implications of your choices stated more correctly.</p>
+<p>However, I <a href="https://futureboy.us/pgp.html" rel="nofollow">argue strongly in my GPG guide</a> that PGP/MIME will probably limit your ability to reach many people who (correctly) use GPG, and I recommend against using PGP/MIME.  Enigmail's receiving of encrypted attachments and public keys is broken, too, and it often can't even decrypt and import, say, a public key that it attached.  (Try sending an encrypted or unencrypted public key to yourself as an Enigmail attachment, and then importing it.)</p>
+<p>Enigmail also has a severe security bug that if it encounters a PGP/MIME message, it will automatically and silently try to decrypt it, even if you've told Enigmail <em>not</em> to automatically decrypt messages!  This is very bad if someone's looking over your shoulder, and it may make you fail to notice that the message was encrypted at all, so you might forget to encrypt a reply, etc.</p>
+<p>For these reasons, I personally recommend against the use of PGP/MIME at the moment, even if both sides use Enigmail, but rather recommend just plain ASCII-armored encrypted text in the body of a plaintext message.  It will let you reach more people and reduce the risk of your attachments being unreadable or being stripped out entirely.</p>
+<p>Additionally, unpredictability is the key to good encryption practice.  For this reason, I recommend strongly against using HTML in encrypted messages, as this gives a long run of "known plaintext".   If it's not obvious why known plaintext can be bad, consider <a href="http://sac2013.irmacs.sfu.ca/slides/s9.pdf" rel="nofollow"> this recent disastrous break on the widely-used (albeit not in GPG) RC4 cipher&lt;/A&gt; which allows, if you know a small number of bytes of the plaintext,  (even as low as 6) to recover the rest of the message, given enough ciphertexts.  The more unpredictable your messages are, the harder they will be to break.</p>
+<p>This article helps you to still be able to send HTML-formatted messages in your other communications, and for that it is very helpful, but you don't want HTML in your encrypted communications if you want your message to be as unpredictable as possible.</p>
+
+    </div>
+  </div>
+  
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name"><a href="../../../../">Micah Lee's blog</a></p>
+      <p><img class="coffee" src="../../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../../../../static/images/reality.png"></a></p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?<p><p>Check the <a href="../../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" src="../../../../static/images/cc-by-nc.png"></a>
+        <br/>
+        <br/>
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

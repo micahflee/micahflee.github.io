@@ -1,0 +1,250 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>Legacy Comments</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="../../../../../static/style.css">
+  <link rel="stylesheet" href="../../../../../static/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">February 21, 2016 06:44 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I don't think you're correct. It looks like this attack was successfully completed in 2005 with postscript files (<a href="https://www.schneier.com/blog/archives/2005/06/more_md5_collis.html">https://www.schneier.com/blog/archives/2005/06/more_md5_collis.html</a>) and again in 2008 with X509 certificates (<a href="https://www.win.tue.nl/~bdeweger/CollidingCertificates/">https://www.win.tue.nl/~bdeweger/CollidingCertificates/</a>). In both cases, both pieces of data getting hashes were valid files. But it does look like it takes a lot more work than simply finding a collision.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Redditor</p>
+        <p class="legacy-comment-meta-pub_date">February 22, 2016 02:31 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Again, what they did was generate two completely new files (collision attack).</p>
+<p>Your second  link explains this in the "application" section. Some quotes: "A successful attack on an existing certificate (or some other data structure such as an executable) requires second preimage resistance of one message: given a pre-specified value and its hash, it must be practically infeasible to find another value with the same hash. As far as we are aware, the results announced in [22] do not imply that second preimages are essentially easier to find than they should, namely with an effort proportional to 2^n for an n-bit hash function"
+and "We are not aware yet of real life practical implications of our results."</p>
+<p>Your first link: see the comments, e.g.
+<a href="https://www.schneier.com/blog/archives/2005/06/more_md5_collis.html#c6016">https://www.schneier.com/blog/archives/2005/06/more_md5_collis.html#c6016</a>
+"All that the researchers are demonstrating here is that it is possible to create two functionally different yet valid files with the same signature in a very short amount of time.</p>
+<p>This and the other referenced attacks all take advantage of the length extension property of hash functions after finding two pieces of data with colliding hash values. Effectively, all they demonstrate is the possibility of wrapping identical content around these two separate sets of colliding bits.</p>
+<p>While this is important, this is not nearly the same thing as demonstrating that it is possible to create two ARBITRARY documents with the same hash value or that it is possible to generate a NEW document with the same hash value as an EXISTING document."</p>
+<p>So, what you could do, for instance, is to fake you own public key by generating two with the same MD5.
+Or if the Linux Mint founder was bad, he could create two iso images with the same MD5, one with a backdoor. But it does not work if you already have an existing iso and MD5 (this would be a pre-image attack).</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">CooloutAC</p>
+        <p class="legacy-comment-meta-pub_date">February 23, 2016 12:02 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>If you say that Clem, if evil,  could make two files with same md5, one backdoored and one not.  Why wouldn't anybody be able to do that then,  whether a file with an md5 already existed or not?  What is the difference?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">CooloutAC</p>
+        <p class="legacy-comment-meta-pub_date">February 23, 2016 01:06 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Your statement:</p>
+<p>"Or if the Linux Mint founder was bad, he could create two iso images with the same MD5, one with a backdoor."</p>
+<p>or Shneier's statement :</p>
+<p>"“All that the researchers are demonstrating here is that it is possible to create two functionally different yet valid files with the same signature in a very short amount of time."</p>
+<p>Seems pretty straightforward to me so pardon my ignorance.  I'm trying to understand how these statements back your claims that such a thing is not possible?</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">CooloutAC</p>
+        <p class="legacy-comment-meta-pub_date">February 23, 2016 01:38 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I think I understand now, you are saying the only way is to modify both files to get their md5 to matchup... like with the collision generator.</p>
+<p>So if true, we would still then have to hope that, theoretically, a non backdoored iso was not uploaded for a while on the site before changed and that mint actively monitors the hashes as well as the iso.  I wonder how long they were compromised for.     And Still kind of crazy regardless they don't use https and that they even have a md5 hash in the first place,  and not just sha256 and a sig, like most other distros.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name"><a href="../../../../../">Micah Lee's blog</a></p>
+      <p><img class="coffee" src="../../../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../../../../../static/images/reality.png"></a></p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?<p><p>Check the <a href="../../../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" src="../../../../../static/images/cc-by-nc.png"></a>
+        <br/>
+        <br/>
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

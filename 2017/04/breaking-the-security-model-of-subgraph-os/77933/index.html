@@ -1,0 +1,272 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>Legacy Comments</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="../../../../static/style.css">
+  <link rel="stylesheet" href="../../../../static/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Matteo</p>
+        <p class="legacy-comment-meta-pub_date">April 14, 2017 03:59 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>@Mast O'don
+"You broke Subgraph’s security..." yes, correct but the conclusion is wrong:
+the difference is that subgraph claim to be secure by default/superior security/above the standard but the reality is that it's enough to double click a file to take over the FULL pc.
+i understand that:
+-is in alpha
+-nautilus wasn't sandboxed (so to be precise they don't breaked the sandbox, they bypassed it); now you can use the term you want but the result is full pc compromised. 
+and if you say "what if it was sandboxed?" the answer is: NOW IT ISN'T, by design!
+also if they sandbox nautilus other apps that you install will not be sandboxed.
+the problem/fault here is not only nautilus bug, it's also their decision to not sandbox nautilus so they left a big hole in their project.
+qubes os doesn't have such big hole:
+qubes is secure by default, no matter what apps you install, no need special configuration.
+they solved the mail phishing to get malware on pc:
+normally people say "don't open suspicious email" but emails are designed to be opened and people is not stupid "click here to get a free virus" noone will click but turn it in "hello this is your state, you haven't payed taxes compile this module or you will pay fine of 1000 dollars" everyone will click.
+<em>also on qubes!</em> but the difference is that qubes users have a different tip: "open ANY link or attachment in disposable virtual machine"
+<em>ANY</em> means any, no need to think or differentiate between suspiscious or not and if you do this you will not be compromised!</p>
+<p>and what if users don't follow this <em>simple</em> tip?
+that will be <em>partially</em> compromised (not fully like other os)</p>
+<p>they are also working to automate this thing "open always in dispvm" so users need to do nothing</p>
+<p>and what if someone phish people into running something in dom0? (like you were saying) because the point it's not that people can run code in dom0 thats obvios, it's your pc, you can do what you want with it.
+the point is how you trick a user into doing that without he understanding what is he doing?
+i don't think this is plausible, there is NO plausible reason that will convince user to do that and also if they try it's not easy to copy somehting in dom0, they will need to google how to do it and they will end up in the docs that say "never do this"</p>
+<p>this is the big difference: dom0 is important and so its well protected <em>also from its own users!</em>
+subgraph should protect <em>any</em> app with a sandbox otherwise people will abuse the not protected one and they haven't done this.</p>
+<p>to conclude: when i read "users pick up random usb and plug them in pc" i don't think "user is stupid" i think that they are doing something normal, usb are designed to be plugged so don't blame users for this, blame microsoft for having autorun / having so insecure pc that can be taken over by doing somehting simple like plugging usb</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">111</p>
+        <p class="legacy-comment-meta-pub_date">April 15, 2017 10:02 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>"NOW IT ISN’T, by design!"</p>
+<p>You probably only read joanna's toots and didn't look at the github issues that were open before micah and joanna went looking for material to write this article with. Their plan is very much to tackle nautilus and other parts of GNOME. If only micah and joanna responded to this like they did to the GNOME foundation people telling them it's not a security issue (hint: they both didn't argue and instead praised GNOME). If that was the attitude SGOS took I doubt that would have been their response.</p>
+<p>This reads like a hack tech journo hitjob</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">April 17, 2017 07:02 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>We didn't go looking for material for this article at all.</p>
+<p>We went looking to see how easy it would be to make a PoC that could hack my travel computer, which was running Subgraph OS. Then I privately disclosed the weaknesses we found to Subgraph and gave the developers two weeks to resolve them, and offered to give them more time if they needed it.</p>
+<p>They responded with a lot of "this isn't surprising, we're already aware of these things, we've been thinking about them for awhile" -- and they sent me the github issues to show that they had been thinking about them for awhile (which I linked to in the article). But they made it pretty clear that they didn't think this vulnerability was a big deal and weren't planning on doing anything about it.</p>
+<p>But thanks to this blog post, Subgraph has fixed this pretty huge hole in the security of their OS, and users are more secure now than they were before I wrote it. It clearly wouldn't have gotten fixed anytime soon without a bit of public shaming, which is a reasonable way to respond when your private vulnerability disclosure gets dismissed as not a big deal.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Irony 2.0</p>
+        <p class="legacy-comment-meta-pub_date">April 24, 2017 02:57 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>&gt; It clearly wouldn’t have gotten fixed anytime soon without a bit of public shaming, which is a reasonable way to respond when your private vulnerability disclosure gets dismissed as not a big deal.</p>
+<p>This is so ironic since this is <em>exactly</em> what Qubes OS lead dev does:</p>
+<p>"In Qubes Nautilus is not part of the TCB, so this bug is not critical. So, we leave it up to whatever template's distro to release patches."</p>
+<p><a href="https://twitter.com/rootkovska/status/852525011168612352">https://twitter.com/rootkovska/status/852525011168612352</a></p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">April 24, 2017 08:40 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>This is because in Qubes, this bug is not a critical vulnerability.</p>
+<p>You can't use this bug to break out of a Qubes sandbox, but you <strong>can</strong> use it to break out of Subgraph OS sandbox.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name"><a href="../../../../">Micah Lee's blog</a></p>
+      <p><img class="coffee" src="../../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../../../../static/images/reality.png"></a></p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?<p><p>Check the <a href="../../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" src="../../../../static/images/cc-by-nc.png"></a>
+        <br/>
+        <br/>
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

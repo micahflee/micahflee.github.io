@@ -1,0 +1,439 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>Micah Lee's blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="../../static/style.css">
+  <link rel="stylesheet" href="../../static/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+    
+      
+  <div class="blog-post">
+    
+    
+      <h1 class="article-title"><a href="../../2013/09/dont-succumb-to-security-nihilism/">Don’t Succumb to Security Nihilism</a></h1>
+    
+    <p class="meta">
+      Posted September 5, 2013
+      
+        in
+        
+          <a class="tag" href="../../tags/crypto">crypto</a>
+        
+          <a class="tag" href="../../tags/spies">spies</a>
+        
+          <a class="tag" href="../../tags/security">security</a>
+        
+      
+    </p>
+    
+      <p>You might have read today’s shocking <a href="http://www.theguardian.com/world/2013/sep/05/nsa-gchq-encryption-codes-security">Guardian</a> and <a href="http://www.nytimes.com/2013/09/06/us/nsa-foils-much-internet-encryption.html?_r=0">New York Times</a> articles outlining the many ways that NSA and GCHQ have defeated crypto on the Internet, and have influenced tech companies to insert back doors into their commercial security products.</p>
+
+      <p><a href="../../2013/09/dont-succumb-to-security-nihilism/">Continue reading →</a></p>
+    
+  </div>
+
+    
+  
+    
+      
+  <div class="blog-post">
+    
+    
+      <h1 class="article-title"><a href="../../2013/08/its-2013-were-all-being-spied-on-why-do-security-software-websites-not-use-https/">It’s 2013. We’re all being spied on. Why do security software websites not use HTTPS?</a></h1>
+    
+    <p class="meta">
+      Posted August 28, 2013
+      
+        in
+        
+          <a class="tag" href="../../tags/crypto">crypto</a>
+        
+          <a class="tag" href="../../tags/hackers">hackers</a>
+        
+          <a class="tag" href="../../tags/https">https</a>
+        
+          <a class="tag" href="../../tags/security">security</a>
+        
+      
+    </p>
+    
+      <p><strong>Update:</strong> This post made the <a href="http://www.reddit.com/r/technology/comments/1ladvh/its_2013_were_all_being_spied_on_why_do_security/">frontpage of reddit</a> and many of the comments are <a href="https://xkcd.com/386/">wrong</a>. I took a moment to clear a couple things up at the bottom of the post.</p>
+<p>We desperately need to work towards deprecating HTTP and replacing it only with HTTPS. The web is a huge part of what billions of people use the Internet for, and still most of it is not encrypted. Since the Snowden leaks started getting published we’ve learned that NSA and GCHQ spy on as close to the entire Internet as they can get.</p>
+<p>It would be naive to think that the US and UK are the only governments doing this too. The network isn’t safe, and the only way to make it safe is to encrypt all the things. Websites that still use HTTP are putting users in danger. Here are a couple of examples.</p>
+
+      <p><a href="../../2013/08/its-2013-were-all-being-spied-on-why-do-security-software-websites-not-use-https/">Continue reading →</a></p>
+    
+  </div>
+
+    
+  
+    
+      
+  <div class="blog-post">
+    
+    
+      <h1 class="article-title"><a href="../../2013/07/despite-googles-statement-they-still-have-access-to-your-wifi-passwords/">Despite Google’s statement, they still have access to your wifi passwords</a></h1>
+    
+    <p class="meta">
+      Posted July 19, 2013
+      
+        in
+        
+          <a class="tag" href="../../tags/crypto">crypto</a>
+        
+          <a class="tag" href="../../tags/mobile">mobile</a>
+        
+          <a class="tag" href="../../tags/security">security</a>
+        
+      
+    </p>
+    
+      <p><em><strong>UPDATE:</strong> The Android bug tracker <a href="https://code.google.com/p/android/issues/detail?id=57560#c33">isn’t the correct place</a> to ask Google to fix this bug. The backup/restore feature is part of the proprietary Google apps for Android, not the open source Android project. <a href="https://productforums.google.com/forum/#!category-topic/mobile/android-devices/android-applications/D6vWpQu8AWU">This thread on the Google product forums</a> is the correct place.</em></p>
+<p>Earlier this week <a href="http://arstechnica.com/security/2013/07/does-nsa-know-your-wifi-password-android-backups-may-give-it-to-them/">Ars Technica covered</a> a <a href="https://code.google.com/p/android/issues/detail?id=57560">bug report</a> I posted on the Android issue tracker about the “Backup and restore” feature not offering encrypted backups.</p>
+<p>Because there’s no option to encrypt your backup data on your Android device with a passphrase that you set, Google has the capability to see the plaintext data, including all your saved wifi passwords. Google can then be compelled to give up this data (and any other user data that they store) to the US government when requested to do so.</p>
+
+      <p><a href="../../2013/07/despite-googles-statement-they-still-have-access-to-your-wifi-passwords/">Continue reading →</a></p>
+    
+  </div>
+
+    
+  
+    
+      
+  <div class="blog-post">
+    
+    
+      <h1 class="article-title"><a href="../../2013/07/use-android-youre-probably-giving-google-all-your-wifi-passwords/">Use Android? You’re Probably Giving Google All Your Wifi Passwords</a></h1>
+    
+    <p class="meta">
+      Posted July 11, 2013
+      
+        in
+        
+          <a class="tag" href="../../tags/crypto">crypto</a>
+        
+          <a class="tag" href="../../tags/mobile">mobile</a>
+        
+          <a class="tag" href="../../tags/security">security</a>
+        
+      
+    </p>
+    
+      <p>Go to your home screen, press the Menu button, select “Settings”, under “Personal” select “Backup and reset”. Is the “Back up my data” checkbox checked? If so, all of the wifi passwords that your phone remembers are being synced to your Google account.</p>
+<p>And the passwords are in plaintext, too. When you format an Android phone and set it up on first run, after you login to your Google account and restore your backup, it immediately connects to wifi using a saved password. There’s no sort of password hash that your Android phone could send your router to authenticate besides the password itself.</p>
+
+      <p><a href="../../2013/07/use-android-youre-probably-giving-google-all-your-wifi-passwords/">Continue reading →</a></p>
+    
+  </div>
+
+    
+  
+    
+      
+  <div class="blog-post">
+    
+    
+      <h1 class="article-title"><a href="../../2013/06/opportunistic-encryption-to-combat-dragnet-surveillance/">Opportunistic Encryption to Combat Dragnet Surveillance</a></h1>
+    
+    <p class="meta">
+      Posted June 29, 2013
+      
+        in
+        
+          <a class="tag" href="../../tags/crypto">crypto</a>
+        
+          <a class="tag" href="../../tags/https">https</a>
+        
+      
+    </p>
+    
+      <p>The world is in shock and anger over recent revelations that NSA and GCHQ are conducting suspiciounless spying on every human with an internet or phone network connection. One of the ways they’re spying on the entire internet is by tapping the underwater fiber-optic cables that connect the continents and parsing and logging the firehose of packets as they fly by.</p>
+<p>If we want to keep what we do on the internet private, a good way to do that is to encrypt as much of our internet traffic as possible. End-to-end encryption is hard to do right for end users because identity verification is really, really hard to scale. It’s not practical for everyone who wants to visit an HTTPS website to meet in person and read out SHA1 fingerprints for SSL certs.</p>
+
+      <p><a href="../../2013/06/opportunistic-encryption-to-combat-dragnet-surveillance/">Continue reading →</a></p>
+    
+  </div>
+
+    
+  
+    
+      
+  <div class="blog-post">
+    
+    
+      <h1 class="article-title"><a href="../../2013/05/swatting-is-not-the-same-as-doxing/">Swatting is Not the Same as Doxing</a></h1>
+    
+    <p class="meta">
+      Posted May 9, 2013
+      
+        in
+        
+          <a class="tag" href="../../tags/hackers">hackers</a>
+        
+      
+    </p>
+    
+      <p><strong><em>Update: KTVU has taken down the story.</em></strong></p>
+<p>Recently I was interviewed about “doxing” by <a href="http://www.ktvu.com/">KTVU</a>, a Bay Area news station based in Oakland. Doxing is when someone publishes documents (“dox”) about someone to the internet. It’s usually full of mundane info that can be found in a phone book and with a google search, but sometimes it also contains more sensitive information like the contents of personal emails, lists of passwords, etc.</p>
+<p>I found out that the segment aired on TV last night when someone tweeted me asking if I really thought that “swatting” was protected by free speech laws. Swatting, I learned for the first time last night, is when someone dials 911 and reports something like a hostage situation or a terrorist bomb plot at someone else’s address in order to get a SWAT team to bust down their door.</p>
+
+      <p><a href="../../2013/05/swatting-is-not-the-same-as-doxing/">Continue reading →</a></p>
+    
+  </div>
+
+    
+  
+    
+      
+  <div class="blog-post">
+    
+    
+      <h1 class="article-title"><a href="../../2013/04/sudo-apt-get-install-torbrowser/">sudo apt-get install torbrowser</a></h1>
+    
+    <p class="meta">
+      Posted April 9, 2013
+      
+        in
+        
+          <a class="tag" href="../../tags/tor">tor</a>
+        
+          <a class="tag" href="../../tags/crypto">crypto</a>
+        
+          <a class="tag" href="../../tags/security">security</a>
+        
+      
+    </p>
+    
+      <p><strong>TL;DR: I wrote a piece of software called <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a> that downloads and auto-updates Tor Browser Bundle for you, in your language and for your architecture, and verifies signatures. I’d like help finding bugs before the initial release.</strong></p>
+<p>Over the years, <a href="https://www.torproject.org/">Tor Project</a> has done an amazing job at making Tor more user-friendly. In the past if you wanted anonymity you had to download and install Tor, maybe hand-edit your torrc file, and configure your browser to use a proxy server. You had to make sure that you didn’t have browser plugins like Flash or Java enabled that would compromise your anonymity. Eventually, this got easier when you could install the TorButton Firefox add-on, but even then you had to keep manually separate your own identity and your anonymous browsing.</p>
+
+      <p><a href="../../2013/04/sudo-apt-get-install-torbrowser/">Continue reading →</a></p>
+    
+  </div>
+
+    
+  
+    
+      
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="../../2013/03/how-to-get-a-tor-project-t-shirt-for-less-than-65/black-tor-tshirt-300x225.png" />
+    </p>
+    
+    
+      <h1 class="article-title"><a href="../../2013/03/how-to-get-a-tor-project-t-shirt-for-less-than-65/">How to Get a Tor Project T-Shirt For Less Than $65</a></h1>
+    
+    <p class="meta">
+      Posted March 19, 2013
+      
+        in
+        
+          <a class="tag" href="../../tags/tor">tor</a>
+        
+      
+    </p>
+    
+      <p>The <a href="https://www.torproject.org/">Tor Project</a> is awesome. It’s a network of volunteer proxy servers that make it possible for people to use the internet anonymously.</p>
+<p>I decided to contribute to the Tor network by running my own exit node called <a href="https://atlas.torproject.org/#details/C31EA6B039165613464D1B5B6819B36E5529B27C">gollum</a>. I’m paying <a href="https://www.gandi.net/">Gandi</a> $16/month for a VPS in Paris, France. As of this writing the uptime on my Tor server is 69 days, 12 hours.</p>
+
+      <p><a href="../../2013/03/how-to-get-a-tor-project-t-shirt-for-less-than-65/">Continue reading →</a></p>
+    
+  </div>
+
+    
+  
+    
+      
+  <div class="blog-post">
+    
+    
+      <h1 class="article-title"><a href="../../2013/03/bradley-mannings-statement-shows-that-us-intelligence-analysts-are-trained-in-using-tor/">Bradley Manning&#39;s statement shows that US intelligence analysts are trained in using Tor</a></h1>
+    
+    <p class="meta">
+      Posted March 12, 2013
+      
+        in
+        
+          <a class="tag" href="../../tags/tor">tor</a>
+        
+          <a class="tag" href="../../tags/leaks">leaks</a>
+        
+      
+    </p>
+    
+      <p>This morning I had the opportunity to help <a href="https://pressfreedomfoundation.org/">Freedom of the Press Foundation</a> publish the full, <a href="https://pressfreedomfoundation.org/blog/2013/03/fpf-publishes-leaked-audio-of-bradley-mannings-statement">previously unreleased audio recording of Bradley Manning’s statement to the military court</a> in Ft. Meade about his motivations for leaking over 700,000 government documents to WikiLeaks.</p>
+<p>In his statement Bradley Manning not only explains his motivation for leaking documents to WikiLeaks (he contacted the Washington Post and the New York Times first), but also technically how he went about doing it, including the software and protocols he used.</p>
+
+      <p><a href="../../2013/03/bradley-mannings-statement-shows-that-us-intelligence-analysts-are-trained-in-using-tor/">Continue reading →</a></p>
+    
+  </div>
+
+    
+  
+    
+      
+  <div class="blog-post">
+    
+    
+      <h1 class="article-title"><a href="../../2013/02/using-gajim-instead-of-pidgin-for-more-secure-otr-chat/">Using Gajim Instead of Pidgin for More Secure OTR Chat</a></h1>
+    
+    <p class="meta">
+      Posted February 20, 2013
+      
+        in
+        
+          <a class="tag" href="../../tags/crypto">crypto</a>
+        
+          <a class="tag" href="../../tags/security">security</a>
+        
+      
+    </p>
+    
+      <p>I’ve been using <a href="http://pidgin.im/">Pidgin</a> as my chat client for many years. The one feature of Pidgin that I care about more than any other is that it supports <a href="http://www.cypherpunks.ca/otr/">Off-the-Record</a> (OTR).</p>
+<p>If you don’t know about OTR, it’s awesome. It lets you have end-to-end encrypted chat sessions with people so that only you and the person you’re chatting with can read the chat messages and all other parties—such as your chat server (often Google), your ISP, or anyone else eavesdropping on your—cannot. It also has cool features like forward secrecy that other cryptosystems like PGP don’t have. If you’ve ever been to a <a href="https://cryptoparty.org/wiki/CryptoParty">CryptoParty</a>, setting up Pidgin and OTR and learning how to verify keys is always on the schedule.</p>
+
+      <p><a href="../../2013/02/using-gajim-instead-of-pidgin-for-more-secure-otr-chat/">Continue reading →</a></p>
+    
+  </div>
+
+    
+  
+
+  
+  <div class="pagination">
+    
+      <a href="../../page/3/">&laquo; Previous</a>
+    
+    | 4 |
+    
+      <a href="../../page/5/">Next &raquo;</a>
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name"><a href="../../">Micah Lee's blog</a></p>
+      <p><img class="coffee" src="../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../../static/images/reality.png"></a></p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?<p><p>Check the <a href="../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../tags/code/">code</a></li>
+  
+    <li><a href="../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../tags/https/">https</a></li>
+  
+    <li><a href="../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../tags/security/">security</a></li>
+  
+    <li><a href="../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" src="../../static/images/cc-by-nc.png"></a>
+        <br/>
+        <br/>
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

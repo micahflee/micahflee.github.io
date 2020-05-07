@@ -1,0 +1,670 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>The Operating System That Can Protect You Even if You Get Hacked</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@micahflee" />
+  <meta name="twitter:creator" content="@micahflee" />
+  <meta property="og:url" content="https://micahflee.com/2014/04/the-operating-system-that-can-protect-you-even-if-you-get-hacked" />
+  <meta property="og:title" content="The Operating System That Can Protect You Even if You Get Hacked" />
+  <meta property="og:image" content="https://micahflee.com/2014/04/the-operating-system-that-can-protect-you-even-if-you-get-hacked/qubes.png" />
+
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="../../../2014/04/the-operating-system-that-can-protect-you-even-if-you-get-hacked/qubes.png" />
+    </p>
+    
+    
+      <h1 class="article-title">The Operating System That Can Protect You Even if You Get Hacked</h1>
+    
+    <p class="meta">
+      Posted April 10, 2014
+      
+        in
+        
+          <a class="tag" href="../../../tags/security">security</a>
+        
+          <a class="tag" href="../../../tags/linux">linux</a>
+        
+          <a class="tag" href="../../../tags/qubes">qubes</a>
+        
+      
+    </p>
+    
+      <p><em>This was originally published on the <a href="https://pressfreedomfoundation.org/blog/2014/04/operating-system-can-protect-you-even-if-you-get-hacked">Freedom of the Press Foundation’s blog</a>.</em></p>
+<p>We wrote about the importance of the <a href="https://pressfreedomfoundation.org/blog/2014/04/help-support-little-known-privacy-tool-has-been-critical-journalists-reporting-nsa">Tails operating system</a> to all of the NSA journalists last week, but there’s also another little-known operating system that journalists should consider using if they find themselves in high-risk scenarios. It’s called <a href="http://qubes-os.org/">Qubes</a>.</p>
+<p>I’ve only been using Qubes for a few weeks, but I feel like my operating system is now a digital fortress. Let me try to explain why, and how Qubes differs from Tails.</p>
+<p>Qubes’ design is based off an important law of software: all programs contain bugs. Some of these are security vulnerabilities. Your computer can get hacked by viewing a Flash video or using javascript in your web browser: this is likely how NSA’s QUANTUM/FOXACID programs hack people. Your computer could also get hacked by opening a PDF, or a Microsoft Word or LibreOffice document, or just by viewing a JPG or GIF.</p>
+<p>If any piece of software gets compromised, your whole computer is compromised. The attacker can look at your files, log your keystrokes, take screenshots, steal your encryption keys, and read the emails that you type before you even have a chance to encrypt them.</p>
+<p>Developers can (and should) try to make their software more secure, but software will never be perfect. Trying to not get hacked is difficult when you have powerful adversaries, yet still have to get work done. Short of never connecting your computer to the internet, the best way to stay secure is to minimize the damage caused when you do eventually get hacked and “sandbox” the most vulnerable programs away from the rest of your computer. Qubes makes this more straight-forward than any other operating system I’ve used.</p>
+<p>Qubes uses virtual machines to let you manage separate “security domains”. A virtual machine (VM) is basically a tiny operating system running inside of your real operating system. If your VM gets hacked, the attacker is able to access the files and read keystrokes in that VM, but not in other VMs or on your host computer. In Qubes all software (besides the desktop environment) is running inside of VMs, and you can easily and efficiently make as many as you need for whatever purposes you need. It’s also designed in such a way that if one VM gets infected with malware, the malware won’t be there the next time you reboot that VM.</p>
+<p>For example, you may want to use Pidgin, an instant messaging application with <a href="https://pressfreedomfoundation.org/encryption-works#otr">OTR encryption</a> capability, to chat with people securely. But Pidgin is notorious for its memory corruption vulnerabilities: the kind of bug that attackers can use to take over your computer by IMing you a weird-looking message. (All publicly known Pidgin vulnerabilities have been fixed if you’re using the latest version, but there’s always the possibility that there are vulnerabilities that have never been reported to the developers. These are called zero day vulnerabilities, and agencies like NSA and FBI spend lots of money to buy information about them.)</p>
+<p>In order to use Pidgin as safely as possible, you can create an AppVM (the Qubes word for a VM to run specific apps in) that you use only for Pidgin. If a Pidgin-zero-day-wielding attacker sends you a weird-looking message that takes over your computer, all it will actually take over is your Pidgin AppVM. The worst that the attacker can do is steal your OTR keys and spy on your chat conversations. Everything else on your computer, such as your work documents, your PGP key, and your password database, will remain safe from the attacker.</p>
+<p>Another example that would be useful to journalists: if you’re writing an article about sensitive documents, you can create an “air-gapped” AppVM that contains these documents, and any files or drafts associated with the story. If you open a document in this AppVM that tries to phone home to alert someone that it’s been opened, it will fail because this AppVM doesn’t have internet access. And if you open a malicious document that hacks this AppVM, the malware won’t be able to exfiltrate any of your files because it won’t have internet access. And finally, if some other part of your computers gets compromised, like your web browser, the attackers won’t have access to these sensitive work files.</p>
+<p>You can also easily use “disposable VMs”, AppVMs that you create for a specific purpose and delete when you’re done with them, to open documents that you don’t completely trust. If that PDF someone emailed you is actually malicious and tries to take over your computer, it will only take over the disposable VM. But if it actually contains something useful, you’ll still be able to read it.</p>
+<p>You can do this all on one computer using a single desktop manager. This is one of the most powerful features about Qubes.</p>
+<p>You can always choose to isolate software like this on traditional operating systems using tools like VirtualBox or VMWare, but it’s impossible to do as good a job of locking down your computer as you can with Qubes.</p>
+<p><strong>Current state of the project</strong></p>
+<p>At the moment you have to be pretty tech savvy in order to get the full benefits of Qubes. And it doesn’t hurt if you’re already a Linux nerd. I think this can be improved, but Qubes will never be a “turn on and forget” security tool. Which security domains each user needs is completely dependent on their preferences and security needs. But if you understand your needs and understand how to use and configure AppVMs to fit them, you’ll be able to use your computer with much higher security than if you were using a traditional OS.</p>
+<p>The places where usability could be greatly improved is hardware support inside of VMs. I spent hours trying to figure out how to make my laptop’s internal webcam accessible to an AppVM. The solution finally ended up being to give the AppVM control of my USB controller and to change permissions on /dev/video0 to be world-writable inside of the AppVM — at the expense of having access to one my USB ports, and while opening up other USB-related security problems (which normal OSes always have). Hardware issues like this keep popping up for me: USB sticks work fine, but USB ethernet cards don’t; I can’t easily import photos from my Android phone. I have enough patience, googlefu, and Linux experience to solve them, but I think many users would be lost.</p>
+<p><strong>Qubes vs Tails?</strong></p>
+<p>Qubes and Tails have fundamentally different use-cases. They’re both very important, and I use both operating systems every day.</p>
+<p>Tails is for staying anonymous. When you use it on a computer, it doesn’t leave a trace that it was ever booted. It changes your MAC address before you connect to a network, and it forces all traffic to go over the Tor network, ensuring that you don’t make a technical mistake and accidentally leak your IP address. When you use the web browser that comes with Tails, your traffic looks exactly like the traffic of all other Tor users.</p>
+<p>Qubes is for staying secure while still being able to use a wide variety of software that might contain zero day vulnerabilities, but it’s not for staying anonymous. Qubes supports cool networking tricks, like making an AppVM where all traffic is forced to go through Tor, but this doesn’t incorporate most of the anonymity tricks that Tails excels at.</p>
+<p><strong>Bottom line</strong></p>
+<p>For maximum security, I would recommend that people use Qubes on their computer for all their everyday, non-anonymous needs: checking email, chatting, using social media and browsing the web, developing software, doing research, writing articles. Since you do all of this work in AppVMs that run Linux (and optionally some of it in AppVMs that run Windows), you get the latest and best tools to work with, and it’s simple to install new software. For more sensitive needs where anonymity is important, you can use Tor Browser Bundle inside of an AppVM.</p>
+<p>And for the most sensitive needs, as the NSA journalists explained, you should boot to Tails.</p>
+
+
+      <div id="commento"></div>
+      <script src="https://cdn.commento.io/js/commento.js"></script>
+
+      
+        
+        <div class="legacy-comments">
+          <p class="legacy-comments-notice">Legacy comments, imported from previous version of this blog:</p>
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Qubes OS Pronto Va Ganando La Confianza De Muchos Defensores De La Privacidad | Geek&amp;#039;s RooM</p>
+        <p class="legacy-comment-meta-pub_date">March 12, 2016 08:50 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>[&#8230;] de la privacidad, incluidos Edward Snowden y varios periodistas, entre los que se encuentra Micah Lee de la publicación The [&#8230;]</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">anon</p>
+        <p class="legacy-comment-meta-pub_date">May 2, 2014 03:05 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>What about Whonix?</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">n00b</p>
+        <p class="legacy-comment-meta-pub_date">October 28, 2014 12:03 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Hey
+A noob question here. The base OS can still be compromised by a virus transferred physically (by a USB) right? By Base OS I mean the OS used to manage all the 'APPVMs'. If that happens, does it mean all the 'APPVMS' are compromised too?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Colin Rothgang</p>
+        <p class="legacy-comment-meta-pub_date">February 20, 2015 09:56 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Yes, but the whole idea of virtualisation is that you dont use your base system for anything apart from hosting all the AppVms. This the reason for hosting the drivers of e.g. USBs in seperated AppVMs (netvm, usbvm). If you use this and assign usb devices very carefully you can protect against such threads.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Grai</p>
+        <p class="legacy-comment-meta-pub_date">May 8, 2014 05:50 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>And Qubes website is served in plain text http.
+What if you are owned when u try to download Qubes?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">micah</p>
+        <p class="legacy-comment-meta-pub_date">May 8, 2014 05:31 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Qubes provides digital signatures: <a href="http://qubes-os.org/trac/wiki/VerifyingSignatures">http://qubes-os.org/trac/wiki/VerifyingSignatures</a> and at the moment you can confirm the fingerprint over https from here: <a href="https://groups.google.com/forum/#!msg/qubes-users/CLnB5uFu_YQ/ZjObBpz0S9UJ">https://groups.google.com/forum/#!msg/qubes-users/CLnB5uFu_YQ/ZjObBpz0S9UJ</a></p>
+<p>Though since verifying gnupg signatures is hard, and most people have no idea what it even means, they really they should use HTTPS, and it looks like setting it up is in the works: <a href="https://groups.google.com/forum/#!searchin/qubes-users/https/qubes-users/d9HtPr-E6aI/vLibCaM5D6kJ">https://groups.google.com/forum/#!searchin/qubes-users/https/qubes-users/d9HtPr-E6aI/vLibCaM5D6kJ</a></p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Grai</p>
+        <p class="legacy-comment-meta-pub_date">May 9, 2014 07:20 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Thanks for ur reply.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">lance</p>
+        <p class="legacy-comment-meta-pub_date">April 14, 2014 01:57 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Take a look at mempo. All in one. Still in early process though.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Dave</p>
+        <p class="legacy-comment-meta-pub_date">April 14, 2014 04:47 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>As long as the Von Neumann model is followed, i.e. code and data in the same memory space is continued to be used, nothing is "secure."  It's not necessarily the OS's problem, it's the processor's problem.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Andrew Cady</p>
+        <p class="legacy-comment-meta-pub_date">April 14, 2014 11:56 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>You remind me of a fellow that insisted that as long as you can get a pointer, you can do anything on a system.  His mental model of computers was based on pre-386 machines without an MMU.  He didn't realize that paging meant that pointers were virtual, and having one doesn't grant you any access to real hardware memory.</p>
+<p>I'm not sure if you're making that exact error, or if you're making a similar one.  In any case, the VMX CPUs (i.e., Intel's VT-x and AMD's AMD-V) do the same thing for the CPU that the 386 did for memory.  All CPU access is now virtualized.  The "guest" OS does not have access to the hardware address space, whether that means memory or the system bus, and it does not have hardware access to privileged CPU instructions.</p>
+<p>So the CPU is already providing the security support that is necessary.  There are still some tactics for VMs to leak information between one another through cache invalidation and CPU usage, which can be observed cross-VM, but the kind of attack you are suggesting is not possible with modern hardware.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">etaye</p>
+        <p class="legacy-comment-meta-pub_date">April 9, 2015 07:41 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>can't copy &amp; paste from vmware or (ubuntu)   to Tails  browser help</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">anon64351</p>
+        <p class="legacy-comment-meta-pub_date">April 10, 2014 02:58 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>What about something like LXC?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">jaseg</p>
+        <p class="legacy-comment-meta-pub_date">April 14, 2014 03:17 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Qubes OS has a stronger security requirement. With LXC, you still have a shared kernel. The reason Qubes OS has VMs for things like storage and network is that it even distrusts your kernel. If a bug in your ethernet card's driver is found, Qubes OS's VM isolation will contain the breach. Even if your ethernet adapter contains a hardware backdoor or your wifi adaptor contains malicious firmware, Qubes OS will use your IOMMU to prevent these from accessing anything outside the NetVM.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">micah</p>
+        <p class="legacy-comment-meta-pub_date">April 14, 2014 07:21 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>When I was first looking into this sort of isolation security stuff a lot of people recommended both Qubes and LXC. I actually haven't tried LXC at all myself, but this is the same impression that I get.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">z</p>
+        <p class="legacy-comment-meta-pub_date">April 13, 2014 08:37 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Qubes is great. I also have working break-out-of-VM exploits for Xen, KVM, and ESXi. The one for Xen is weaponized for Firefox and Chrome. Have a nice day.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">-z</p>
+        <p class="legacy-comment-meta-pub_date">April 13, 2014 11:43 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>One of them was even created by the Qubes development team.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">micah</p>
+        <p class="legacy-comment-meta-pub_date">April 14, 2014 07:29 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Are you talking about this bug? <a href="https://groups.google.com/forum/#!msg/qubes-devel/JIpZoQUP6dQ/g6TvtpUHzBQJ">https://groups.google.com/forum/#!msg/qubes-devel/JIpZoQUP6dQ/g6TvtpUHzBQJ</a></p>
+<p>Or do you claim that you have zero day that works against current versions of Qubes?</p>
+<p>"The one for Xen is weaponized for Firefox and Chrome" -- so you also have a Firefox and Chrome code exec zero day?</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Anthony</p>
+        <p class="legacy-comment-meta-pub_date">April 14, 2014 05:39 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Can you boot Tails in an AppVM in the Qubes OS?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">micah</p>
+        <p class="legacy-comment-meta-pub_date">April 14, 2014 07:33 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Yes, though technically it's an HVM not an AppVM (you can boot to any ISO in an HVM). You can't do stuff like secure file transfer or secure copy/paste between the Tails HVM and other AppVMs though. And of course Tails warns you that you're running in a VM, and creating a persistent volume is hard. But it's certainly doable.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Timely</p>
+        <p class="legacy-comment-meta-pub_date">April 14, 2014 09:38 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>This is timely and interesting. You mention Linux (and Windows in parentheses). I'd like to see a system that supports OS X and other flavors of *nix as well.</p>
+<p>App sandboxing can only do so much. So I see this as the future of operating systems (or at least popular OSes taking cues from this and improving).</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">micah</p>
+        <p class="legacy-comment-meta-pub_date">April 14, 2014 10:45 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>The biggest problem with OSX is ridiculous terms that you agree in the license. For the longest time you were only allowed to virtualize OSX Server, but not the desktop version. Apparently this <a href="http://apple.stackexchange.com/questions/20965/does-apples-license-for-os-x-allow-it-to-be-virtualized-on-an-hp-pc" rel="nofollow">changed with Lion</a>?</p>
+<p>But in any case, you're only allowed to run virtual OSX on Mac hardware, which really puts a monkey wrench into all of this. It's also hard to get OSX working well in normal VM environments like Xen, VirtualBox, etc. because it normally violates the license so most people don't put serious resources into it.</p>
+<p>But if Apple ever stops being stupid and restrictive, I'm sure you'll easily be able to run Mac software in Qubes. Knowing Apple, that probably won't happen for some time.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Hardening Debian for the Desktop Using Grsecurity | Micah Lee&amp;#039;s Blog</p>
+        <p class="legacy-comment-meta-pub_date">February 15, 2016 11:42 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>[&#8230;] written in the past about how awesome Qubes is, which is also a reasonably secure operating system. So how does it [&#8230;]</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+        </div>
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name"><a href="../../../">Micah Lee's blog</a></p>
+      <p><img class="coffee" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../../../static/images/reality.png"></a></p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?<p><p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" src="../../../static/images/cc-by-nc.png"></a>
+        <br/>
+        <br/>
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

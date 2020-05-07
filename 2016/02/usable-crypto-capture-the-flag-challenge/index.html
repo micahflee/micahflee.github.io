@@ -1,0 +1,214 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>Usable Crypto Capture the Flag Challenge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="twitter:card" content="summary" />
+  
+  <meta name="twitter:site" content="@micahflee" />
+  <meta name="twitter:creator" content="@micahflee" />
+  <meta property="og:url" content="https://micahflee.com/2016/02/usable-crypto-capture-the-flag-challenge" />
+  <meta property="og:title" content="Usable Crypto Capture the Flag Challenge" />
+  
+
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    
+      <h1 class="article-title">Usable Crypto Capture the Flag Challenge</h1>
+    
+    <p class="meta">
+      Posted February 6, 2016
+      
+        in
+        
+          <a class="tag" href="../../../tags/hackers">hackers</a>
+        
+          <a class="tag" href="../../../tags/openpgp">openpgp</a>
+        
+      
+    </p>
+    
+      <p>Last week, during USENIX’s first <a href="https://www.usenix.org/conference/enigma2016">Enigma conference</a>, EFF hosted a small Capture the Flag hacking competition. I designed one of the challenges myself, entitled Usable Crypto. It requires you to use PGP as an attacker rather than a defender. It’s on the easy side, as far as CTF challenges go, and I think many people who have absolutely no hacking skills but some fumbling-around-with-PGP skills could beat it without too much trouble. And it might even demonstrate why verifying fingerprints really is rather important.</p>
+<p>If you’d like to give it a go, it’s live at <a href="https://usable-crypto.ctf.micahflee.com/">https://usable-crypto.ctf.micahflee.com/</a>. The plot for Enigma’s CTF was loosely based off of Cory Doctorow’s novel Little Brother. You’re an X-NET hacker fighting the surveillance state’s Department of National Security. You win when you capture the flag, which is a string of text that starts with “FLAG_” (but please don’t post it in the comments).</p>
+
+
+      <div id="commento"></div>
+      <script src="https://cdn.commento.io/js/commento.js"></script>
+
+      
+        
+        <div class="legacy-comments">
+          <p class="legacy-comments-notice">Legacy comments, imported from previous version of this blog:</p>
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Jasper</p>
+        <p class="legacy-comment-meta-pub_date">July 2, 2016 10:47 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I made a script to generate PGP keys and output it's public key to the clipboard to save me some time :)</p>
+<h1 id="/bin/bash">! /bin/bash</h1><p>rm key.pub
+rm key.sec
+echo 'deleted old keys'
+cat &gt; gpgparams &lt;&lt;EOF
+Key-Type: RSA
+Key-Length: 2048
+Key-Usage: encrypt
+Subkey-Type: RSA
+Subkey-Length: 2048
+Name-Real: Dept of National Security Agent
+Name-Email: agent@dns.spy
+Expire-Date: 7
+%pubring key.pub
+%secring key.sec 
+EOF</p>
+<p>echo &#039;Generating key..&#039;
+gpg --gen-key --armor --batch gpgparams
+echo &#039;Done&#039;
+cat key.pub | xclip -selection clipboard
+echo &#039;pub key copied to clipboard!&#039;</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+        </div>
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name"><a href="../../../">Micah Lee's blog</a></p>
+      <p><img class="coffee" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../../../static/images/reality.png"></a></p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?<p><p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" src="../../../static/images/cc-by-nc.png"></a>
+        <br/>
+        <br/>
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

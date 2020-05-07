@@ -1,0 +1,1734 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>Hardening Debian for the Desktop Using Grsecurity</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@micahflee" />
+  <meta name="twitter:creator" content="@micahflee" />
+  <meta property="og:url" content="https://micahflee.com/2016/01/debian-grsecurity" />
+  <meta property="og:title" content="Hardening Debian for the Desktop Using Grsecurity" />
+  <meta property="og:image" content="https://micahflee.com/2016/01/debian-grsecurity/grsec_feature.png" />
+
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="../../../2016/01/debian-grsecurity/grsec_feature.png" />
+    </p>
+    
+    
+      <h1 class="article-title">Hardening Debian for the Desktop Using Grsecurity</h1>
+    
+    <p class="meta">
+      Posted January 15, 2016
+      
+        in
+        
+          <a class="tag" href="../../../tags/sysadmin">sysadmin</a>
+        
+          <a class="tag" href="../../../tags/security">security</a>
+        
+          <a class="tag" href="../../../tags/linux">linux</a>
+        
+      
+    </p>
+    
+      <p>I recently built a desktop system that I think is reasonably secure. It’s running Debian sid, also known as “unstable” — though in the Debian desktop world that just means you get to use the newest software. It’s just about as stable as “stable”, and besides, #yolo. It’s also running a <a href="https://grsecurity.net/">grsecurity</a>-patched Linux kernel and <a href="https://en.wikipedia.org/wiki/Grsecurity#PaX">PaX</a>, technologies that make Linux way more secure. Grsecurity protects you against memory corruption attacks, such as buffer overflows.</p>
+<p>Last October I traveled to Moscow and <a href="https://theintercept.com/2015/11/12/edward-snowden-explains-how-to-reclaim-your-privacy/">interviewed Edward Snowden</a>. Here’s one of the things he told me:</p>
+<blockquote><p>“Something that we haven’t seen that we need to see is a greater hardening of the overall kernels of every operating system through things like grsecurity, but unfortunately there’s a big usability gap between the capabilities that are out there, that are possible, and what is attainable for the average user.”</p>
+</blockquote>
+<p>Since I just set up Debian with a grsec kernel, I figured I’d write a tutorial for how to do it. It’s still a long way before the average user can take advantage of this stuff – it breaks everything, and the user needs to learn how to diagnose and fix it themselves – but I think that it’s well within the capabilities of Linux nerds who are comfortable using a terminal. You can probably also follow along no matter what Linux distribution you’re using. Also, I’m fairly new to grsecurity myself, so if you have tips or suggestions, or if I got something wrong, please post in the comments.</p>
+<p>Grsecurity can be used with very little configuration. Just by baking it into your kernel, entire classes of exploits will fail to work against you, but those same exploits will succeed against someone running a vanilla Linux kernel. Grsecurity also lets you enforce access controls, but that’s outside the scope of this article. Just running a grsec kernel gives you a lot of protection for free.</p>
+<p>First, I’m going to explain a little bit about what grsec is and how it protects you. Then I’m going to install Debian and upgrade it to sid. Then I’m going to download the Linux source code and the grsecurity patch, verify digital signatures, patch the Linux kernel, and finally compile it. (If you’ve never compiled the Linux kernel before, you’re in for a treat!) Then I’m going to show you how to use paxctl to turn off certain PaX protections on specific binaries so that they can run without crashing. And finally, I’m going to briefly show you how to troubleshoot grsec and PaX, so you can make software work that would otherwise crash, all on your own.</p>
+<p><strong>How does grsecurity make Linux more secure?</strong></p>
+<p>Memory corruption attacks normally work something like this: The target accepts malicious input into a program (maybe they load a GIF in an image viewing program, or a document in LibreOffice, or a malformed PGP public key in GnuPG). This input includes an exploit – some code that triggers a security bug in whatever software it’s targeting – as well as a small block of malicious code called shellcode. When the buggy software parses the input, the exploit takes over the flow of execution and jumps into the attacker’s shellcode. Shellcode can do many different things, but it commonly gives the attacker a remote shell – basically, letting them run commands on the victim’s computer (with the permissions of the user who was running the program that got hacked).</p>
+<p>Grsecurity protects you by being extremely strict about which parts of memory are allowed to get executed. If it sees a program try to execute some code in the wrong part of memory, it kills the process, which will thwart attacks. So if a target using a grsec-patched kernel loads a malicious PDF in a vulnerable PDF reader, and it exploits a bug and tries to jump to shellcode, grsec will kill the process and log this to <code>/var/log/syslog</code>.</p>
+<p>Unfortunately, grsec doesn’t know which programs are <em>supposed</em> to jump into user-loaded memory – it turns out quite a few programs do. For example, web browsers are able to load websites that include JavaScript. In order to improve performance, they convert the JavaScript code to machine code and then jump into it to execute it (this is called Just In Time compilation, or JIT). When grsec notices this, it will kill your web browser process.</p>
+<p>You can still run a web browser with grsec, but you need to set a PaX flag (more on this below) to disable memory protections on that specific executable binary. This means your browser won’t immediately crash when you open it, but it also means that if an attacker is able to exploit a bug in it, they may be able to succeed in running their shellcode. Likewise, you often need to disable memory protection on programming language interpreters, such as <code>/usr/bin/python2</code>, <code>/usr/bin/python3</code>, and <code>/usr/lib/jvm/java-7-openjdk-amd64/jre/bin/java</code>.</p>
+<p>So it’s not perfect. But even with disabling memory protections on specific binaries, you still get a lot of protection. Most programs work fine without having to disable any protections, and grsec makes it extremely hard for an attacker to escalate privileges. So if someone does manage to hack your web browser and get a shell, grsec will probably prevent them from getting root. Or if you’re a web developer and are running Apache with an old vulnerable WordPress on it that someone on your wifi notices and hacks, grsec will probably prevent them from accessing any data that isn’t readable from the <code>www-data</code> user, even if they come armed with Linux privilege escalation exploits.</p>
+<p><strong>Installing Debian sid</strong></p>
+<p>Debian doesn’t release sid installation images. Instead you need to install an earlier version of Debian and upgrade to sid. So go and grab the <a href="https://www.debian.org/distrib/netinst">latest stable netinst iso</a>, probably the amd64 one.</p>
+<p>You also may want to verify the signature of the iso. As of this writing, the latest stable is 8.2.0, and the iso URL is <code>http://cdimage.debian.org/debian-cd/8.2.0/amd64/iso-cd/debian-8.2.0-amd64-netinst.iso</code>. If you drop the filename part of the path and just load <code>http://cdimage.debian.org/debian-cd/8.2.0/amd64/iso-cd/</code>, you’ll see several files to downloading, including <code>SHA512</code> and <code>SHA512.sign</code>. Download both of those. The <code>SHA512</code> file contains <code>SHA512</code> checksums of all of the isos for that version of Debian, including <code>debian-8.2.0-amd64-netinst.iso</code>.</p>
+<p>Make sure you have the key that Debian uses to sign their releases. You can <a href="https://www.debian.org/CD/verify">find its fingerprint here</a>. For Debian 8, the signing key fingerprint is <code>DF9B 9C49 EAA9 2984 3258 9D76 DA87 E80D 6294 BE9B</code> (as of the time of writing), and you can get the key by running this:</p>
+<pre><code>$ gpg --recv-keys DF9B9C49EAA9298432589D76DA87E80D6294BE9B
+</code></pre>
+<p>Now you can verify the signature:</p>
+<pre><code>$ gpg --verify SHA512SUMS.sign                                                                                            
+gpg: assuming signed data in 'SHA512SUMS'
+gpg: Signature made Fri 11 Sep 2015 08:13:34 AM PDT using RSA key ID 6294BE9B
+gpg: Good signature from "Debian CD signing key &lt;debian-cd@lists.debian.org&gt;" [unknown]
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: DF9B 9C49 EAA9 2984 3258  9D76 DA87 E80D 6294 BE9B
+</code></pre>
+<p>Make sure it says <code>Good signature from "Debian CD signing key &lt;debian-cd@lists.debian.org&gt;"</code>. Great! Now, take a SHA512 checksum of the iso (note that your checksum might be different, if you’ve downloaded a newer version of Debian than I did):</p>
+<pre><code>$ sha512sum debian-8.2.0-amd64-netinst.iso                                                                                
+923cd1bfbfa62d78aecaa92d919ee54a95c8fca834b427502847228cf06155e7243875f59279b0bf6bfd1b579cbe2f1bc80528a265dafddee9a9d2a197ef3806  debian-8.2.0-amd64-netinst.iso
+</code></pre>
+<p>Now let’s check to see if that checksum is in the SHA512 file.</p>
+<pre><code>$ cat SHA512SUMS | grep 923cd1bfbfa62d78aecaa92d919ee54a95c8fca834b427502847228cf06155e7243875f59279b0bf6bfd1b579cbe2f1bc80528a265dafddee9a9d2a197ef3806
+923cd1bfbfa62d78aecaa92d919ee54a95c8fca834b427502847228cf06155e7243875f59279b0bf6bfd1b579cbe2f1bc80528a265dafddee9a9d2a197ef3806  debian-8.2.0-amd64-netinst.iso
+</code></pre>
+<p>Great, the signed <code>SHA512</code> file shows the same checksum for <code>debian-8.2.0-amd64-netinst.iso</code> that I got manually. This means that I’ve confirmed that the Debian netinst iso I downloaded hasn’t been tampered with.</p>
+<p>Finally, burn the iso to a CD or <code>dd</code> it to a USB stick, boot to it, and install Debian.</p>
+<p>Note that when it asks for you to come up with a root password, you can leave it blank. If you do this, then Debian will make your user a sudoer. This might be more familiar to you if you’re used to Ubuntu or Mac OS X.</p>
+<p>When you get to the “Partition disks” screen, choose “Guided – use entire disk and set up encrypted LVM” in order to set up full disk encryption. You’ll need to come up with a <a href="https://theintercept.com/2015/03/26/passphrases-can-memorize-attackers-cant-guess/">strong passphrase</a>.</p>
+<p><img src="../../../2016/01/debian-grsecurity/grsec1.png" alt="Full disk encryption"></p>
+<p>When you get to the “Software selection” screen, make sure to select GNOME as your desktop environment. That’s what I’m using, and this tutorial includes setting a PaX flag to make GNOME work.</p>
+<p><img src="../../../2016/01/debian-grsecurity/grsec2.png" alt="Install GNOME desktop environment"></p>
+<p>Reboot into your freshly installed Debian, mount your encrypted hard drive, and login. Now it’s time to upgrade from stable to sid. Open a terminal and edit the /etc/apt/source.list file as root.</p>
+<p>It starts out looking like this:</p>
+<pre><code># 
+
+# deb cdrom:[Debian GNU/Linux 8.2.0 _Jessie_ - Official amd64 NETINST Binary-1 20150906-11:09]/ jessie main
+
+#deb cdrom:[Debian GNU/Linux 8.2.0 _Jessie_ - Official amd64 NETINST Binary-1 20150906-11:09]/ jessie main
+
+deb http://ftp.us.debian.org/debian/ jessie main
+deb-src http://ftp.us.debian.org/debian/ jessie main
+
+deb http://security.debian.org/ jessie/updates main
+deb-src http://security.debian.org/ jessie/updates main
+
+# jessie-updates, previously known as 'volatile'
+deb http://ftp.us.debian.org/debian/ jessie-updates main
+deb-src http://ftp.us.debian.org/debian/ jessie-updates main
+</code></pre>
+<p>We can delete the cdrom comments, and also we can delete the security and updates repositories. Since we’re updating to sid, we get all of the latest versions of all packages, which already includes security updates. And finally, change the “jessie” to “sid”, so that the result file looks like this:</p>
+<pre><code>deb http://ftp.us.debian.org/debian/ sid main
+deb-src http://ftp.us.debian.org/debian/ sid main
+</code></pre>
+<p>Save and exit. Now, update all of the software. This will take awhile. And finally, reboot into sid.</p>
+<pre><code>$ sudo apt-get update
+$ sudo apt-get dist-upgrade
+$ sudo apt-get autoremove
+$ sudo reboot
+</code></pre>
+<p><strong>Compiling the grsec-patched Linux kernel</strong></p>
+<p>The Debian wiki’s <a href="https://wiki.debian.org/grsecurity">grsecurity page</a> implies that linux-grsec is packaged in sid already, but it <a href="https://packages.debian.org/search?suite=sid&amp;searchon=names&amp;keywords=linux-grsec">doesn’t seem available</a> yet. In the future this will be much simpler, but for now we can compile the Linux kernel ourselves.</p>
+<p><strong>Update:</strong> Grsecurity is indeed packaged in sid. The package name (right now) is <code>linux-image-4.3.0-1-grsec-amd64</code>, so you can apt-get install that instead of compiling it yourself if you want.</p>
+<p><a href="https://xkcd.com/456/"><img src="../../../2016/01/debian-grsecurity/xkcd-cautionary.png" alt="Cautionary"></a></p>
+<p>Start by installing dependencies:</p>
+<pre><code>$ sudo apt-get install libncurses5-dev build-essential fakeroot kernel-package gcc-5 gcc-5-plugin-dev make
+</code></pre>
+<p>Download the public keys that are used to sign the Linux kernel source as well as the grsecurity patch. You can find the latest Linux kernel signing key <a href="https://kernel.org/category/signatures.html">here</a>, and you you can find the latest grsecurity signing key at the bottom of <a href="https://grsecurity.net/download.php">this page</a>.</p>
+<p>At the time of writing, here’s how to download the two signing keys:</p>
+<pre><code>$ gpg --recv-keys 647F28654894E3BD457199BE38DBBDC86092693E
+$ gpg --recv-keys DE9452CE46F42094907F108B44D1C0F82525FE49
+</code></pre>
+<p>Now download the Linux source code and the grsecurity patch. You’re going to need to download the latest stable version (not any of the longterm versions), because the grsecurity project only releases that version publicly. Because these versions numbers change constantly, I’m not going to provide direct links.</p>
+<p>Download the latest stable Linux source, as well as the associated PGP signature file, from kernel.org. The files I’m downloading are called <code>linux-4.3.3.tar.xz</code> and <code>linux-4.3.3.tar.sign</code>.</p>
+<p>Download the corresponding grsecurity patch, as well as the associated PGP signature file, from grsecurity.net. This will be under the header “test kernel patch”. The files I’m downloading are called <code>grsecurity-3.1-4.3.3-201601051958.patch</code> and <code>grsecurity-3.1-4.3.3-201601051958.patch.sig</code>.</p>
+<p>If you’re following along with a version of Linux that’s newer than 4.3.3, type the following instructions yourself instead of copying and pasting, so that the commands correspond with the version of Linux and grsec that you downloaded.</p>
+<p>Decompress the Linux source code.</p>
+<pre><code>$ unxz linux-4.3.3.tar.xz
+</code></pre>
+<p>Verify the signatures. The output of both of these should say “Good signature”.</p>
+<pre><code>$ gpg --verify linux-4.3.3.tar.sign
+$ gpg --verify grsecurity-3.1-4.3.3-201601051958.patch.sig
+</code></pre>
+<p>If all went well, extract the Linux source code and then apply the grsec patch.</p>
+<pre><code>$ tar -xf linux-4.3.3.tar
+$ cd linux-4.3.3/
+$ patch -p1 &lt; ../grsecurity-3.1-4.3.3-201601051958.patch
+</code></pre>
+<p>Start with your existing Linux kernel configuration. Note that it’s possible that your config file might be named differently if you currently have a different version of the Linux kernel installed, so make sure you use the right filename.</p>
+<pre><code>$ cp /boot/config-4.3.0-1-amd64 .config
+$ make menuconfig
+</code></pre>
+<p>Navigate to Security options, Grsecurity, and make sure it’s enabled. Then go to Configuration Method and set it to Automatic. Go to Usage Type and change it to Desktop. Go to <code>Virtualization Type</code> and set it to None (unless you’re testing this in a VM, then make sure you choose the right hypervisor). Go to <code>Required Properties</code> and set it to <code>Security</code>.</p>
+<p><img src="../../../2016/01/debian-grsecurity/grsec3.png" alt="Linux kernel options"></p>
+<p>Now save and exit.</p>
+<p>You can use all of your CPU cores to make compiling the Linux kernel faster by running this.</p>
+<pre><code>$ export CONCURRENCY_LEVEL="$(grep -c '^processor' /proc/cpuinfo)"
+</code></pre>
+<p>Now compile the kernel. This will probably take a really long time. When you’re done you’ll have a deb file you can install.</p>
+<pre><code>$ fakeroot make-kpkg --initrd kernel_image
+</code></pre>
+<p>When this finishes, install the new Linux kernel image.</p>
+<pre><code>$ cd ..
+$ sudo dpkg -i linux-image-4.3.3-grsec_4.3.3-grsec-10.00.Custom_amd64.deb
+</code></pre>
+<p>Now let’s make sure you GRUB boots into this kernel image by default. Figure out what the kernel version string that GRUB will use is called.</p>
+<pre><code>$ grep menuentry /boot/grub/grub.cfg | cut -d "'" -f2 | grep "grsec$"
+Debian GNU/Linux, with Linux 4.3.3-grsec
+</code></pre>
+<p>Now edit <code>/etc/default/grub</code> and change the <code>GRUB_DEFAULT=</code> line be to <code>"Advanced options for Debian GNU\/Linux&gt;</code> followed by the kernel version string. Put the whole things in quotes, like this: <code>GRUB_DEFAULT="Advanced options for Debian GNU\/Linux&gt;Debian GNU/Linux, with Linux 4.3.3-grsec"</code></p>
+<p><img src="../../../2016/01/debian-grsecurity/grsec4.png" alt="GRUB config"></p>
+<p>Save and exit, and then upgrade grub.</p>
+<pre><code>$ sudo update-grub
+</code></pre>
+<p>Before rebooting into the grsec kernel, we need to install PaX tools, which will let us disable memory protections on specific userland binaries.</p>
+<pre><code>$ sudo apt-get install paxtest paxctl
+$ sudo reboot
+</code></pre>
+<p>When you boot into the new kernel, everything will be broken.</p>
+<p>This is because grsec is killing the <code>gnome-shell</code> process. In order to make your desktop environment work, you need to disable memory protections on the <code>gnome-shell</code> binary.</p>
+<p>Press Ctrl-Alt F1 to switch to tty1 and login without graphics. Then disable memory protections on <code>/usr/bin/gnome-shell</code> using <code>paxctl</code> (more on how this tool works below).</p>
+<p><img src="../../../2016/01/debian-grsecurity/grsec5.png" alt="Fix gnome-shell"></p>
+<p>Here’s the command to run.</p>
+<pre><code>$ sudo paxctl -cm /usr/bin/gnome-shell
+</code></pre>
+<p>Reboot again, and this time GNOME should work.</p>
+<pre><code>$ sudo reboot
+</code></pre>
+<p>Login to your account, and open a terminal to do a few final steps.</p>
+<p>Edit <code>/etc/sysctl.conf</code> (as root) and add these lines:</p>
+<pre><code>kernel.grsecurity.rwxmap_logging = 0
+kernel.grsecurity.grsec_lock = 1
+</code></pre>
+<p>And activate them.</p>
+<pre><code>$ sudo sysctl -p
+</code></pre>
+<p>Now, make sure that grsecurity is really working like it should.</p>
+<pre><code>$ paxtest blackhat
+PaXtest - Copyright(c) 2003,2004 by Peter Busser 
+Released under the GNU Public Licence version 2 or later
+
+Writing output to /home/micah/paxtest.log
+It may take a while for the tests to complete
+Test results:
+PaXtest - Copyright(c) 2003,2004 by Peter Busser 
+Released under the GNU Public Licence version 2 or later
+
+Mode: Blackhat
+Linux rey 4.3.3-grsec #3 SMP Mon Jan 11 12:42:40 PST 2016 x86_64 GNU/Linux
+
+Executable anonymous mapping             : Killed
+Executable bss                           : Killed
+Executable data                          : Killed
+Executable heap                          : Killed
+Executable stack                         : Killed
+Executable shared library bss            : Killed
+Executable shared library data           : Killed
+Executable anonymous mapping (mprotect)  : Killed
+Executable bss (mprotect)                : Killed
+Executable data (mprotect)               : Killed
+Executable heap (mprotect)               : Killed
+Executable stack (mprotect)              : Killed
+Executable shared library bss (mprotect) : Killed
+Executable shared library data (mprotect): Killed
+Writable text segments                   : Killed
+Anonymous mapping randomisation test     : 28 bits (guessed)
+Heap randomisation test (ET_EXEC)        : 23 bits (guessed)
+Heap randomisation test (PIE)            : 35 bits (guessed)
+Main executable randomisation (ET_EXEC)  : 28 bits (guessed)
+Main executable randomisation (PIE)      : 28 bits (guessed)
+Shared library randomisation test        : 28 bits (guessed)
+Stack randomisation test (SEGMEXEC)      : 35 bits (guessed)
+Stack randomisation test (PAGEEXEC)      : 35 bits (guessed)
+Arg/env randomisation test (SEGMEXEC)    : 39 bits (guessed)
+Arg/env randomisation test (PAGEEXEC)    : 39 bits (guessed)
+Randomization under memory exhaustion @~0: 29 bits (guessed)
+Randomization under memory exhaustion @0 : 28 bits (guessed)
+Return to function (strcpy)              : paxtest: return address contains a NULL byte.
+Return to function (memcpy)              : Killed
+Return to function (strcpy, PIE)         : paxtest: return address contains a NULL byte.
+Return to function (memcpy, PIE)         : Killed
+</code></pre>
+<p>Congratulations, you’re running Debian with a hardened grsecurity kernel! But you’re not done yet. Lots of your software is going to crash as soon as your run it. The next section shows you how to fix that.</p>
+<p><em>Thanks to the Kevin Gallagher and the <a href="https://freedom.press/">Freedom of the Press Foundation</a> staff for making a great <a href="https://gist.github.com/ageis/a91f36ca99c252291a00">guide</a> that I mostly based this section off of.</em></p>
+<p><strong>Setting PaX flags so you can actually use your computer</strong></p>
+<p>Grsecurity automatically kills processes that use memory in a way that could be an attack. But many programs legitimately use memory this way. In order to use those programs, you need to set PaX flags on their binaries — these flags actually get stored in the binary file’s header. <code>paxctl</code> is a program that lets you view and set these flags.</p>
+<pre><code>$ sudo paxctl -h
+PaX control v0.9
+Copyright 2004,2005,2006,2007,2009,2010,2011,2012,2014 PaX Team 
+
+usage: paxctl  
+
+options:
+    -p: disable PAGEEXEC        -P: enable PAGEEXEC
+    -e: disable EMUTRAMP        -E: enable EMUTRAMP
+    -m: disable MPROTECT        -M: enable MPROTECT
+    -r: disable RANDMMAP        -R: enable RANDMMAP
+    -x: disable RANDEXEC        -X: enable RANDEXEC
+    -s: disable SEGMEXEC        -S: enable SEGMEXEC
+
+    -v: view flags          -z: restore default flags
+    -q: suppress error messages -Q: report flags in short format
+    -c: convert PT_GNU_STACK into PT_PAX_FLAGS (see manpage!)
+    -C: create PT_PAX_FLAGS (see manpage!)
+</code></pre>
+<p>Earlier we ran <code>paxctl -cm /usr/bin/gnome-shell</code>. The <code>-c</code> modified the binary so that it’s able to accept PaX flags, and the <code>-m</code> disabled <code>MPROTECT</code> — basically meaning that that specific binary is allowed to do stuff that grsec would kill other binaries it caught doing. You can view the flags that are set like this.</p>
+<pre><code>$ sudo paxctl -v /usr/bin/gnome-shell                                        
+PaX control v0.9
+Copyright 2004,2005,2006,2007,2009,2010,2011,2012,2014 PaX Team 
+
+- PaX flags: -----m-x-e-- [/usr/bin/gnome-shell]
+    MPROTECT is disabled
+    RANDEXEC is disabled
+    EMUTRAMP is disabled
+</code></pre>
+<p>For the most part, all you’ll ever need to do is use <code>paxctl -cm</code> on a binary that you trust to run without <code>MPROTECT</code>. You can always run <code>paxctl -M</code> to enable <code>MPROTECT</code> on it again.</p>
+<p>There’s also a cool looking project called <a href="https://github.com/subgraph/paxrat">paxrat</a>, developed by Subgraph, that helps you manage PaX flags. It’s not yet packaged for Debian, and I haven’t yet tested it out, but I look forward to playing with it. For now we can just use paxctl.</p>
+<p>To start, let’s set PaX flags for some GRUB binaries.</p>
+<pre><code>$ sudo paxctl -cpm /usr/sbin/grub-probe
+$ sudo paxctl -cpm /usr/sbin/grub-mkdevicemap
+$ sudo paxctl -cpm /usr/sbin/grub-install
+$ sudo paxctl -cpm /usr/bin/grub-script-check
+$ sudo paxctl -cpm /usr/bin/grub-mount
+</code></pre>
+<p>And python interpreters.</p>
+<pre><code>$ sudo paxctl -cm /usr/bin/python2
+$ sudo paxctl -cm /usr/bin/python3
+</code></pre>
+<p>One issue I’ve run into when trying to set PaX flags with <code>paxctl</code> is an error message that says “Text file busy”. If you run into this issue, you can kill any processes of that binary that are running and then try again. If you have a hard time keeping a process killed, you might try rebooting into recovery mode to set its PaX flags.</p>
+<p>How do you know what binaries you should set PaX flags on? Grsec logs its error messages to <code>/var/log/syslog</code>, so let’s start by opening a new terminal and watching all of the grsec error messages that scroll by.</p>
+<pre><code>$ sudo tail -f /var/log/syslog | grep grsec
+</code></pre>
+<p>Now, in a new terminal window, try opening Iceweasel by running its binary.</p>
+<pre><code>$ iceweasel
+Gtk-Message: Failed to load module "canberra-gtk-module"
+Killed
+</code></pre>
+<p>Iceweasel was killed by grsec, and here’s the error message that was logged to <code>/var/log/syslog</code>.</p>
+<pre><code>Jan 11 18:18:25 debian kernel: [  286.128581] grsec: denied resource by requesting 4096 for RLIMIT_CORE against limit 0 for /usr/lib/iceweasel/iceweasel[iceweasel:1991] uuid/euid:1000/1000 gid:egid:1000/1000, parent /bin/bash[1417] uid/euid:1000/1000 gid/egid:1000/1000
+</code></pre>
+<p>The important bits there are grsec: <code>denied resource and /usr/lib/iceweasel/iceweasel</code>. (Note that <code>/usr/bin/iceweasel</code> is a symlink to <code>/usr/lib/iceweasel/iceweasel</code>, so this is in fact the Iceweasel binary.)</p>
+<p>If you want to use Iceweasel (and risk turning off its memory protections), then use paxctl to disable <code>MPROTECT</code>.</p>
+<pre><code>$ sudo paxctl -cm /usr/lib/iceweasel/iceweasel
+</code></pre>
+<p>Now trying running iceweasel again. It should just open this time!</p>
+<p>Now, try opening a new tab. My syslog window throws two more errors.</p>
+<pre><code>Jan 11 18:26:48 debian kernel: [  788.651798] grsec: denied resource overstep by requesting 4096 for RLIMIT_CORE against limit 0 for /usr/lib/iceweasel/plugin-container[Web Content:2100] uid/euid:1000/1000 gid/egid:1000/1000, parent /usr/lib/iceweasel/iceweasel[Gecko_IOThread:2041] uid/euid:1000/1000 gid/egid:1000/1000
+Jan 11 18:26:48 debian kernel: [  788.818013] grsec: denied resource overstep by requesting 4096 for RLIMIT_CORE against limit 0 for /usr/lib/iceweasel/plugin-container[Web Content:2114] uid/euid:1000/1000 gid/egid:1000/1000, parent /usr/lib/iceweasel/iceweasel[Gecko_IOThread:2041] uid/euid:1000/1000 gid/egid:1000/1000
+</code></pre>
+<p>It looks like each time you open a tab, Iceweasel tries running <code>/usr/lib/iceweasel/plugin-container</code> in a subprocess, and grsec kills that process. However, Iceweasel appears to work fine without it, so no big deal. Since it hasn’t affected me yet, I’m going to keep <code>MPROTECT</code> enabled on that binary. If you need to run a plugin in Iceweasel and grsec prevents that from working, then you might consider disabling <code>MPROTECT</code>.</p>
+<p>Let’s try another: Tor Browser. The easiest way to install Tor Browser is to use <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a> (a piece of software I wrote… ehem.)</p>
+<p>Edit <code>/etc/apt/sources.list</code> as root, add the “contrib” repository.</p>
+<pre><code>deb http://ftp.us.debian.org/debian/ sid main contrib
+deb-src http://ftp.us.debian.org/debian/ sid main contrib
+</code></pre>
+<p>Now install Tor Browser Launcher.</p>
+<pre><code>$ sudo apt-get update
+$ sudo apt-get install torbrowser-launcher
+</code></pre>
+<p>Now try launching Tor Browser.</p>
+<pre><code>$ torbrowser-launcher
+</code></pre>
+<p>It should pop up a window and download the Tor Browser tarball for the first time. It should also download its PGP signature, verify the signature, extract the tarball, and then try to launch Tor Browser. But when it does, grsec kills the process.</p>
+<pre><code>Jan 11 18:38:24 debian kernel: [ 1485.423982] grsec: denied resource overstep by requesting 4096 for RLIMIT_CORE against limit 0 for /home/micah/.local/share/torbrowser/tbb/x86_64/tor-browser_en-US/Browser/firefox[firefox:3954] uid/euid:1000/1000 gid/egid:1000/1000, parent /lib/systemd/systemd[systemd:1] uid/euid:0/0 gid/egid:0/0
+</code></pre>
+<p>Tor Browser is trying to run the <code>/home/micah/.local/share/torbrowser/tbb/x86_64/tor-browser_en-US/Browser/firefox</code> binary, and it fails for the exact same reason that Iceweasel fails. To fix it, disable <code>MPROTECT</code> on that binary.</p>
+<pre><code>$ sudo paxctl -cm /home/micah/.local/share/torbrowser/tbb/x86_64/tor-browser_en-US/Browser/firefox
+$ torbrowser-launcher
+</code></pre>
+<p>This time, Tor Browser will launch without any crashes or grsec errors.</p>
+<p><strong>How does Debian with grsecurity compare to Qubes?</strong></p>
+<p>I’ve <a href="https://micahflee.com/2014/04/the-operating-system-that-can-protect-you-even-if-you-get-hacked/">written in the past</a> about how awesome <a href="https://www.qubes-os.org/">Qubes</a> is, which is also a reasonably secure operating system. So how does it compare to Debian with a grsec kernel?</p>
+<p>In Qubes, you separate your computer into different security domains (also known as AppVMs), but in each of these domains you’re basically running a normal, non-hardened OS. If an attacker hacks you, they only have access to data in a single security domain, and the rest of your data remains safe. In Debian/grsec — like in every non-Qubes operating system that’s currently available, including Windows, Mac OS X, Ubuntu, Arch, etc. — you only have one security domain, so if an attacker hacks you it’s basically game over. But grsec makes it harder for an attacker to successfully hack you. (I’m looking forward to the release <a href="https://subgraph.com/sgos/">Subgraph OS</a>, which will be the second desktop operating system designed for compartmentalization, and which will be based on Debian, grsec, and Linux containers.)</p>
+<p>For example, let’s say an attacker sends you a malicious PDF that secretly exploits a bug in Evince, a popular Linux PDF viewer. Pretend you’re running Qubes and decide to open this PDF in your “personal” security domain that you use for non-work related stuff (really you should open it in a disposable VM, but maybe you didn’t think it was that risky or something). The PDF exploits the bug in Evince and jumps into the attacker’s shellcode, and now the attacker can run whatever commands they want and access any of your data, but only within your “personal” AppVM. They can’t access any of the files in your “work” domain, or your “email” domain, or the networkless “vault” domain that you use to store your PGP secret keys and password databases.</p>
+<p>Now pretend you’re running Debian/grsec. You open the PDF, it exploits the bug in Evince and tries to jump to the attacker’s shellcode, but grsec detects that your Evince process is trying to execute code in an off-limits part of memory and kills the process. Evince immediately closes, grsec logs an error to syslog, and you don’t get hacked at all. In this case, grsec completely prevented the attack, while Qubes only contained it.</p>
+<p>But now let’s change the example. Instead of Evince, the attacker is exploiting a bug in Iceweasel. If you’re using Qubes, the attacker only hacks the domain that you’re running Iceweasel in. If you’re using Debian/grsec (and you disabled <code>MPROTECT</code> on <code>/usr/lib/iceweasel/iceweasel</code> like we did above), the attacker’s shellcode will run and they’ll have access to all of your files, be able to log your keystrokes, etc. They might have a very difficult time getting root, which will make it harder for them to install a persistent backdoor, but that’s little consolation.</p>
+<p>Hardening your kernel with grsecurity is great because it makes it much harder for attacks against you to succeed, but it still doesn’t make it so you can compartmentalize your computer the way that Qubes does. It’s also important to remember that grsec mostly protects you against memory corruption bugs, but other types of security issues exist too. You might run an ssh server and use a crappy password. You might get tricked into copying and pasting something malicious into your terminal. You might be running buggy software that can be exploited without jumping into forbidden memory space, so grsec won’t catch it.</p>
+<p>There’s another big difference between Qubes and Debian/grsec: Usability.</p>
+<p>Qubes isn’t terribly hard to use (for experienced Linux nerds), but it does require shifting the paradigm about how you think about operating systems, and working around software that isn’t designed for it. For example, it’s not uncommon to have four or five different web browsers open at the same time, all running in different security domains for different purposes. If someone sends you a link, you can’t just click it. You have to decide which domain you’d like to open it in first, and then copy it into that domain’s clipboard before pasting it into a browser. There’s also still a lot of work to be done to make USB devices usable in Qubes. If you want to do some Android development, it’s not the simplest task yet to get Android Studio installed and communicating with your phone over a USB port in an AppVM. Same with video chat. And same with figuring out a workflow to take a screenshot, crop it, and then tweet it. Many tasks are complicated in Qubes simply because you have to deal with compartmentalization and the limitations of virtualizing all of your software — but this is also what gives Qubes its strength.</p>
+<p>Debian with grsec doesn’t require this paradigm shift. Once you get past the initial PaX learning curve and make sure that the software you use most often all works, then it’s just like using any other operating system — but you get the invisible-but-awesome benefits of having a hardened kernel. USB devices, webcams, screenshots, and everything else work just like you’re used to. So if you’re not quite ready for Qubes, or if you can’t run Qubes for your specific work for whatever reason, Debian/grsec might be a good choice for you.</p>
+<p>The best of both worlds would be running Qubes, but with AppVMs that have grsecurity-patched Linux kernels. This is entirely possible, but no one has yet succeeded in doing it.</p>
+
+
+      <div id="commento"></div>
+      <script src="https://cdn.commento.io/js/commento.js"></script>
+
+      
+        
+        <div class="legacy-comments">
+          <p class="legacy-comments-notice">Legacy comments, imported from previous version of this blog:</p>
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Patrick</p>
+        <p class="legacy-comment-meta-pub_date">January 31, 2016 02:13 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Great article.  To help some users with firmware, here's excellent reference:</p>
+<p><a href="https://www.linux.com/learn/tutorials/806072-how-to-install-firmware-in-debian-to-enable-wireless-video-or-sound/">https://www.linux.com/learn/tutorials/806072-how-to-install-firmware-in-debian-to-enable-wireless-video-or-sound/</a></p>
+<p>Also, I recommend users to edit  /etc/apt/sources.list  to have the following -</p>
+<p>deb <a href="http://ftp.it.debian.org/debian/">http://ftp.it.debian.org/debian/</a> sid main contrib non-free
+deb-src <a href="http://ftp.it.debian.org/debian/">http://ftp.it.debian.org/debian/</a> sid main contrib non-free</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Rick Valenzuela</p>
+        <p class="legacy-comment-meta-pub_date">November 3, 2016 11:09 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>FYI for those installing from the Debian repo, and especially if you're having trouble at the sysctl step. I was denied trying to activate sysctl , but then was able to change the proper variables/values in /etc/sysctl.d/grsec.conf. I don't know if that's a new sid update, but I've referred to this blog post before and hadn't previously hung up on that step.</p>
+<p>Thanks for the tutorial!</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Luis</p>
+        <p class="legacy-comment-meta-pub_date">October 18, 2016 06:42 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Hi,
+I tried to install grsec on my disto Debian Jessie 8 Stable.  I did the exactly steps, changed the sources.list did the apt-get dist-upgrade etc (..) reboot. However when I start to compile and try to install dependencies ( $ sudo apt-get install libncurses5-dev build-essential fakeroot kernel-package gcc-5 gcc-5-plugin-dev make ) I get this error <a href="http://beta.pastee.com/29ck9">http://beta.pastee.com/29ck9</a>.</p>
+<p>Can someone help me to get pass this step?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">luis</p>
+        <p class="legacy-comment-meta-pub_date">October 19, 2016 04:07 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Problem solved. 
+The repositories on sources.list were not correct.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Newsletter CyberSécurité semaine 4 - Adacis</p>
+        <p class="legacy-comment-meta-pub_date">January 23, 2016 12:23 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>[&#8230;] HOT ! Retour d&rsquo;expérience sur le durcissement Debian avec GrSecurity [&#8230;]</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">asdf</p>
+        <p class="legacy-comment-meta-pub_date">August 15, 2016 02:39 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I can't verify the kernel. It's signed by FF992F6D and not the official signing key. I've tried re-downloading a bunch of times.</p>
+<p>Wtf is going on? Am I doing something wrong?</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Kevin Gallagher</p>
+        <p class="legacy-comment-meta-pub_date">January 15, 2016 04:57 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Yay! Great post, and thanks for the shoutout. Two notes:</p>
+<p>Desktop users may want to compile the kernel_headers package too (add it to the make-kpkg command), since many drivers (ex. Nvidia, Radeon, VirtualBox, Openswan) require the kernel headers to be installed in order for DKMS (Dynamic Kernel Module Support) to work.</p>
+<p>Secondly, you may want to look into using <a href="https://grsecurity.net/paxctld/paxctld_1.0-4_amd64.deb" rel="nofollow">paxctld</a> or Subgraph's <a href="https://github.com/subgraph/paxrat" rel="nofollow">paxrat</a> for a daemon to manage PaX flags on binaries. The issue is that every time packages are updated (eg. Python, Iceweasel, GRUB) they will lose the headers, making it necessary to run paxctl again. You can make all that configuration persistent in /etc/paxctld.conf, and paxtld will apply the flags on any update to the binaries specified in that configuration file. Unfortunately, neither of these packages are in Debian repos as yet.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Corsac</p>
+        <p class="legacy-comment-meta-pub_date">January 17, 2016 06:51 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>The sysctl interface <em>is</em> enabled.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Patterson</p>
+        <p class="legacy-comment-meta-pub_date">January 17, 2016 03:47 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>OK, thanks Corsac. There must be something else keeping my machine from working with exactly these steps.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Dg</p>
+        <p class="legacy-comment-meta-pub_date">February 7, 2016 07:43 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Thanks for an intersting article.
+However, I take issue with the use of stock Linux kernel. The inclusion of proprietary firmware means that there is the possibility of backdoors, and if such a malicious firmware program managed to fool the system into thinking it was something else, it could in theory run some code in kernel space. So why use the stock kernel over the Debian kernel or Linux-libre? You could for example just buy a (freedom-respecting) USB wireless adaptor so you can have WiFi. Could grsecurity stop suspicious action by malicious firmware programs? I am not sure but I suspect it would not be effective for such a scenario.
+Regards</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Jared Jennings</p>
+        <p class="legacy-comment-meta-pub_date">February 11, 2016 12:51 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>This is a very clear howto on an important topic, thanks! One tip: When you pipe tail -f though grep, it's good to hand grep the --line-buffered switch.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">kekec</p>
+        <p class="legacy-comment-meta-pub_date">January 16, 2016 12:04 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>hey,</p>
+<p>thanks for the great topics here on your blog!</p>
+<p>is there any security related reason why you now use Debian and not Ubuntu as you used to?</p>
+<p>also: could using disposable VirtualBox VMs for some risky tasks substitute the need for Qubes OS?</p>
+<p>thanks!</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">January 16, 2016 11:05 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>You can do this in Ubuntu just the same. There isn't much of a security reason to favor Debian (though there are some things I don't like about Ubuntu security, like how they use short apt repository keys), but there are some privacy reasons, which are easy to overcome if you still like Ubuntu: <a href="https://fixubuntu.com/">https://fixubuntu.com/</a></p>
+<p>As far as using VirtualBox VMs for particularly risky stuff, that's not a bad idea, but it's definitely not a substitute for Qubes. That's kind of a blacklist approach: "I think this task is risky, so I'll do it in a VM." But Qubes uses a whitelist approach: "Everything is risky, so make sure I limit the damage of every attack." For example, Qubes protects you against bugs in your wifi driver that could be remotely exploited -- the attacker will just hack your netvm, and won't gain access to all your data.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">luis</p>
+        <p class="legacy-comment-meta-pub_date">October 19, 2016 04:09 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>After all the procedures i came across another problem when compiling the kernel. Can anyone plz give a look at the erros i got and try to give me some explanation? 
+<a href="http://beta.pastee.com/4ubju">http://beta.pastee.com/4ubju</a></p>
+<p>Thanks</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Tomas</p>
+        <p class="legacy-comment-meta-pub_date">October 29, 2016 10:24 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Have you read the article? This should fix it for you:</p>
+<h1 id="apt-get-install-kernel-package">apt-get install kernel-package</h1>
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">David man</p>
+        <p class="legacy-comment-meta-pub_date">January 14, 2018 09:46 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Hello,
+Are the test patch have any valuable , and can be used  (compared to release patch) ?</p>
+<p>Thank you,</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">phil</p>
+        <p class="legacy-comment-meta-pub_date">June 20, 2017 06:42 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>shame there is no grsec binary kernel in stable. I dont want to use sid.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">JT. Flemin</p>
+        <p class="legacy-comment-meta-pub_date">August 10, 2018 06:07 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>any possibility to do this in debian stretch without installing jessie unstable? no?</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">LinAdmin</p>
+        <p class="legacy-comment-meta-pub_date">September 26, 2016 05:45 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Thanks for this interesting article. 
+Debian Jessie backports now has a grsec kernel:</p>
+<p>apt install -t jessie-backports linux-base
+apt install -t jessie-backports linux-image-grsec-amd64 linux-image-4.6.0-1-grsec-amd64
+apt-get install paxtest paxctl</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">lucas</p>
+        <p class="legacy-comment-meta-pub_date">October 2, 2016 05:18 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>hi Linadmin, install successfully under jessie cinnamon desktop which crashes partially now, how to proceed at best? Tx</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">AP</p>
+        <p class="legacy-comment-meta-pub_date">October 29, 2016 11:51 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Does this changes the process?</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Patterson</p>
+        <p class="legacy-comment-meta-pub_date">January 17, 2016 02:58 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>A note here for anyone who chooses to use apt-get for the pre-compiled package linux-image-4.3.0-1-grsec-amd64, rather than compiling the kernel. It seems that grsec's sysctl interface isn't enabled (I find /proc/sys/kernel/grsecurity/chroot_deny_sysctl=1 in the package; more at [0]). It would be enabled if you were to compile it with your steps. Runtime changes to grsec kernel params such as tpe (which I needed to disable to run torbrowser-launcher or any personal scripts; still figuring that part out) are then denied at your 'sudo sysctl -p' step.</p>
+<p>Please correct me if I'm wrong, I thought this info should make it here early in case others are deterred by this step Google didn't hit the answer very quickly). Thanks Micah, love your work! This article pushed me finally to try grsec and more.</p>
+<p>[0]<a href="https://en.wikibooks.org/wiki/Grsecurity/Configuring_and_Installing_grsecurity#Configuring_grsecurity_and_PaX_Features">https://en.wikibooks.org/wiki/Grsecurity/Configuring_and_Installing_grsecurity#Configuring_grsecurity_and_PaX_Features</a></p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Jonathan Smith</p>
+        <p class="legacy-comment-meta-pub_date">January 16, 2016 07:29 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>In one of Edward Snowden's revelations, the world got to know that American intelligence agencies routinely intercept, among other stuff, desktop and laptop computers that are on their way from the vendors to their customers. They would install surveillance rootkits on the motherboards of the machines.</p>
+<p>Would your hardened Debian be able to prevent or make it harder for the already infected motherboards to surveil on the activities of the computer user?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">January 16, 2016 08:54 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Probably not. If you have malicious firmware on your motherboard, you can't be confident about the security of pretty much anything you do on that computer.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Jon</p>
+        <p class="legacy-comment-meta-pub_date">July 29, 2016 06:56 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Any chance you could make a guide for integrating GRsecurity with Qubes?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Iron Geek</p>
+        <p class="legacy-comment-meta-pub_date">January 3, 2017 06:48 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p><a href="https://coldhak.ca/blog/2016/12/12/coldkernel-qubes-1.html">https://coldhak.ca/blog/2016/12/12/coldkernel-qubes-1.html</a></p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Just Paranoid</p>
+        <p class="legacy-comment-meta-pub_date">January 7, 2017 06:04 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <ol>
+<li>How would you know if there was firmware or not on your motherboard?</li>
+<li>If the American Intelligence or any govt intel agency wanted to get malicious firmware onto all chips through agreements with chip makers, could they? As in full spectrum dominance.</li>
+<li>Actually the important question is what steps would gaurantee a clean motherboard?</li>
+</ol>
+<p>Just paranoid.</p>
+<p>Thanks</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">RandomName</p>
+        <p class="legacy-comment-meta-pub_date">March 11, 2017 03:01 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I do not know that much about this, but no one else has answered yet.</p>
+<p>1: It is hard to know if the system is compromised on a closed system. I would suggest checking out the free(as in freedom) hardware(fsf.org/resources/hw) if you really want to be sure.</p>
+<p>2: They could use Intel's ME and AMD's PSP. They have this for system management mode(SMM). SMM has access to your CPU, GPU, RAM and internet if I remember correctly. It can also be used to turn your computer on remotely and operate without the users knowledge.</p>
+<p>3: This is a bit complicated. The PowerPC is open but really expensive. There is a Chromebook that uses coreboot and an ARM CPU, it should at least be safer than Intel or AMD. There have been some attempts to overwrite Intel ME on some Lenovo laptops to install coreboot. Doing that involves opening the laptop and physically connecting to a flash chip, but you do not need to solder anything.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">griffin</p>
+        <p class="legacy-comment-meta-pub_date">May 26, 2016 01:00 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I use xfce, how do I replace below gnome line for xfce4?
+" $ sudo paxctl -cm /usr/bin/gnome-shell "</p>
+<p>thank you.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">mrlynch</p>
+        <p class="legacy-comment-meta-pub_date">June 24, 2016 09:52 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>sudo paxctl -cm /usr/bin/xfce4-session</p>
+<p>that might do the trick</p>
+<p>cheers</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Mike</p>
+        <p class="legacy-comment-meta-pub_date">November 28, 2016 01:48 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Anybody know the corresponding command for kde desktop?
+I've tried 'sudo paxctl -cm /usr/bin/startkde'
+doesn't seem to want to work
+BTW I followed this tutorial using Arch Linux, and was able to get a gnome desktop working... Just like me some plasma better.</p>
+<p>Great write up Micah</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Mike</p>
+        <p class="legacy-comment-meta-pub_date">December 9, 2016 08:41 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>(SOLVED)
+sudo paxctl -cm /usr/bin/plasmashell
+For KDE Plasma Desktop</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Josh Glenn</p>
+        <p class="legacy-comment-meta-pub_date">March 15, 2017 12:24 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Thanks for the great post, saved me a reinstall of Ubuntu after installing coldkernel.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">aer</p>
+        <p class="legacy-comment-meta-pub_date">February 16, 2016 04:08 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>It's good to have a hardened Linux kernel so the feeling of being secure is really true.
+To save myself from trouble of getting my hands dirty, I will just install Qube OS.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">unknown</p>
+        <p class="legacy-comment-meta-pub_date">February 14, 2016 10:52 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Make sure  add HTTPS repo , before downloading torbrowser bundle , and add Debian tor Debian repo
+(As explained by ioerror ) 
+Commenting from place where anonymous dangerous than normal</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">February 15, 2016 11:45 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Using https repos and including the Tor repo installing of installing it from Debian are good things to do, but aren't necessary for security. Tor Browser Launcher (used in this blog post) downloads Tor Browser over https with certificate pinning, and verifies the PGP signature for you.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">anon</p>
+        <p class="legacy-comment-meta-pub_date">February 16, 2016 12:15 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Agree, but what if tor download sites are blocked , tor browser launcher is great ( security wise )  , for first time to download tor we need rely on Debian repo tor (system tor option ) , but I'm afraid when I download tor from Debian http repo MITM guys can know I'm downloading tor ( once I download tor I use obfs proxy for connect and download through tor browser launcher ) so my traffic doesn't look like tor , sorry if I'm going off traffic</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Zaki Manian</p>
+        <p class="legacy-comment-meta-pub_date">January 16, 2016 09:30 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Another usability consideration I can think of is that Qubes doesn't provide GPU access outside dom0, webGL is kinda nice and half the CPU die is GPU, it's kind of a shame not to use it</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">nookich</p>
+        <p class="legacy-comment-meta-pub_date">December 4, 2016 11:37 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Thanks for a great guide!</p>
+<p>I installed grsec in Debian Jessie by installing it from the jessie-backports repo, and it seems to work fine, although I run into some issues when trying to run torbrowser.</p>
+<p>I installed torbrowser-launcher and used it to download/install TorBrowser. When I try to start TorBrowser using the launcher, grsec outputs the following to /var/log/syslog:
+/home/username/.local/share/torbrowser/tbb/x86_64/tor-browser_en-US/start-tor-browser.desktop</p>
+<p>When I try to run paxctl -cm on it it reports the error:
+file /home/username/.local/share/torbrowser/tbb/x86_64/tor-browser_en-US/start-tor-browser.desktop is not a valid ELF executable</p>
+<p>Does anyone have any idea on how to allow torbrowser to start?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">nookich</p>
+        <p class="legacy-comment-meta-pub_date">December 4, 2016 12:26 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Correction: the output to syslog is:
+grsec: denied untrusted exec (due to not being in trusted group and file in non-root-owned directory) of /home/username/tor-browser_en-US/start-tor-browser.desktop by /home/username/tor-browser_en-US/start-tor-browser.desktop[bash:3258] uid/euid:1000/1000 gid/egid:1000/1000, parent /bin/bash[bash:2379] uid/euid:1000/1000 gid/egid:1000/1000</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Tururu</p>
+        <p class="legacy-comment-meta-pub_date">February 12, 2017 06:45 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>You can add your user to grsec-tpe group</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">asdf</p>
+        <p class="legacy-comment-meta-pub_date">January 15, 2017 12:30 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>You will have to disable mprotect for the firefox binary in the folder of the TorBrowser</p>
+<p>You can do this by:
+sudo paxctl -cm /home/username/.local/share/torbrowser/tbb/x86_64/tor-browser_en-US/Browser/firefox</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Kevin Gallagher</p>
+        <p class="legacy-comment-meta-pub_date">January 15, 2016 05:03 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Also, the next level of hardening is using the grsecurity <a href="https://en.wikibooks.org/wiki/Grsecurity/The_RBAC_System" rel="nofollow">RBAC</a>, which is extremely powerful. It  has a utility called <a href="https://grsecurity.net/stable/gradm-3.1-201507191652.tar.gz" rel="nofollow">gradm</a> which you can put in learning mode, then use your computer as you normally would and it will write a ton of data relating to your usage patterns and every permission/role/access/capability that is required. Then, it can write a policy file for the RBAC based on this data, which, when you enable it, will explicitly grant access only to the things you need to do. It's super cool!</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">pablo</p>
+        <p class="legacy-comment-meta-pub_date">March 9, 2017 04:57 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Don't forget that in order to have a FULL protection with RBAC you must not perform any administrative task (e.g. install new packages, enable/disable services....), even if you're root. Maybe an effective protection with RBAC is something too strict for a Desktop use, but I agree that is extremely powerful</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">pablo</p>
+        <p class="legacy-comment-meta-pub_date">March 9, 2017 04:58 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I mean during Learning Mode*</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Diederik de Haas</p>
+        <p class="legacy-comment-meta-pub_date">January 16, 2016 06:40 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>It's been a while since I last used it, but by using the installer from <a href="https://www.debian.org/devel/debian-installer/">https://www.debian.org/devel/debian-installer/</a> you can install testing directly and if I'm not mistaken also sid directly. I think it's in one of the Advanced menu sections.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Diederik de Haas</p>
+        <p class="legacy-comment-meta-pub_date">January 16, 2016 06:44 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Found it: <a href="https://wiki.debian.org/InstallFAQ#Q._How_do_I_install_.22unstable.22_.28.22sid.22.29.3F">https://wiki.debian.org/InstallFAQ#Q._How_do_I_install_.22unstable.22_.28.22sid.22.29.3F</a></p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Nick</p>
+        <p class="legacy-comment-meta-pub_date">May 15, 2016 02:14 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Hm.. interesting article.</p>
+<p>Now i know why my debian unstable system wouldn't boot with grsecurity kernel.
+But when the boot process get stopped by grsecurity, and won't start the graphical desktop, i didn't have the option to use Ctrl+Alt+F1 for further login. I must use the "single" option via grub kernel parameter, or i never see any tty. I also didn't compile the kernel with grsecurity, there was an usable patched binary kernel in the unstable repository. My system is fully encrypted too, with seperated /, /tmp, /var, /boot, /home, /var/log volumes. The / and /boot volumes are always gets mounted as read-only.
+This is perhaps an problem for grsecurity on first start. Any ideas?</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Joni</p>
+        <p class="legacy-comment-meta-pub_date">February 11, 2016 01:12 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Do you think Grsecurity is better than SELinux?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Lionel</p>
+        <p class="legacy-comment-meta-pub_date">February 14, 2016 07:50 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>SELinux is of the "policy " class: it denies some operations to some programs. Most distros have sub-par support for SELinux and many people disable it because it's too annoying for their particular use case.
+PaX/grsecurity is of the "anti-exploitation" class: its wide set of features provides various means to prevent vulnerabilities from being successfully exploited at all, or at least making attackers' lives exploiting vulnerabilities very much harder.</p>
+<p>SELinux on a mainline kernel is powerless against the proofs of concept for dangerous kernel holes which are discussed once in every while on LWN, while a well-configured PaX/grsecurity kernel kills them immediately, because:</p>
+<ul>
+<li>the kernel exploit proofs of concept usually dereference ops structs in user space directly, so they trip UDEREF, which is a strict superset of e.g. the SMAP of Intel's most recent processors, available for a wide range of processors for over a decade, instead of just that narrow SMAP-supporting subset;</li>
+<li>they execute payloads directly in user space, so they'd trip KERNEXEC anyway if UDEREF hadn't caught them earlier (say, because whoever compiled the kernel disabled that feature). KERNEXEC is a superset of the SMEP of Intel's recent processors, available on a wide range of processors for over a decade;</li>
+<li>they fairly often target ops structs that PaX/grsecurity makes constant (CONSTIFY) but mainline doesn't, and therefore end up in segfaults;</li>
+<li>the binary forms of the PoC assume the standard layout of the structs, which the RANDSTRUCT feature randomizes, yielding a segfault in most cases.</li>
+</ul>
+<p>Two recent holes in mainline kernels are based on reference count overflows, which PaX's REFCOUNT has been protecting against for years - simply killing the process upon an attempt to exploit a refcount overflow.</p>
+<p>I could also mention the better randomization of ASLR + mmap, the ability to randomize the kernel stack base, memory sanitization of areas that mainline doesn't sanitize (and therefore elimination of various information leaks or use-after-free errors), usercopy hardening, protection against a number of integer overflows, or the eviction of recent features whose insecure implementation yields a stream of vulnerabilities, such as the eBPF JIT. SELinux or the other "policy" frameworks provide none of those features.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Jonathan</p>
+        <p class="legacy-comment-meta-pub_date">January 18, 2016 09:00 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Firejail[1] is a quick and easy solution to contain dangerous applications such as a browser.</p>
+<p>I did not try it on a grSec machine yet, though.</p>
+<p>[1]- <a href="https://firejail.wordpress.com/">https://firejail.wordpress.com/</a></p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Kevin</p>
+        <p class="legacy-comment-meta-pub_date">February 16, 2016 01:41 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Can you use Firejail and GRsecurity together? I am thinking of setting up Firejail on the next install.  The internet is getting nastier and nastier...</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Jasper</p>
+        <p class="legacy-comment-meta-pub_date">February 3, 2016 07:02 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Hi Micah,
+I´d like to ask something. I'm willing to switch to qubes but what's keeping me from using it is KeePass's auto-type. How would I go about managing passwords in a Vault VM that can't sync my database with a remote server, neither can I efficiently get passwords from the Vault to my browser VM. (Ignoring the ctrl+c, ctrl+shift+c, ctrl+shift+v, ctrl+v thing)</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">February 3, 2016 07:23 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>If you're willing to sync your password database to a remote server, then you could always make an AppVM for KeePass that has firewall rules that block everything except the connection to your remote server. And if the ctrl-c, ctrl-shift-c, ctrl-shift-v, ctrl-v thing is too much for you, you could always just keep your KeePass database in the AppVM that you use to browse the web, and use it's auto-type feature. In both of these cases your passwords might be slightly less protected, but no less than just using a password database in a normal operating system. And you still get all the other benefits of Qubes.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Jasper</p>
+        <p class="legacy-comment-meta-pub_date">February 3, 2016 07:39 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Thanks! I'll make the firewall whitelist just the server and just do the the ctrl-c, ctrl-shift-c, ctrl-shift-v, ctrl-v thing.
+I'm hoping Qubes could at some point have some sort of system similar to 'split GPG'. So that an AppVM can request credentials from the KeePass VM.</p>
+<p>P.S. you said "if you're willing to sync the database to a remote server" isn't the database secure enough to do such a thing? (assume a 7+ word diceware passphrase)</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Anon</p>
+        <p class="legacy-comment-meta-pub_date">October 2, 2016 12:45 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Saw you tweeted "Though I'm not sure why "Return to function (memcpy)" is vulnerable in this VM, when grsec kills the process on other systems". Can you please update here if you figure out why? My setup's been giving me the same warnings on both memcpy tests and I've been trying to figure it out for a few days now. Happens on both the repository grsec kernel and compiling my own per above.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Anon</p>
+        <p class="legacy-comment-meta-pub_date">October 4, 2016 02:33 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Looks like the difference might be due to a bug in paxtest before v0.9.14. I was able to recreate this by running an older version (0.9.11) of paxtest that claimed the memcpy's were Killed. When I run the newer version of paxtest, the memcpy's are again vulnerable. This appears to be intended behavior to show that this class of attack is hard to defend against: <a href="https://forums.grsecurity.net/viewtopic.php?t=1420&amp;amp;highlight=strcpy">https://forums.grsecurity.net/viewtopic.php?t=1420&amp;amp;highlight=strcpy</a>.</p>
+<p>The latest version of paxtest can be downloaded from <a href="https://www.grsecurity.net/~spender/">https://www.grsecurity.net/~spender/</a>. Currently it's paxtest-0.9.15.tar.gz. The ChangeLog inside details the bugfix, at least, I think it's this one:</p>
+<p>paxtest (0.9.14-1) stable; urgency=low</p>
+<ul>
+<li>Various fixes/cleanups including ensuring an overflowing strcpy/memcpy isn't
+optimized away, from Mathias Krause</li>
+</ul>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+        </div>
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name"><a href="../../../">Micah Lee's blog</a></p>
+      <p><img class="coffee" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../../../static/images/reality.png"></a></p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?<p><p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" src="../../../static/images/cc-by-nc.png"></a>
+        <br/>
+        <br/>
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

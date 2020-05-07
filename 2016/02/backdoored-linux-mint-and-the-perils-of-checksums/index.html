@@ -1,0 +1,584 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>Backdoored Linux Mint, and the Perils of Checksums</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@micahflee" />
+  <meta name="twitter:creator" content="@micahflee" />
+  <meta property="og:url" content="https://micahflee.com/2016/02/backdoored-linux-mint-and-the-perils-of-checksums" />
+  <meta property="og:title" content="Backdoored Linux Mint, and the Perils of Checksums" />
+  <meta property="og:image" content="https://micahflee.com/2016/02/backdoored-linux-mint-and-the-perils-of-checksums/mint.png" />
+
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="../../../2016/02/backdoored-linux-mint-and-the-perils-of-checksums/mint.png" />
+    </p>
+    
+    
+      <h1 class="article-title">Backdoored Linux Mint, and the Perils of Checksums</h1>
+    
+    <p class="meta">
+      Posted February 20, 2016
+      
+        in
+        
+          <a class="tag" href="../../../tags/hackers">hackers</a>
+        
+          <a class="tag" href="../../../tags/linux">linux</a>
+        
+          <a class="tag" href="../../../tags/openpgp">openpgp</a>
+        
+          <a class="tag" href="../../../tags/security">security</a>
+        
+      
+    </p>
+    
+      <p>Someone hacked the website of Linux Mint — which, according to <a href="https://stats.wikimedia.org/wikimedia/squids/SquidReportOperatingSystems.htm">Wikipedia’s traffic analysis report</a> is the 3rd most popular desktop Linux distribution after Ubuntu and Fedora — and replaced links to ISO downloads with a backdoored version of the operating system. This <a href="http://blog.linuxmint.com/?p=2994">blog post</a> explains the situation.</p>
+<p>From the post and comments, the key points includes:</p>
+<ul>
+<li>Links to the malicious version of the ISO were added, detected, and removed on the same day, February 20. If you’re already running Linux Mint, this doesn’t affect you — all files installed or updated using the package manager are digitally signed and the signatures are verified.</li>
+<li>Linux Mint 17.3 Cinnamon was the only version that was compromised</li>
+<li>The website was hacked because of a WordPress exploit. Project leader Clement Lefebvre says, “Yes, the breach was made via wordpress. From there they got a www-data shell.”</li>
+<li>The backdoored ISO contains Linux Mint with <a href="http://blog.malwaremustdie.org/2013/05/story-of-unix-trojan-tsunami-ircbot-w.html">Tsunami botnet malware</a> running on it.</li>
+</ul>
+<p>The blog post includes instructions for checking your ISO files to ensure that they’re valid by comparing MD5 checksums. MD5 checksums!</p>
+<p>Besides the fact that the website isn’t available over HTTPS so network attackers could change those MD5 checksums to whatever they want as you load the blog post, <a href="https://en.wikipedia.org/wiki/MD5#Security">MD5 is entirely broken</a> and has been for many years. MD5 should never be relied on for verifying that you have the legitimate version of a file. It would not be difficult for someone to generate a backdoored Linux Mint ISO that has the same MD5 checksum as the legitimate ISO. Likewise, while SHA1 is considerable stronger, it also should not be used for security purposes anymore. Wikipedia’s <a href="https://en.wikipedia.org/wiki/SHA-1">SHA1 article</a> says: “SHA-1 is no longer considered secure against well-funded opponent.”</p>
+<p>It would be great if the Linux Mint project can completely stop relying on MD5 and started using a checksum algorithm that is considered secure today, like SHA256.</p>
+<p>But it’s also important to note that comparing the checksum of a file you downloaded with what you see on the website you downloaded it from isn’t secure either, even if you are using SHA256. If a hacker can hack the website to modify the download link, they can modify the checksum at the same time to match their malicious download.</p>
+<p>The only solution to this problem is to use public key cryptography. The ISOs should be digitally signed with an OpenPGP secret key, and users should verify the signature using the associated public key. Linux Mint actually does in fact sign releases with a PGP key, but there’s no information on the download page about this, or how to go about verifying the signature.</p>
+<p>If you look at the directory structure in the Linux Mint folder on one of the download mirrors, like <a href="http://mirrors.kernel.org/linuxmint/stable/17.3/">http://mirrors.kernel.org/linuxmint/stable/17.3/</a> for example, you’ll see a bunch of ISO files as well as sha256sum.txt and sha256sum.txt.gpg. The sha256sum.txt file includes SHA256 checksums of all of the ISO files, and you can use sha256sum.txt.gpg to verify the signature of that file.</p>
+<p>This appears to be the signing key:</p>
+<pre><code>pub   dsa1024/0FF405B2 2009-04-29 [SC]
+      Key fingerprint = E1A3 8B8F 1446 75D0 60EA  666F 3EE6 7F3D 0FF4 05B2
+uid         [ unknown] Clement Lefebvre (Linux Mint Package Repository v1) 
+sub   elg2048/0F346519 2009-04-29 [E]
+</code></pre>
+<p>Verifying is PGP signatures is more complicated and harder to explain than comparing checksums, but it’s actually secure. It’s the only way to be sure that a Linux installer ISO you download hasn’t been tampered with since the image was built by the developers. Tails is an example of an operating system that does an <a href="https://tails.boum.org/download/index.en.html#verify">excellent job</a> at explaining how to verify PGP signatures when you download their ISO.</p>
+
+
+      <div id="commento"></div>
+      <script src="https://cdn.commento.io/js/commento.js"></script>
+
+      
+        
+        <div class="legacy-comments">
+          <p class="legacy-comments-notice">Legacy comments, imported from previous version of this blog:</p>
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Just a reader</p>
+        <p class="legacy-comment-meta-pub_date">December 16, 2016 05:41 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Micah,</p>
+<p>I greatly enjoy reading your articles at The Intercept. I thought you might like to know that as of version 18 the Mint team looks to be using 256 keys to verify the iso's now. Better late than never I guess! Happy holidays!</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Redditor</p>
+        <p class="legacy-comment-meta-pub_date">February 21, 2016 05:55 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>"MD5 should never be relied on for verifying that you have the legitimate version of a file. It would not be difficult for someone to generate a backdoored Linux Mint ISO that has the same MD5 checksum as the legitimate ISO. "</p>
+<p>Sorry, but that's a myth that keeps being brought up.
+What has been done by academics is: create two files from scratch that have the same MD5 sum, basically a "collision attack". (This is why MD5 should not be used for passwords.)</p>
+<p>This has nothing to do with the Linux Mint iso. 
+You would need what is called a "pre-image attack" (<a href="https://en.wikipedia.org/wiki/Preimage_attack">https://en.wikipedia.org/wiki/Preimage_attack</a>), where you try to create a file that has the same MD5 sum as an existing sum. This is realistically impossible (I think it was 2^120 or something...trillions of years).
+Then you also can't just add a few bytes to the iso either, you would need the new file to work as the Linux Mint iso does. So basically a "secondary pre-image attack"
+So no, this would not have been possible with the Linux Mint security breach.</p>
+<p>Still, to me the fact that they use MD5 is just one more argument for their security strategy being weak. They use Wordpress, they have 6-character long passwords containing "mint", they don't use HTTPS, they dont automatically install security updates on Mint etc etc.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">February 21, 2016 06:44 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I don't think you're correct. It looks like this attack was successfully completed in 2005 with postscript files (<a href="https://www.schneier.com/blog/archives/2005/06/more_md5_collis.html">https://www.schneier.com/blog/archives/2005/06/more_md5_collis.html</a>) and again in 2008 with X509 certificates (<a href="https://www.win.tue.nl/~bdeweger/CollidingCertificates/">https://www.win.tue.nl/~bdeweger/CollidingCertificates/</a>). In both cases, both pieces of data getting hashes were valid files. But it does look like it takes a lot more work than simply finding a collision.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Redditor</p>
+        <p class="legacy-comment-meta-pub_date">February 22, 2016 02:31 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Again, what they did was generate two completely new files (collision attack).</p>
+<p>Your second  link explains this in the "application" section. Some quotes: "A successful attack on an existing certificate (or some other data structure such as an executable) requires second preimage resistance of one message: given a pre-specified value and its hash, it must be practically infeasible to find another value with the same hash. As far as we are aware, the results announced in [22] do not imply that second preimages are essentially easier to find than they should, namely with an effort proportional to 2^n for an n-bit hash function"
+and "We are not aware yet of real life practical implications of our results."</p>
+<p>Your first link: see the comments, e.g.
+<a href="https://www.schneier.com/blog/archives/2005/06/more_md5_collis.html#c6016">https://www.schneier.com/blog/archives/2005/06/more_md5_collis.html#c6016</a>
+"All that the researchers are demonstrating here is that it is possible to create two functionally different yet valid files with the same signature in a very short amount of time.</p>
+<p>This and the other referenced attacks all take advantage of the length extension property of hash functions after finding two pieces of data with colliding hash values. Effectively, all they demonstrate is the possibility of wrapping identical content around these two separate sets of colliding bits.</p>
+<p>While this is important, this is not nearly the same thing as demonstrating that it is possible to create two ARBITRARY documents with the same hash value or that it is possible to generate a NEW document with the same hash value as an EXISTING document."</p>
+<p>So, what you could do, for instance, is to fake you own public key by generating two with the same MD5.
+Or if the Linux Mint founder was bad, he could create two iso images with the same MD5, one with a backdoor. But it does not work if you already have an existing iso and MD5 (this would be a pre-image attack).</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">CooloutAC</p>
+        <p class="legacy-comment-meta-pub_date">February 23, 2016 12:02 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>If you say that Clem, if evil,  could make two files with same md5, one backdoored and one not.  Why wouldn't anybody be able to do that then,  whether a file with an md5 already existed or not?  What is the difference?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">CooloutAC</p>
+        <p class="legacy-comment-meta-pub_date">February 23, 2016 01:06 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Your statement:</p>
+<p>"Or if the Linux Mint founder was bad, he could create two iso images with the same MD5, one with a backdoor."</p>
+<p>or Shneier's statement :</p>
+<p>"“All that the researchers are demonstrating here is that it is possible to create two functionally different yet valid files with the same signature in a very short amount of time."</p>
+<p>Seems pretty straightforward to me so pardon my ignorance.  I'm trying to understand how these statements back your claims that such a thing is not possible?</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">CooloutAC</p>
+        <p class="legacy-comment-meta-pub_date">February 23, 2016 01:38 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I think I understand now, you are saying the only way is to modify both files to get their md5 to matchup... like with the collision generator.</p>
+<p>So if true, we would still then have to hope that, theoretically, a non backdoored iso was not uploaded for a while on the site before changed and that mint actively monitors the hashes as well as the iso.  I wonder how long they were compromised for.     And Still kind of crazy regardless they don't use https and that they even have a md5 hash in the first place,  and not just sha256 and a sig, like most other distros.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Redditor</p>
+        <p class="legacy-comment-meta-pub_date">February 21, 2016 05:59 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Also, the whole PGP part is not correct either.</p>
+<p>The problem is that those keys aren't verified most of the time. An attacker that has control over the server can just put their own public key in, add it to a few public servers and pose as Clement from Linux Mint.</p>
+<p>see these comments (not me, I'm just a research monkey): 
+<a href="https://www.reddit.com/r/netsec/comments/46ujhv/linux_mint_isos_were_replaced_with_trojanized/d08c3lm?context=3">https://www.reddit.com/r/netsec/comments/46ujhv/linux_mint_isos_were_replaced_with_trojanized/d08c3lm?context=3</a>
+<a href="https://www.reddit.com/r/netsec/comments/46ujhv/linux_mint_isos_were_replaced_with_trojanized/d08e231">https://www.reddit.com/r/netsec/comments/46ujhv/linux_mint_isos_were_replaced_with_trojanized/d08e231</a></p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">February 21, 2016 06:52 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>But it is in fact possible to verify the legitimacy of a key, and I do it myself frequently. Without using public key crypto signatures, there is no way at all for this to work at all.</p>
+<p>Sometimes I'm connected in the web of trust with the signing key. When I'm not I normally verify that people have posted the fingerprint in multiple locations online (over https if it's available), and I come from multiple IP addresses. I also often find that TOFU works out great with OS distributions. When I download a new ISO and try to verify it's signature, I often find that I already have the signing key from a previous time I downloaded an ISO from the same distro.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">anonymous</p>
+        <p class="legacy-comment-meta-pub_date">February 21, 2016 10:01 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Is it interesting that the Tails link in this blog about verifying signatures gives me a certificate error on multiple browsers in Windows and Linux?  Is this a test?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">anonymous</p>
+        <p class="legacy-comment-meta-pub_date">February 21, 2016 10:08 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Never mind.  It was OpenDNS blocking the Tails site.  Yes it was a test :)</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">MintFan</p>
+        <p class="legacy-comment-meta-pub_date">February 21, 2016 10:34 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Any speculation on who was behind this hack or why? Why Linux Mint Cinnamon and why that particular malware? Was it a nation state type actor deploying crude malware to get a particular target and trying to look like an ordinary hacker? Or an ordinary hacker targeting that particular OS for some reason?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">February 21, 2016 02:36 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I think it's unlikely that it was a nation-state actor. It was probably whoever runs the Tsunami botnet.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">someone</p>
+        <p class="legacy-comment-meta-pub_date">February 21, 2016 12:54 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>1024-bit DSA OpenPGP keys are not considered secure.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">anonymous</p>
+        <p class="legacy-comment-meta-pub_date">February 21, 2016 08:47 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>indeed. the linux mint team should address this problem with a set of updated keys, ISO signatures and signed checksums</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">mackmans</p>
+        <p class="legacy-comment-meta-pub_date">March 5, 2017 11:29 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p><a href="http://md5online.co.uk/">http://md5online.co.uk/</a></p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Pablo</p>
+        <p class="legacy-comment-meta-pub_date">September 3, 2017 05:04 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>It looks like the mint team does not care too much about security.</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+        </div>
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name"><a href="../../../">Micah Lee's blog</a></p>
+      <p><img class="coffee" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Technologist at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Board of <a href="https://freedom.press/">Freedom of the Press</a>
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+      </ul>
+
+      <p><a href="https://standwithreality.org/"><img class="coffee" src="../../../static/images/reality.png"></a></p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?<p><p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" src="../../../static/images/cc-by-nc.png"></a>
+        <br/>
+        <br/>
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>
