@@ -1,0 +1,312 @@
+<!doctype html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Legacy Comments</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="../../../../../../../static/style.css">
+  <link rel="stylesheet" href="../../../../../../../static/fontawesome/css/all.min.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Oliver</p>
+        <p class="legacy-comment-meta-pub_date">February 21, 2018 04:00 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>How do you define what is and isn't part of an "Operating System"? Are Notepad and Minesweeper on Windows part of the Operating System? They're bundled with it, but they're user-mode programs. There's no fundamental difference between GNU awk and Minesweeper when it comes to drawing the line between OS and non-OS. Therefore it makes sense to use OS strictly to refer to the kernel and maybe the libraries needed to make system calls, but every actual application is something else optionally bundled with the OS.</p>
+<p>The GNU FAQ  on this says that an OS "ought to handle all the jobs that many users may want to do". How do you define these "many users"? If a Windows user needs Excel, and the computer they're on doesn't include Excel, do they not have a complete OS?</p>
+<p>Ordinary language is never that precise, people have pictures of what they mean. Despite what I've said, when I think of Unix I'll think of rwx permissions and the cat command. A lot of that is outside the kernel, which is why "Operating System" is a vague term. But that is the nature of human language and why it's better not to insist too strongly on names. I think it best not to argue this point too much if there isn't a clear, precise definition of the term.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">John</p>
+        <p class="legacy-comment-meta-pub_date">March 14, 2018 07:33 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I'm brand new to this debate, but I don't find your questions compelling.  There is a very clear, objective criteria already.  If every single distribution of what we call "Linux" requires the GNU to be operable at all -- and I don't mean lacking features, I mean even allowing any basic user interaction with it <em>as an operating system</em> -- then Richard's claim is fair, and even generous.  Nobody's talking about one or two non-essential tools, one is talking about the entirety of the GNU system as it is used by the operating system.</p>
+<p>Are there flavors of Linux now that don't use GNU?  I don't know the answer to that but I will say that it shouldn't matter in this debate if there was a significant period of time where this was not the case, meaning that originally GNU/Linux (or some other neutral or combined name) should have simply always been the name of the OS.</p>
+<p>The only compelling argument seems to be "it's what everyone is saying already", meaning that communication is more fluid to simply use the accepted term; the dictionary has even accepted it by now.</p>
+<p>Personally, I think it's sad that historically this is the way things worked out.  Getting name credit for what has turned out to be such an impactful set of software isn't  a small thing.  Until I did my own research I always did wonder what GNU meant or is.  I think it makes sense for Richard and the GNU org to want to turn this around if they can, and I wish them luck.</p>
+<p>It should be said that coincidentally, history could have gone the other way.  We could have called the OS GNU with Linus insisting to everyone today that we should call it GNU/Linux.</p>
+<p>Now it's on to more reading for me to find out how many Linux distros don't actually feature GNU so that I don't accidentally call something GNU/Linux that I should not (it's the only fair case where GNU should actually be omitted).</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Richard Stallman</p>
+        <p class="legacy-comment-meta-pub_date">June 22, 2018 04:10 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p><a href="https://micahflee.com/2015/09/why-i-say-linux-instead-of-gnulinux/#comment-71648">https://micahflee.com/2015/09/why-i-say-linux-instead-of-gnulinux/#comment-71648</a></p>
+<p>Hello again,
+I believe you are confused in some sense. You continue referring to the entire GNU operating system with the Linux kernel as "Linux", even though this is clearly erroneous. In addition to that, it is also unfair; you should give equal consideration to the GNU Project, which contributed as much (if not more) to the GNU/Linux system than the kernel. Linux is the kernel: the program in the system that allocates the machine's resources to the other programs that you run. The kernel is an essential part of an operating system, but useless by itself; it can only function in the context of a complete operating system.
+You can read my writings on the subject either at <a href="https://stallman.org">https://stallman.org</a> or <a href="https://gnu.org">https://gnu.org</a>, and this article may be of particular interest to you: <a href="https://www.gnu.org/gnu/why-gnu-linux.en.html">https://www.gnu.org/gnu/why-gnu-linux.en.html</a></p>
+<h2 id="i-got-a-reply-dennis-a-gutowski-said">I got a reply! Dennis A. Gutowski said:</h2><p>Is the gnu contribution important? Yes. But just as equally, if not more so, is
+the kernel. This operating system never was, nor will ever be gnu. It’s Linux.
+Why? Because all those wonderful programs you wrote do literally nothing without
+the kernel. They are entirely useless without it.</p>
+<p>If you write and release a gnu kernel, and I reference it, I promise you I will
+refer to it as gnu. But OS’s like Ubuntu are and will always be Linux.</p>
+<h2 id="here-is-what-rms-replied">Here is what "rms" replied:</h2><p><a href="https://micahflee.com/2015/09/why-i-say-linux-instead-of-gnulinux/#comment-84984">https://micahflee.com/2015/09/why-i-say-linux-instead-of-gnulinux/#comment-84984</a></p>
+<p>Hello Dennis,
+Of course the Kernel is an important part of the operating system - necessary,
+even.  But in order to meaningfully interact with a Kernel you need userland
+tools, such as those developed by GNU.  It's as you say, the GNU system is not
+functional without a Kernel -- but so too is the Kernel "entirely useless"
+without GNU.  You can see there is a mutual dependence on the Kernel and GNU,
+they both need each other.  The Kernel does everything behind the scenes -- you
+don't interact with the Kernel, you interact with GNU.  You could say the most
+meaningful interactions you have with your computer are the interactions you
+make with GNU, not the Kernel.  This is why both GNU and the Kernel deserve
+equal credit -- GNU+Linux.  By omitting "GNU" from "GNU+Linux", you are saying
+the contributions to GNU are so meaningless as to not even warrant a mention.</p>
+<p>There is a GNU Kernel, it is called Hurd -- you can learn more about it here:
+<a href="https://www.gnu.org/software/hurd/">https://www.gnu.org/software/hurd/</a></p>
+<p>Ubuntu is not an "OS" on it's own, it's a flavor (or distribution) of GNU+Linux
+built upon the distribution Debian. Ubuntu adds nonfree blobs and used to even
+add spyware, you can read about that here:
+<a href="https://www.gnu.org/philosophy/ubuntu-spyware.en.html">https://www.gnu.org/philosophy/ubuntu-spyware.en.html</a>
+Nonetheless, Ubuntu is not "Linux".  Ubuntu is not a Kernel, nor is it shipped
+without GNU userland.  Ubuntu depends on GNU just as it depends on the Kernel.
+As you can see, it is more proper to refer to Ubuntu as "Ubuntu GNU+Linux",
+rather than simply "Linux".</p>
+<p>rms</p>
+<p>Oliver,
+Notepad and Minesweeper are not "core applications" that are required to 
+interact in any meaningful way with the Kernel. It is a false equivalency.  Of 
+course it's entirely possible to use Windows without Notepad, but it is much 
+more difficult, if at all possible, to interact with a Linux system lacking 
+core 
+utilities.  You cannot exactly admin a server without being able to use chmod,
+rm, echo, or many of the other coreutils.</p>
+<p>You also seem to equate GNU in it's entirety with GNU Coreutils alone, which is 
+also a mistake. GNU is much more than the few dozen utilities included in GNU 
+Coreutils.  GNU also includes many libraries the Kernel -- and most userland 
+applications you come across -- depends on, including GNU's implementation of 
+libc, not to mention the fact that Linux is compiled solely with the GNU C 
+Compiler.  Even without any GNU Coreutils, your Linux distribution still 
+depends on GNU in many ways you may not see.</p>
+<p>This is not simply a matter of language evolving, it's more a matter of 
+exposure and acknowledgement. GNU has contributed massively to the community -- 
+it might not even exist in it's current state if it weren't for GNU. To simply 
+omit GNU from the discussion by calling it "Linux" alone is damaging not only 
+to GNU, but also to newcomers who may not otherwise hear about GNU or it's 
+importance. It's really not that much work to acknowledge GNU in this case -- 
+it's 4 extra keystrokes, and it will benefit everybody.</p>
+<p>rms</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">José Gatica</p>
+        <p class="legacy-comment-meta-pub_date">September 19, 2018 05:36 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>oooohhh I think you're very confused and without arguments, bro</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">José Gatica</p>
+        <p class="legacy-comment-meta-pub_date">September 19, 2018 05:37 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I mean, Oliver is confused and without arguments</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name centered"><a href="../../../../../../../">Micah Lee's blog</a></p>
+      <p class="centered"><img class="fullwidth" src="../../../../../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Director of Infosec at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Advisor at <a href="https://ddosecrets.com/">DDoSecrets</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Cofounded <a href="https://freedom.press/">Freedom of the Press</a> (former)
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../../../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://semiphemeral.com">Semiphemeral</a>
+        </li>
+      </ul>
+
+      <p class="centered"><iframe class="centered" src="https://snowflake.torproject.org/embed.html" width="320"
+          height="240" frameborder="0" scrolling="no"></iframe></p>
+
+      <p class="centered"><a href="https://standwithreality.org/"><img class="fullwidth"
+            src="../../../../../../../static/images/reality.png"></a>
+      </p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?
+      <p>
+      <p>Check the <a href="../../../../../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../../../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../../../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../../../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../../../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../../../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../../../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../../../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../../../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../../../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../../../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../../../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../../../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../../../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../../../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../../../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../../../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../../../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../../../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../../../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../../../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License"
+            src="../../../../../../../static/images/cc-by-nc.png"></a>
+        <br />
+        <br />
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative
+          Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me
+        credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must
+        make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

@@ -1,0 +1,215 @@
+<!doctype html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Goodbye, passwords in OnionShare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@micahflee" />
+  <meta name="twitter:creator" content="@micahflee" />
+  <meta property="og:url" content="https://micahflee.com/2021/09/goodbye-passwords-in-onionshare" />
+  <meta property="og:title" content="Goodbye, passwords in OnionShare" />
+  <meta property="og:image" content="https://micahflee.com/2021/09/goodbye-passwords-in-onionshare/onionshare-2.4.png" />
+
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="./onionshare-2.4.png" />
+    </p>
+    
+    
+      <h1 class="article-title">Goodbye, passwords in OnionShare</h1>
+    
+    <p class="meta">
+      Posted September 26, 2021
+      
+        in
+        
+          <a class="tag" href="../../../tags/onionshare">onionshare</a>
+        
+      
+    </p>
+    
+      <p>I'm excited to announce that OnionShare 2.4 is now out and the major change in this version is that we've completely gotten rid of passwords! Private OnionShare services are now protected using private keys (aka <a href="https://community.torproject.org/onion-services/advanced/client-auth/">client authentication</a>) on the Tor layer instead of instead of basic authentication on the HTTP layer. Check out the new version at <a href="https://onionshare.org">onionshare.org</a>!</p>
+<p>Before today, OnionShare web addresses looked something like this:</p>
+<pre><code>http://onionshare:constrict-purity@by4im3ir5nsvygprmjq74xwplrkdgt44qmeapxawwikxacmr3dqzyjad.onion
+</code></pre>
+<p>The first part, <code>onionshare:constrict-purity</code>, is an HTTP basic authentication username (always 'onionshare') and random password. Basically, if you load that address in Tor Browser without the username and password part, it would prompt the user to login. If you didn't have the password and guessed wrong enough times, OnionShare would detect a potential attack and shut down the service.</p>
+<p>Today though, the passwords are gone! OnionShare 2.4 addresses look something like this:</p>
+<pre><code>http://oy5oaslxxzwib7fsjaiz5mjeyg3ziwdmiyeotpjw6etxi722pn7pqsyd.onion
+</code></pre>
+<p>And the private keys look something like this:</p>
+<pre><code>K3N3N3U3BURJW46HZEZV2LZHBPKEFAGVN6DPC7TY6FHWXT7RLRAQ
+</code></pre>
+<p>When you start an OnionShare service you get both, and you have to give both to the people who want to use your service. For example, lets say you want to send a super secret Nintendo ROM to your friend. You open OnionShare, drag the file in, and start the server.</p>
+<p><img src="qbert1.png" alt=""></p>
+<p>You open up an encrypted messaging app like Signal and then send <em>both</em> the OnionShare address and the private key. When your friend opens Tor Browser and pastes the address, Tor itself will pop up a little window asking for the private key.</p>
+<p><img src="qbert2.png" alt=""></p>
+<p>If they don't have it then it's simply impossible to connect.</p>
+<p><img src="qbert3.png" alt=""></p>
+<p>Once your friend copies and pastes the correct private key, they can access the onion site like normal and download the secret Nintendo ROM.</p>
+<p><img src="qbert4.png" alt=""></p>
+<p>The command line version, of course, works the same way. Let's say you want to set up a secret chat room. You can do that like this (in this case, running the command line version from the <a href="https://snapcraft.io/onionshare">snap package</a>):</p>
+<pre><code>onionshare.cli --chat --title "retro gamerz only"
+</code></pre>
+<p><img src="qbert5.png" alt="">
+<img src="qbert6.png" alt=""></p>
+<p>If you want to run a <a href="https://docs.onionshare.org/2.4/en/advanced.html#turn-off-private-key">public OnionShare service</a> that anyone can access and doesn't have a secret key, like if you're setting up an anonymous dropbox, then just check the "This is a public OnionShare service (disables private key)" box before starting the server, or use the <code>--public</code> flag on the command line.</p>
+
+
+      <div id="commento"></div>
+      <script src="https://cdn.commento.io/js/commento.js"></script>
+
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name centered"><a href="../../../">Micah Lee's blog</a></p>
+      <p class="centered"><img class="fullwidth" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Director of Infosec at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Advisor at <a href="https://ddosecrets.com/">DDoSecrets</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Cofounded <a href="https://freedom.press/">Freedom of the Press</a> (former)
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://semiphemeral.com">Semiphemeral</a>
+        </li>
+      </ul>
+
+      <p class="centered"><iframe class="centered" src="https://snowflake.torproject.org/embed.html" width="320"
+          height="240" frameborder="0" scrolling="no"></iframe></p>
+
+      <p class="centered"><a href="https://standwithreality.org/"><img class="fullwidth"
+            src="../../../static/images/reality.png"></a>
+      </p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?
+      <p>
+      <p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License"
+            src="../../../static/images/cc-by-nc.png"></a>
+        <br />
+        <br />
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative
+          Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me
+        credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must
+        make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

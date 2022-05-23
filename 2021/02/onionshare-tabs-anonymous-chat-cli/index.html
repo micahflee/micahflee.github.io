@@ -1,0 +1,218 @@
+<!doctype html>
+
+<head>
+  <meta charset="utf-8">
+  <title>OnionShare 2.3 adds tabs, anonymous chat, better command line support, and quite a bit more</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@micahflee" />
+  <meta name="twitter:creator" content="@micahflee" />
+  <meta property="og:url" content="https://micahflee.com/2021/02/onionshare-tabs-anonymous-chat-cli" />
+  <meta property="og:title" content="OnionShare 2.3 adds tabs, anonymous chat, better command line support, and quite a bit more" />
+  <meta property="og:image" content="https://micahflee.com/2021/02/onionshare-tabs-anonymous-chat-cli/chat.png" />
+
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="./chat.png" />
+    </p>
+    
+    
+      <h1 class="article-title">OnionShare 2.3 adds tabs, anonymous chat, better command line support, and quite a bit more</h1>
+    
+    <p class="meta">
+      Posted February 21, 2021
+      
+        in
+        
+          <a class="tag" href="../../../tags/onionshare">onionshare</a>
+        
+          <a class="tag" href="../../../tags/code">code</a>
+        
+      
+    </p>
+    
+      <p>After a ridiculously long sixteen months (or roughly ten years in pandemic time) I'm excited to announce that OnionShare 2.3 is out! Download it from <a href="https://onionshare.org/">onionshare.org</a>.</p>
+<p>This version includes loads of new and exciting features which you can read about in much more detail on the brand new OnionShare documentation website, <a href="https://docs.onionshare.org/">docs.onionshare.org</a>. For now though I'm just going to go over the major ones: tabs, anonymous chat, and better command line support.</p>
+<h2 id="doing-all-the-things-at-once">Doing all the things at once</h2><p>In the olden days, OnionShare only did one thing: let you securely and anonymously share files over the Tor network. With time we added new features. You could use it as an <a href="https://micahflee.com/2019/02/onionshare-2/">anonymous dropbox</a>, and then later to <a href="https://micahflee.com/2019/10/new-version-of-onionshare-makes-it-easy-for-anyone-to-publish-anonymous-uncensorable-websites/">host an onion site</a>.</p>
+<p>But what if you wanted to, for example, run your own anonymous dropbox <em>as well as</em> share files with someone? If your OnionShare was busy running a service, you couldn't run a second service without stopping the first service. This is all fixed now thanks to tabs.</p>
+<p><img src="tabs.png" alt=""></p>
+<p>Now when you open OnionShare you are presented with a blank tab that lets you choose between sharing files, receiving files, hosting a website, or chatting anonymous. You can have as many tabs open as you want at a time, and you can easily save tabs (that's what the purple thumbtack in the tab bar means) so that if you quit OnionShare and open it again later, these services can start back up with the same OnionShare addresses.</p>
+<p>So with OnionShare 2.3 you can host a few websites, have your own personal anonymous dropbox, and securely send files to people whenever you want, all at the same time. Under the hood, the addition of tabs also makes OnionShare connect to the Tor network faster, especially if you're using a bridge.</p>
+<h2 id="secure-anonymous-ephemeral-chat-rooms-that-don-t-log-anything">Secure, anonymous, ephemeral chat rooms that don't log anything</h2><p>Another major new feature is chat. You start a chat service, it gives you an OnionShare address, and then you send this address to everyone who is invited to the chat room (using an encrypted messaging app like Signal, for example). Then everyone loads this address in a <a href="https://www.torproject.org/">Tor Browser</a>, makes up a name to go by, and can have a completely private conversation.</p>
+<p><img src="chat-torbrowser.png" alt=""></p>
+<p>If you're already using an encrypted messaging app, what’s the point of an OnionShare chat room? It leaves fewer traces.</p>
+<p>If, for example, you send a message to a Signal group, a copy of your message ends up on each device (the devices, and computers if they set up Signal Desktop of each member of the group). Even if disappearing messages is turned on it’s hard to confirm all copies of the messages are actually deleted from all devices, and from any other places (like notifications databases) they may have been saved to. OnionShare chat rooms don’t store any messages anywhere, so the problem is reduced to a minimum.</p>
+<p>OnionShare chat rooms can also be useful for people wanting to chat anonymously and securely with someone without needing to create any accounts. For example, a whistleblower can send an OnionShare address to a journalist using a disposable e-mail address, and then wait for the journalist to join the chat room, all without compromising their anonymity.</p>
+<p>Because OnionShare relies on Tor onion services, connections between the Tor Browser and OnionShare are all end-to-end encrypted (E2EE). When someone posts a message to an OnionShare chat room, they send it to the server through their E2EE onion connection. The OnionShare server then forwards the message to all other members of the chat room through the other members' E2EE onion connections, using WebSockets. OnionShare doesn’t implement any chat encryption on its own. It relies on the Tor onion service’s encryption instead.</p>
+<p>Huge thanks to <a href="https://twitter.com/Saptak013">Saptak Sengupta</a> for developing the anonymous chat feature (doing the bulk of the work in like a single day (!), in the midst of a hacker con in Goa, India last March).</p>
+<h2 id="onionshare-from-the-command-line">OnionShare from the command line</h2><p><img src="cli.png" alt=""></p>
+<p>OnionShare 2.3 finally de-couples the command line and the graphical versions. You can install <code>onionshare-cli</code> on any platform, including headless Linux servers, <a href="https://pypi.org/project/onionshare-cli/">using pip</a>:</p>
+<p><code>
+pip3 install --user onionshare-cli
+</code></p>
+<p>You also need to have <code>tor</code> installed to use it from your package manager, or Homebrew if you're using macOS.</p>
+<p>It's simple to use. For example, here's how you start a chat server:</p>
+<p><img src="cli-chat.png" alt=""></p>
+<p>I hope you enjoy the new version of OnionShare!</p>
+<p><em>Note February 21, 2021: OnionShare 2.3 for Linux will be available in <a href="https://flathub.org/">Flathub</a> after <a href="https://github.com/flathub/flathub/pull/2129">this pull request</a> is reviewed and merged, so hang tight. In the meantime, it's already <a href="https://snapcraft.io/onionshare">available in Snapcraft</a> (though it logs analytics), or you can install the <code>.flatpak</code> file directly from <a href="https://onionshare.org/dist/2.3/">onionshare.org/dist/2.3</a>.</em></p>
+<p><em>Update February 22, 2022: Version 2.3 had a bug where chat was broken :( but we just released version 2.3.1 which fixes it! :).</em></p>
+<p><em>Update February 23, 2020: The Flatpak package is live! Linux users <a href="https://flathub.org/apps/details/org.onionshare.OnionShare">get it from Flathub</a>.</em></p>
+
+
+      <div id="commento"></div>
+      <script src="https://cdn.commento.io/js/commento.js"></script>
+
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name centered"><a href="../../../">Micah Lee's blog</a></p>
+      <p class="centered"><img class="fullwidth" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Director of Infosec at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Advisor at <a href="https://ddosecrets.com/">DDoSecrets</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Cofounded <a href="https://freedom.press/">Freedom of the Press</a> (former)
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://semiphemeral.com">Semiphemeral</a>
+        </li>
+      </ul>
+
+      <p class="centered"><iframe class="centered" src="https://snowflake.torproject.org/embed.html" width="320"
+          height="240" frameborder="0" scrolling="no"></iframe></p>
+
+      <p class="centered"><a href="https://standwithreality.org/"><img class="fullwidth"
+            src="../../../static/images/reality.png"></a>
+      </p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?
+      <p>
+      <p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License"
+            src="../../../static/images/cc-by-nc.png"></a>
+        <br />
+        <br />
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative
+          Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me
+        credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must
+        make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

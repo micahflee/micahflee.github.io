@@ -1,0 +1,245 @@
+<!doctype html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Legacy Comments</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="../../../../static/style.css">
+  <link rel="stylesheet" href="../../../../static/fontawesome/css/all.min.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">John Doe</p>
+        <p class="legacy-comment-meta-pub_date">August 29, 2013 05:32 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Sorry, this is none sense.
+Given the 3 objectives in security (Confidentiality, Integrity, and Availability), SSL provides Confidentiality and Integrity.
+If I'm making available some software (whether TrueCrypt or GPG, or which ever), then there is no point in providing Confidentiality. The information is available publicly. You downloading it with SSL will not keep anything (more) secret.
+You mention Integrity by talking about injecting malware. We need to provide for the integrity of the packages available for download, yes. This is often done with  MD5 checksums. The user downloads the package and checks that the MD5 they compute matches that shown on the site(s) (plural when you check multiple sources). Done.
+Your analogy of people locking their doors broken. The burden of the extra 1 second to lock you door is borne by the 100 people locking their 100 cars - 1 second each. If the software vendor were to add SSL by default to his servers, then he needs to bear the burden of locking those 100 cars - all the compute burden of doing SSL is focalized on the web server (or dedicate SSL accelerator for the rich).
+So option (1-FREE) use MD5 where the visitor consumes his time checking and performance remains high and scalable on HTTP, or (2-COST) use SSL where the entire burden is with the server side (no more caching, no CDNs, dedicated SSL accelerator hardware).
+ Now, regarding the injection of malware, yes that's an issue. But SSL won't address this. Intercepting one session of one user to falsify that one HTTP packet is possible but somewhat complex. Falsify the traffic for that one page for all visitors? Perhaps not impossible but way more complex. We could just attack the distribution server to have it distribute compromised content or compel the software vendor to compromise the software himself. The later is a lot easier, especially when we have root CAs with which to sign our own real fake certificates. Note that option 1-FREE will help detect this when suddenly the MD5's are all over the place.
+If you're worried about malware then disable JavaScript, Flash, Java, or any other browser plug-in. Do not run binaries from the Internet unless you trust the source and have validated their integrity (MD5?). Or install from source, compiling yourself. Still checking the MD5...
+So in this case (distributing publicly available software), SSL does not add anything. It just costs something.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Baps</p>
+        <p class="legacy-comment-meta-pub_date">August 29, 2013 06:23 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Dude, MD5 is hopelessly broken, nobody should be using MD5 for anything.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">John Doe</p>
+        <p class="legacy-comment-meta-pub_date">August 29, 2013 07:05 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Thanks!</p>
+<p>Indeed, TrueCrypt, GnuPG, and kernel.org offer PGP signatures for the downloads. MD5 has completely disappeared.</p>
+<p>TIL that package managers (deb &amp; rpm) now also use PGP sigs. to verify packages.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">asdf</p>
+        <p class="legacy-comment-meta-pub_date">November 12, 2013 12:05 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>This comment is ridiculous. First, md5 is completely broken. There are programs to change a file in undetectable ways to make it have the same md5 hash as another file and it works in a reasonable amount of time. Second, even if you used a secure hash, this only protects again the file being corrupted through accidental means. If someone could change the file that you were receiving, they could also change the hash you are receiving to match the changed file.</p>
+<p>People saying that we shouldn't use HTTPS because there are other ways things can go wrong, are like people saying we shouldn't use condoms because there is still a change of STD and pregnancy. Even though condoms (HTTPS) may not be as good as abstinence (not using the internet at all), we aren't comparing these two. We are comparing condoms (HTTPS) to unprotected sex (HTTP). HTTPS is undeniably better and is only a small performance trade off. All processors are fast enough to make this trivial. Facebook and Google and Twitter send their whole sites over HTTPS and don't seem to think that it is a problem.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name centered"><a href="../../../../">Micah Lee's blog</a></p>
+      <p class="centered"><img class="fullwidth" src="../../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Director of Infosec at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Advisor at <a href="https://ddosecrets.com/">DDoSecrets</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Cofounded <a href="https://freedom.press/">Freedom of the Press</a> (former)
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://semiphemeral.com">Semiphemeral</a>
+        </li>
+      </ul>
+
+      <p class="centered"><iframe class="centered" src="https://snowflake.torproject.org/embed.html" width="320"
+          height="240" frameborder="0" scrolling="no"></iframe></p>
+
+      <p class="centered"><a href="https://standwithreality.org/"><img class="fullwidth"
+            src="../../../../static/images/reality.png"></a>
+      </p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?
+      <p>
+      <p>Check the <a href="../../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License"
+            src="../../../../static/images/cc-by-nc.png"></a>
+        <br />
+        <br />
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative
+          Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me
+        credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must
+        make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

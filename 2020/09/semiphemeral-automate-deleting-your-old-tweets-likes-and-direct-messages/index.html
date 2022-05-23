@@ -1,0 +1,222 @@
+<!doctype html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Easily automate deleting your old tweets, likes, and DMs with Semiphemeral</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@micahflee" />
+  <meta name="twitter:creator" content="@micahflee" />
+  <meta property="og:url" content="https://micahflee.com/2020/09/semiphemeral-automate-deleting-your-old-tweets-likes-and-direct-messages" />
+  <meta property="og:title" content="Easily automate deleting your old tweets, likes, and DMs with Semiphemeral" />
+  <meta property="og:image" content="https://micahflee.com/2020/09/semiphemeral-automate-deleting-your-old-tweets-likes-and-direct-messages/semiphemeral.png" />
+
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="./semiphemeral.png" />
+    </p>
+    
+    
+      <h1 class="article-title">Easily automate deleting your old tweets, likes, and DMs with Semiphemeral</h1>
+    
+    <p class="meta">
+      Posted September 10, 2020
+      
+        in
+        
+          <a class="tag" href="../../../tags/semiphemeral">semiphemeral</a>
+        
+      
+    </p>
+    
+      <p>Roughly one hundred years ago, in June of 2019, <a href="https://micahflee.com/2019/06/semiphemeral-automatically-delete-your-old-tweets-except-for-the-ones-you-want-to-keep/">I released</a> an <a href="https://github.com/micahflee/semiphemeral">open source</a> Twitter privacy tool called Semiphemeral that makes it simple-ish to delete years of old tweets. The great thing about Semiphemeral is, unlike similar tools, it's flexible: you don't have to delete <em>all</em> of your old tweets if you don't want to. You can, say, choose to keep tweets that have at least 20 likes, flag specific tweets you want to never delete, or delete all your retweets and likes that are older than a week.</p>
+<p>But at the time, Semiphemeral was only usable by the nerdiest among us. It required running commands in a terminal window, creating your own Twitter API key, and, if you want to automate it, setting up a cron job on a server. But this is no longer the case!</p>
+<p><strong>For the last several months I've been running an easy-to-use hosted version at <a href="https://semiphemeral.com/">Semiphemeral.com</a>. Now <em>anyone*</em> can easily delete their old tweets, likes, and now even direct messages (more on this below).</strong></p>
+<p><img src="screenshot.png" alt=""></p>
+<h1 id="semiphemeral-is-an-antifascist-service">Semiphemeral is an antifascist service</h1><p>*Well, <em>most people</em>.</p>
+<p>In order to use Semiphemeral, you must follow <a href="https://twitter.com/semiphemeral">@semiphemeral</a> on Twitter. Supporters of dictators and anti-democratic demagogues, racists, or other types of fascists will be blocked, and blocked users are ineligible to use Semiphemeral. Everyone deserves privacy on social media, but not everyone is entitled to get that privacy by using this free service.</p>
+<p>How does fascist detection work? Right now it's fairly simple. Semiphemeral maintains a list of popular fascist Twitter influencers: extremist demagogues like Trump in the US, Bolsonaro in Brazil, or Modi in India; popular neo-Nazi media personalities like Tucker Carlson or Ben Shapiro; and others.</p>
+<p>When you start using Semiphemeral it downloads a history of your tweets and likes. If you've liked tweets from any of those fascists within the last few months, you get automatically blocked and are disqualified from using the service (it automatically unblocks you in a few months, in case you've changed since then).</p>
+<p>This algorithm is prone to false positives, of course. Many perfectly reasonable people have at one point liked a Trump tweet, for whatever reason. So if you get blocked and you've only liked a few fascist tweets, Semiphemeral will let you unblock yourself and continue using the service. But if you've demonstrated a clear pattern of liking what fascists are spewing on Twitter, you have to write an email if you want to appeal your block.</p>
+<h1 id="getting-started">Getting started</h1><p>Using the hosted Semiphemeral service is easy. Just go to <a href="https://semiphemeral.com/">https://semiphemeral.com/</a> and click "Login with Twitter". This will ask you to give Semiphemeral.com permission to delete your tweets and likes.</p>
+<p><img src="twitter-auth.png" alt=""></p>
+<p>As soon as you create your account, Semiphemeral starts downloading a history of your tweets. Depending on how long you've been using Twitter, this may take a long time. Twitter enforces <a href="https://developer.twitter.com/ja/docs/basics/rate-limits">rate limits</a>, which means Semiphemeral will frequently have to stop and wait 15 minutes before it can continue.</p>
+<p>In the meantime, you can go over to the Settings page and configure it exactly as you like. Here's how mine is configured:</p>
+<ul>
+<li>Delete tweets older than 30 days unless they have at least 20 retweets or at least 20 likes, and don't delete tweets that are part of a thread that contains at least one tweet that meets these thresholds</li>
+<li>Unretweet tweets older than 30 days and unlike tweets older than 60 days</li>
+<li>Delete direct messages older than 14 days</li>
+</ul>
+<p><img src="settings-screenshot.png" alt=""></p>
+<p>When it's done downloading your Twitter history, @semiphemeral will send you a Twitter direct message letting you know.</p>
+<p>The next step is to go to the Tweets tab. This will show you all of the tweets that don't fit your criteria in Settings, and you can optionally exclude any of them from deletion. For example, Semiphemeral won't delete the tweet that verifies myself on the messaging app Keybase:</p>
+<p><img src="keybase-screenshot.png" alt=""></p>
+<p>After you've chosen the settings you want and chosen which tweets to manually exclude, you can go back to the Dashboard and click the "Start Semiphemeral" button. From this point on, once a day Semiphemeral will download your latest Twitter history and delete the older stuff based on your settings.</p>
+<h1 id="deleting-direct-messages">Deleting direct messages</h1><p>Semiphemeral can also delete your old DMs, basically making them ephemeral (although keep in mind that when you delete a DM, the person you sent it to can still read it unless they delete it too).</p>
+<p>When you first login to Semiphemeral, you give the app permission to delete your tweets but it doesn't have access to your DMs. If you want it to delete them, first you must give it access. You can find a link to authorize Semiphemeral to access your DMs on the Settings page under "Direct messages". This time you have to agree to an additional privilege.</p>
+<p><img src="twitter-dms-auth.png" alt=""></p>
+<p>There's another catch. Twitter only tells Semiphemeral about the last 30 days of your DMs. Because of this, Semiphemeral can't <em>automatically</em> delete all your old DMs, only those within the last 30 days. For example, if you configure it to delete DMs older than 7 days, each time it runs it will delete the DMs between 30 days ago and 7 days ago.</p>
+<p>But if you have years and years of DMs you want to destroy, don't worry. You can still bulk delete them, you just need to give Semiphemeral a list of them. If you go to the DMs tab there's instructions on how to do this. But in short, you need to download a copy of your Twitter archive and them upload files that contain all of your historical DM metadata to Semiphemeral, and <em>then</em> it can delete all your older ones.</p>
+<h1 id="semiphemeral-com-doesn-t-track-you">Semiphemeral.com doesn't track you</h1><p>You can see Semiphemeral's extremely <a href="https://semiphemeral.com/privacy">short and readable privacy policy here</a>, but the TLDR is: The service doesn't use any analytics software or log IP addresses, and there are no ads. It temporarily saves the content of your tweets, but then deletes that content when it deletes those tweets. It never accesses the content of your DMs.</p>
+<p>It's hosted on the US-based cloud hosting provider DigitalOcean, and uses Stripe to process optional credit card tips.</p>
+<h1 id="paid-for-by-tips">Paid for by tips</h1><p>Semiphemeral is totally free to use. I coded it in my spare time basically just because I wanted to use it myself. At the moment it's costing me roughly $60/month to pay for hosting (and if it gets considerably more popular, that amount will increase as well).</p>
+<p>If you &lt;3 Semiphemeral you can help me offset these costs by tipping (you can do this from the Tip tab when you're logged in), which is greatly appreciated.</p>
+
+
+      <div id="commento"></div>
+      <script src="https://cdn.commento.io/js/commento.js"></script>
+
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name centered"><a href="../../../">Micah Lee's blog</a></p>
+      <p class="centered"><img class="fullwidth" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Director of Infosec at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Advisor at <a href="https://ddosecrets.com/">DDoSecrets</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Cofounded <a href="https://freedom.press/">Freedom of the Press</a> (former)
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://semiphemeral.com">Semiphemeral</a>
+        </li>
+      </ul>
+
+      <p class="centered"><iframe class="centered" src="https://snowflake.torproject.org/embed.html" width="320"
+          height="240" frameborder="0" scrolling="no"></iframe></p>
+
+      <p class="centered"><a href="https://standwithreality.org/"><img class="fullwidth"
+            src="../../../static/images/reality.png"></a>
+      </p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?
+      <p>
+      <p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License"
+            src="../../../static/images/cc-by-nc.png"></a>
+        <br />
+        <br />
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative
+          Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me
+        credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must
+        make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

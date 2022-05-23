@@ -1,0 +1,206 @@
+<!doctype html>
+
+<head>
+  <meta charset="utf-8">
+  <title>With Semiphemeral you can delete your old Twitter likes, but it&#39;s noisy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@micahflee" />
+  <meta name="twitter:creator" content="@micahflee" />
+  <meta property="og:url" content="https://micahflee.com/2019/07/with-semiphemeral-you-can-delete-your-old-twitter-likes-but-its-noisy" />
+  <meta property="og:title" content="With Semiphemeral you can delete your old Twitter likes, but it&#39;s noisy" />
+  <meta property="og:image" content="https://micahflee.com/2019/07/with-semiphemeral-you-can-delete-your-old-twitter-likes-but-its-noisy/semiphemeral.png" />
+
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="./semiphemeral.png" />
+    </p>
+    
+    
+      <h1 class="article-title">With Semiphemeral you can delete your old Twitter likes, but it&#39;s noisy</h1>
+    
+    <p class="meta">
+      Posted July 21, 2019
+      
+        in
+        
+          <a class="tag" href="../../../tags/semiphemeral">semiphemeral</a>
+        
+          <a class="tag" href="../../../tags/code">code</a>
+        
+      
+    </p>
+    
+      <p>I don't know if others use Twitter the same way that I do, but I tend to like things quite a bit more frequently than I tweet or retweet things. I'd imagine that if you analyzed my last 10 years of Twitter likes, you could learn much more about me than just by looking at my timeline. My likes probably reveal exactly which political, technical, and social arguments I followed, and which sides I took in all of them.</p>
+<p>I recently programmed a tool called <a href="https://micahflee.com/2019/06/semiphemeral-automatically-delete-your-old-tweets-except-for-the-ones-you-want-to-keep/">semiphemeral</a>  to automate deleting all of my old tweets (except for ones that I want to keep), and it also goes back and unlikes all of the tweets that I liked more than 60 days ago  -- or, so I initially thought. It soon became clear that semiphemeral only actually deleted the most recent 4,000 likes.</p>
+<p>I just released a new version that allows you to delete <em>all</em> of your old likes, but unfortunately there are some... caveats. (You can install semiphemeral with <code>pip3 install semiphemeral</code>, and if you already have it installed you can upgrade to the latest version with <code>pip3 install --upgrade semiphemeral</code>.)</p>
+<p>Twitter works in mysterious ways. If you have a very long like history, the only way to delete your old ones is to first <em>relike</em> those tweets (yes, the tweets that you already liked), and <em>then</em> you can unlike them. This means that your friends (and strangers) will get notifications that you, for example,  liked a random tweet from 2014 but by the time they open Twitter the notification will be gone, and you won't be listed in their likes for that tweet. And on top of that, running this script may take <em>weeks</em>. Twitter only allows you to like up to 1,000 tweets per day, so if you need to relike/unlike about 10,000 tweets (this is what I did), it will take about 10 days to run. I had maybe a dozen different people contact me wondering if my account was hacked.</p>
+<p><img src="twitter-deleting-likes.png" alt=""></p>
+<p>But why?</p>
+<p>It turns out that the Twitter <a href="https://developer.twitter.com/en/docs/tweets/post-and-engage/api-reference/get-favorites-list.html">API call</a> for getting a list of tweets that a user has liked, <code>GET favorites/list</code> , doesn't work as you'd expect. It only returns the most recent 4,000 likes -- and even if you delete those and wait several days, it never returns any that are older than those. In fact, there doesn't seem to be any way at all to get the API to give you a complete list of IDs for old tweets that you liked.</p>
+<p>In order to get a list of all of your old likes (since the Twitter API won't give it to you), you must go to <a href="https://twitter.com/settings/your_twitter_data">https://twitter.com/settings/your_twitter_data</a> and download your Twitter data (note that this is different than your "Twitter archive", which doesn't include information about your likes). Twitter will email you a link to a zip file. When you unzip it there will be many files, including a file called <code>like.js</code>. Run this command, with the path to your <code>like.js</code>, for example:</p>
+<pre><code>semiphemeral unlike --filename ~/path/to/like.js
+</code></pre>
+<p>Using the <code>like.js</code> file from your Twitter data, this will first fetch all of the tweets that you liked, then it with relike and unlike each one of them. Each relike will trigger a notification, but at the end of the process your likes will have actually been deleted.</p>
+<p>Each time it hits the 1,000 likes/day rate limit, semiphemeral will pause for 24 hours before continuing (if the command crashes or you cancel in the middle for any reason, it's safe to run it again to continue where you left off). If possible, I recommend you run this in a <code>screen</code> or <code>tmux</code> session on a server somewhere so that it doesn't get interrupted when you suspend your laptop. And if you're running semiphemeral on a cron job, I recommend that you disable it first, and then start it up again when it's finished.</p>
+<p>New likes don't have this problem, so as long as you regularly run <code>semiphemeral delete</code>, your new likes will automatically get deleted.</p>
+<p>You can find the source code and readme for semiphemeral on it's <a href="https://github.com/micahflee/semiphemeral">github project page</a>.</p>
+
+
+      <div id="commento"></div>
+      <script src="https://cdn.commento.io/js/commento.js"></script>
+
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name centered"><a href="../../../">Micah Lee's blog</a></p>
+      <p class="centered"><img class="fullwidth" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Director of Infosec at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Advisor at <a href="https://ddosecrets.com/">DDoSecrets</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Cofounded <a href="https://freedom.press/">Freedom of the Press</a> (former)
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://semiphemeral.com">Semiphemeral</a>
+        </li>
+      </ul>
+
+      <p class="centered"><iframe class="centered" src="https://snowflake.torproject.org/embed.html" width="320"
+          height="240" frameborder="0" scrolling="no"></iframe></p>
+
+      <p class="centered"><a href="https://standwithreality.org/"><img class="fullwidth"
+            src="../../../static/images/reality.png"></a>
+      </p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?
+      <p>
+      <p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License"
+            src="../../../static/images/cc-by-nc.png"></a>
+        <br />
+        <br />
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative
+          Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me
+        credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must
+        make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

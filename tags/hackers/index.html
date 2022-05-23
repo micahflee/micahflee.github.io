@@ -1,0 +1,306 @@
+<!doctype html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Tag: hackers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="../../static/style.css">
+  <link rel="stylesheet" href="../../static/fontawesome/css/all.min.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <article>
+      
+  <h1>Tag: hackers</h1>
+  
+  
+  
+    
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="../../2017/04/breaking-the-security-model-of-subgraph-os/sgos.png" />
+    </p>
+    
+    
+      <h1 class="article-title"><a href="../../2017/04/breaking-the-security-model-of-subgraph-os/">Breaking the Security Model of Subgraph OS</a></h1>
+    
+    <p class="meta">
+      Posted April 11, 2017
+      
+        in
+        
+          <a class="tag" href="../hackers">hackers</a>
+        
+          <a class="tag" href="../linux">linux</a>
+        
+          <a class="tag" href="../qubes">qubes</a>
+        
+          <a class="tag" href="../subgraph">subgraph</a>
+        
+      
+    </p>
+    
+      <p>I recently traveled to Amsterdam to attend a meeting with Tor Project staff, volunteers, and other members of the wider Tor community. Before trips like this, I prepare a separate travel computer, only bringing with me data and credentials that I might need during my trip. My primary laptop runs <a href="https://www.qubes-os.org/">Qubes</a>, but this time I decided to install <a href="https://subgraph.com/sgos/index.en.html">Subgraph OS</a> on my travel laptop. I had only briefly messed with it before, and there’s no better way to learn about a new operating system than by forcing yourself to actually use it for a few days.</p>
+<p>Subgraph OS is an “adversary resistant computing platform.” It’s similar to <a href="https://tails.boum.org/">Tails</a> in that it’s based on Debian and all traffic is forced through Tor (that’s changing though: there’s now basic support for <a href="https://subgraph.com/sgos/documentation/clearnet-chromium/">clearnet Chromium</a> and <a href="https://twitter.com/subgraph/status/846455144648785921">OpenVPN</a>). It uses a grsecurity Linux kernel, and many apps run in “oz sandboxes”, a homebrew sandbox solution that protects you even if an attacker manages to exploit a bug in one of these apps. Subgraph OS also includes the Subgraph Firewall, an application firewall similar to Little Snitch for macOS — something that’s pretty awesome, and hasn’t really existed in the Linux ecosystem before. Basically, it’s designed to be an easy-to-use Linux distro that’s extremely secure.</p>
+
+      <p><a href="../../2017/04/breaking-the-security-model-of-subgraph-os/">Continue reading →</a></p>
+    
+  </div>
+
+  
+    
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="../../2016/02/backdoored-linux-mint-and-the-perils-of-checksums/mint.png" />
+    </p>
+    
+    
+      <h1 class="article-title"><a href="../../2016/02/backdoored-linux-mint-and-the-perils-of-checksums/">Backdoored Linux Mint, and the Perils of Checksums</a></h1>
+    
+    <p class="meta">
+      Posted February 20, 2016
+      
+        in
+        
+          <a class="tag" href="../hackers">hackers</a>
+        
+          <a class="tag" href="../linux">linux</a>
+        
+          <a class="tag" href="../openpgp">openpgp</a>
+        
+          <a class="tag" href="../security">security</a>
+        
+      
+    </p>
+    
+      <p>Someone hacked the website of Linux Mint — which, according to <a href="https://stats.wikimedia.org/wikimedia/squids/SquidReportOperatingSystems.htm">Wikipedia’s traffic analysis report</a> is the 3rd most popular desktop Linux distribution after Ubuntu and Fedora — and replaced links to ISO downloads with a backdoored version of the operating system. This <a href="http://blog.linuxmint.com/?p=2994">blog post</a> explains the situation.</p>
+
+      <p><a href="../../2016/02/backdoored-linux-mint-and-the-perils-of-checksums/">Continue reading →</a></p>
+    
+  </div>
+
+  
+    
+  <div class="blog-post">
+    
+    
+      <h1 class="article-title"><a href="../../2016/02/usable-crypto-capture-the-flag-challenge/">Usable Crypto Capture the Flag Challenge</a></h1>
+    
+    <p class="meta">
+      Posted February 6, 2016
+      
+        in
+        
+          <a class="tag" href="../hackers">hackers</a>
+        
+          <a class="tag" href="../openpgp">openpgp</a>
+        
+      
+    </p>
+    
+      <p>Last week, during USENIX’s first <a href="https://www.usenix.org/conference/enigma2016">Enigma conference</a>, EFF hosted a small Capture the Flag hacking competition. I designed one of the challenges myself, entitled Usable Crypto. It requires you to use PGP as an attacker rather than a defender. It’s on the easy side, as far as CTF challenges go, and I think many people who have absolutely no hacking skills but some fumbling-around-with-PGP skills could beat it without too much trouble. And it might even demonstrate why verifying fingerprints really is rather important.</p>
+
+      <p><a href="../../2016/02/usable-crypto-capture-the-flag-challenge/">Continue reading →</a></p>
+    
+  </div>
+
+  
+    
+  <div class="blog-post">
+    
+    
+      <h1 class="article-title"><a href="../../2013/08/its-2013-were-all-being-spied-on-why-do-security-software-websites-not-use-https/">It’s 2013. We’re all being spied on. Why do security software websites not use HTTPS?</a></h1>
+    
+    <p class="meta">
+      Posted August 28, 2013
+      
+        in
+        
+          <a class="tag" href="../crypto">crypto</a>
+        
+          <a class="tag" href="../hackers">hackers</a>
+        
+          <a class="tag" href="../https">https</a>
+        
+          <a class="tag" href="../security">security</a>
+        
+      
+    </p>
+    
+      <p><strong>Update:</strong> This post made the <a href="http://www.reddit.com/r/technology/comments/1ladvh/its_2013_were_all_being_spied_on_why_do_security/">frontpage of reddit</a> and many of the comments are <a href="https://xkcd.com/386/">wrong</a>. I took a moment to clear a couple things up at the bottom of the post.</p>
+<p>We desperately need to work towards deprecating HTTP and replacing it only with HTTPS. The web is a huge part of what billions of people use the Internet for, and still most of it is not encrypted. Since the Snowden leaks started getting published we’ve learned that NSA and GCHQ spy on as close to the entire Internet as they can get.</p>
+<p>It would be naive to think that the US and UK are the only governments doing this too. The network isn’t safe, and the only way to make it safe is to encrypt all the things. Websites that still use HTTP are putting users in danger. Here are a couple of examples.</p>
+
+      <p><a href="../../2013/08/its-2013-were-all-being-spied-on-why-do-security-software-websites-not-use-https/">Continue reading →</a></p>
+    
+  </div>
+
+  
+    
+  <div class="blog-post">
+    
+    
+      <h1 class="article-title"><a href="../../2013/05/swatting-is-not-the-same-as-doxing/">Swatting is Not the Same as Doxing</a></h1>
+    
+    <p class="meta">
+      Posted May 9, 2013
+      
+        in
+        
+          <a class="tag" href="../hackers">hackers</a>
+        
+      
+    </p>
+    
+      <p><strong><em>Update: KTVU has taken down the story.</em></strong></p>
+<p>Recently I was interviewed about “doxing” by <a href="http://www.ktvu.com/">KTVU</a>, a Bay Area news station based in Oakland. Doxing is when someone publishes documents (“dox”) about someone to the internet. It’s usually full of mundane info that can be found in a phone book and with a google search, but sometimes it also contains more sensitive information like the contents of personal emails, lists of passwords, etc.</p>
+<p>I found out that the segment aired on TV last night when someone tweeted me asking if I really thought that “swatting” was protected by free speech laws. Swatting, I learned for the first time last night, is when someone dials 911 and reports something like a hostage situation or a terrorist bomb plot at someone else’s address in order to get a SWAT team to bust down their door.</p>
+
+      <p><a href="../../2013/05/swatting-is-not-the-same-as-doxing/">Continue reading →</a></p>
+    
+  </div>
+
+  
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name centered"><a href="../../">Micah Lee's blog</a></p>
+      <p class="centered"><img class="fullwidth" src="../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Director of Infosec at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Advisor at <a href="https://ddosecrets.com/">DDoSecrets</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Cofounded <a href="https://freedom.press/">Freedom of the Press</a> (former)
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://semiphemeral.com">Semiphemeral</a>
+        </li>
+      </ul>
+
+      <p class="centered"><iframe class="centered" src="https://snowflake.torproject.org/embed.html" width="320"
+          height="240" frameborder="0" scrolling="no"></iframe></p>
+
+      <p class="centered"><a href="https://standwithreality.org/"><img class="fullwidth"
+            src="../../static/images/reality.png"></a>
+      </p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?
+      <p>
+      <p>Check the <a href="../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../advisory/">advisory</a></li>
+  
+    <li><a href="../code/">code</a></li>
+  
+    <li><a href="../crypto/">crypto</a></li>
+  
+    <li><a href="../drama/">drama</a></li>
+  
+    <li><a href="./">hackers</a></li>
+  
+    <li><a href="../https/">https</a></li>
+  
+    <li><a href="../journalism/">journalism</a></li>
+  
+    <li><a href="../leaks/">leaks</a></li>
+  
+    <li><a href="../linux/">linux</a></li>
+  
+    <li><a href="../mobile/">mobile</a></li>
+  
+    <li><a href="../onionshare/">onionshare</a></li>
+  
+    <li><a href="../openpgp/">openpgp</a></li>
+  
+    <li><a href="../qubes/">qubes</a></li>
+  
+    <li><a href="../security/">security</a></li>
+  
+    <li><a href="../semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../spies/">spies</a></li>
+  
+    <li><a href="../subgraph/">subgraph</a></li>
+  
+    <li><a href="../sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../tor/">tor</a></li>
+  
+    <li><a href="../wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License"
+            src="../../static/images/cc-by-nc.png"></a>
+        <br />
+        <br />
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative
+          Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me
+        credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must
+        make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

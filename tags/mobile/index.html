@@ -1,0 +1,279 @@
+<!doctype html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Tag: mobile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="../../static/style.css">
+  <link rel="stylesheet" href="../../static/fontawesome/css/all.min.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <article>
+      
+  <h1>Tag: mobile</h1>
+  
+  
+  
+    
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="../../2015/11/some-thoughts-on-faraday-bags-and-operational-security/faraday-cage.jpg" />
+    </p>
+    
+    
+      <h1 class="article-title"><a href="../../2015/11/some-thoughts-on-faraday-bags-and-operational-security/">Some Thoughts on Faraday Bags and Operational Security</a></h1>
+    
+    <p class="meta">
+      Posted November 25, 2015
+      
+        in
+        
+          <a class="tag" href="../security">security</a>
+        
+          <a class="tag" href="../mobile">mobile</a>
+        
+      
+    </p>
+    
+      <p>I recently took a trip to Moscow to <a href="https://theintercept.com/2015/11/12/edward-snowden-explains-how-to-reclaim-your-privacy/">interview National Security Agency whistblower Edward Snowden</a> about operational security. In the article I published on The Intercept, I mentioned that I used a faraday bag.</p>
+<blockquote><p>Our first meeting would be in the hotel lobby, and I arrived with all my important electronic gear in tow. I had powered down my smartphone and placed it in a “faraday bag” designed to block all radio emissions.</p>
+</blockquote>
+
+      <p><a href="../../2015/11/some-thoughts-on-faraday-bags-and-operational-security/">Continue reading →</a></p>
+    
+  </div>
+
+  
+    
+  <div class="blog-post">
+    
+    
+      <h1 class="article-title"><a href="../../2013/07/despite-googles-statement-they-still-have-access-to-your-wifi-passwords/">Despite Google’s statement, they still have access to your wifi passwords</a></h1>
+    
+    <p class="meta">
+      Posted July 19, 2013
+      
+        in
+        
+          <a class="tag" href="../crypto">crypto</a>
+        
+          <a class="tag" href="../mobile">mobile</a>
+        
+          <a class="tag" href="../security">security</a>
+        
+      
+    </p>
+    
+      <p><em><strong>UPDATE:</strong> The Android bug tracker <a href="https://code.google.com/p/android/issues/detail?id=57560#c33">isn’t the correct place</a> to ask Google to fix this bug. The backup/restore feature is part of the proprietary Google apps for Android, not the open source Android project. <a href="https://productforums.google.com/forum/#!category-topic/mobile/android-devices/android-applications/D6vWpQu8AWU">This thread on the Google product forums</a> is the correct place.</em></p>
+<p>Earlier this week <a href="http://arstechnica.com/security/2013/07/does-nsa-know-your-wifi-password-android-backups-may-give-it-to-them/">Ars Technica covered</a> a <a href="https://code.google.com/p/android/issues/detail?id=57560">bug report</a> I posted on the Android issue tracker about the “Backup and restore” feature not offering encrypted backups.</p>
+<p>Because there’s no option to encrypt your backup data on your Android device with a passphrase that you set, Google has the capability to see the plaintext data, including all your saved wifi passwords. Google can then be compelled to give up this data (and any other user data that they store) to the US government when requested to do so.</p>
+
+      <p><a href="../../2013/07/despite-googles-statement-they-still-have-access-to-your-wifi-passwords/">Continue reading →</a></p>
+    
+  </div>
+
+  
+    
+  <div class="blog-post">
+    
+    
+      <h1 class="article-title"><a href="../../2013/07/use-android-youre-probably-giving-google-all-your-wifi-passwords/">Use Android? You’re Probably Giving Google All Your Wifi Passwords</a></h1>
+    
+    <p class="meta">
+      Posted July 11, 2013
+      
+        in
+        
+          <a class="tag" href="../crypto">crypto</a>
+        
+          <a class="tag" href="../mobile">mobile</a>
+        
+          <a class="tag" href="../security">security</a>
+        
+      
+    </p>
+    
+      <p>Go to your home screen, press the Menu button, select “Settings”, under “Personal” select “Backup and reset”. Is the “Back up my data” checkbox checked? If so, all of the wifi passwords that your phone remembers are being synced to your Google account.</p>
+<p>And the passwords are in plaintext, too. When you format an Android phone and set it up on first run, after you login to your Google account and restore your backup, it immediately connects to wifi using a saved password. There’s no sort of password hash that your Android phone could send your router to authenticate besides the password itself.</p>
+
+      <p><a href="../../2013/07/use-android-youre-probably-giving-google-all-your-wifi-passwords/">Continue reading →</a></p>
+    
+  </div>
+
+  
+    
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="../../2013/02/mobile-location-anonymity-proxying-twitter-im-and-email-through-tor-on-android/orbot.png" />
+    </p>
+    
+    
+      <h1 class="article-title"><a href="../../2013/02/mobile-location-anonymity-proxying-twitter-im-and-email-through-tor-on-android/">Mobile Location Anonymity: Proxying Twitter, IM, and Email through Tor on Android</a></h1>
+    
+    <p class="meta">
+      Posted February 1, 2013
+      
+        in
+        
+          <a class="tag" href="../crypto">crypto</a>
+        
+          <a class="tag" href="../mobile">mobile</a>
+        
+          <a class="tag" href="../tor">tor</a>
+        
+      
+    </p>
+    
+      <p>Each time your computer makes a connection to a server on the internet, you tell the remote server, as well as your ISP and every router in between, your IP address. If you’re using the internet on your phone you might be disclosing the IP of your 3G or 4G connection, or the IP of the wifi network you’re connected to.</p>
+<p>If your phone checks for new emails or tweets every couple minutes, or keeps up a consistent connection to your instant messenger server, any of those services is almost definitely logging a history of your IP addresses.</p>
+<p>This IP address data could be used to figure out your physical location over time. This is the information that <a href="https://www.eff.org/cases/new-york-v-harris">New York City subpoenaed Twitter for</a>, to get the private messages and IP addresses (read: location data) of Occupy protester Malcolm Harris.</p>
+
+      <p><a href="../../2013/02/mobile-location-anonymity-proxying-twitter-im-and-email-through-tor-on-android/">Continue reading →</a></p>
+    
+  </div>
+
+  
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name centered"><a href="../../">Micah Lee's blog</a></p>
+      <p class="centered"><img class="fullwidth" src="../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Director of Infosec at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Advisor at <a href="https://ddosecrets.com/">DDoSecrets</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Cofounded <a href="https://freedom.press/">Freedom of the Press</a> (former)
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://semiphemeral.com">Semiphemeral</a>
+        </li>
+      </ul>
+
+      <p class="centered"><iframe class="centered" src="https://snowflake.torproject.org/embed.html" width="320"
+          height="240" frameborder="0" scrolling="no"></iframe></p>
+
+      <p class="centered"><a href="https://standwithreality.org/"><img class="fullwidth"
+            src="../../static/images/reality.png"></a>
+      </p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?
+      <p>
+      <p>Check the <a href="../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../advisory/">advisory</a></li>
+  
+    <li><a href="../code/">code</a></li>
+  
+    <li><a href="../crypto/">crypto</a></li>
+  
+    <li><a href="../drama/">drama</a></li>
+  
+    <li><a href="../hackers/">hackers</a></li>
+  
+    <li><a href="../https/">https</a></li>
+  
+    <li><a href="../journalism/">journalism</a></li>
+  
+    <li><a href="../leaks/">leaks</a></li>
+  
+    <li><a href="../linux/">linux</a></li>
+  
+    <li><a href="./">mobile</a></li>
+  
+    <li><a href="../onionshare/">onionshare</a></li>
+  
+    <li><a href="../openpgp/">openpgp</a></li>
+  
+    <li><a href="../qubes/">qubes</a></li>
+  
+    <li><a href="../security/">security</a></li>
+  
+    <li><a href="../semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../spies/">spies</a></li>
+  
+    <li><a href="../subgraph/">subgraph</a></li>
+  
+    <li><a href="../sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../tor/">tor</a></li>
+  
+    <li><a href="../wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License"
+            src="../../static/images/cc-by-nc.png"></a>
+        <br />
+        <br />
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative
+          Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me
+        credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must
+        make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

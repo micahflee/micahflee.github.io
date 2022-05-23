@@ -1,0 +1,295 @@
+<!doctype html>
+
+<head>
+  <meta charset="utf-8">
+  <title>OnionShare 2 adds anonymous dropboxes, supports new Tor addresses, and is translated into a dozen new languages</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@micahflee" />
+  <meta name="twitter:creator" content="@micahflee" />
+  <meta property="og:url" content="https://micahflee.com/2019/02/onionshare-2" />
+  <meta property="og:title" content="OnionShare 2 adds anonymous dropboxes, supports new Tor addresses, and is translated into a dozen new languages" />
+  <meta property="og:image" content="https://micahflee.com/2019/02/onionshare-2/onionshare.png" />
+
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="./onionshare.png" />
+    </p>
+    
+    
+      <h1 class="article-title">OnionShare 2 adds anonymous dropboxes, supports new Tor addresses, and is translated into a dozen new languages</h1>
+    
+    <p class="meta">
+      Posted February 18, 2019
+      
+        in
+        
+          <a class="tag" href="../../../tags/onionshare">onionshare</a>
+        
+          <a class="tag" href="../../../tags/security">security</a>
+        
+          <a class="tag" href="../../../tags/tor">tor</a>
+        
+      
+    </p>
+    
+      <p>After nearly a year of work from a <a href="https://github.com/micahflee/onionshare/wiki/Developing-OnionShare">growing community</a> of developers, designers, and translators, I'm excited that OnionShare 2 is finally ready. You can download it from <a href="https://onionshare.org/">onionshare.org</a>.</p>
+<p>OnionShare is an open source tool for securely and anonymously sending and receiving files using Tor onion services. It works by starting a web server directly on your computer and making it accessible as an unguessable Tor web address that others can load in <a href="https://www.torproject.org/">Tor Browser</a> to download files from you, or upload files to you. It doesn't require setting up a separate server, using a third party file-sharing service, or even logging into an account.</p>
+<p>Unlike services like email, Google Drive, DropBox, WeTransfer, or nearly any other way people typically send files to each other, when you use OnionShare you don't give any companies access to the files that you're sharing. So long as you share the unguessable web address in a secure way (like pasting it in an encrypted messaging app), <em>no one</em> but you and the person you're sharing with can access your files.</p>
+<p>Here's a tour of some of the new parts of OnionShare 2.</p>
+<ul>
+<li><a href="#sharing-files-with-onionshare">Sharing files with OnionShare</a></li>
+<li><a href="#the-macos-sandbox">The macOS sandbox</a></li>
+<li><a href="#next-generation-onion-services">Next generation onion services</a></li>
+<li><a href="#onionshare-doesn-t-zip-if-you-share-just-one-file">OnionShare doesn't zip if you share just one file</a></li>
+<li><a href="#onionshare-addresses-are-ephemeral-by-default">OnionShare addresses are ephemeral by default</a></li>
+<li><a href="#receiving-files-with-onionshare">Receiving files with OnionShare</a></li>
+<li><a href="#only-open-things-from-people-you-trust-or-if-you-know-what-you-are-doing">Only open things from people you trust, or if you know what you are doing</a></li>
+<li><a href="#public-onionshare-addresses">Public OnionShare addresses</a></li>
+<li><a href="#running-an-anonymous-dropbox">Running an anonymous dropbox</a></li>
+<li><a href="#onionshare-in-your-language">OnionShare in your language</a></li>
+</ul>
+<h3 id="sharing-files-with-onionshare">Sharing files with OnionShare</h3><p>Here's what OnionShare 2 looks like. When you first open it, it connects to the Tor network.</p>
+<p><img src="connecting-to-tor.png" alt=""></p>
+<p>Once you're connected, you're in the "Share Files" tab (I'll talk more about the new "Receive Files" tab below).</p>
+<p><img src="share-mode1.png" alt=""></p>
+<p>To securely and anonymously share files with someone, just drag and drop the files into the OnionShare window. Alternatively, you can click the "Add Files" and "Add Folder" buttons to browse your filesystem.</p>
+<h3 id="the-macos-sandbox">The macOS sandbox</h3><p>In Windows and Linux there's just a single "Add" button that lets you select both files and folders. The reason for two separate buttons in the macOS version is a bit complicated, but boils down to a cool new security feature: The macOS sandbox is turned on in OnionShare 2, which means that even if someone manages to exploit a vulnerability in OnionShare to try to hack your computer, they still won't be able to access your data or run programs on your computer without first escaping the sandbox.</p>
+<p><img src="share-mode2.png" alt=""></p>
+<p>I've dragged all of the files that make up the OnionShare source code into the window. Now, to make them accessible to someone else, I just click "Start sharing".</p>
+<h3 id="next-generation-onion-services">Next generation onion services</h3><p><img src="share-mode3.png" alt=""></p>
+<p>After clicking the button, I wait a few seconds, and then OnionShare gives me an unguessable Tor address to share. This is also new in OnionShare 2: By default, it uses <a href="https://blog.torproject.org/tors-fall-harvest-next-generation-onion-services">next generation Tor onion services</a>, also known as <code>v3</code> onion addresses. These are onion addresses that look like <code>lldan5gahapx5k7iafb3s4ikijc4ni7gx5iywdflkba5y2ezyg6sjgyd.onion</code>, as opposed to the old <code>v2</code> kind, that look like <code>elx57ue5uyfplgva.onion</code>.</p>
+<p><code>v3</code> onions are much more secure than <code>v2</code> onions for a variety of reasons, but they can be a bit unwieldy and hard to type (for example, if you're using OnionShare to move files between two computers that are both in front of you). You can still use <code>v2</code> onion addresses if you want by going into Settings and choosing "Use legacy addresses".</p>
+<p>Also, you might notice that the OnionShare address is using HTTP and not HTTPS, but this is actually perfectly fine. HTTPS adds a layer of encryption between a web browser and a web server, but Tor onion services are already end-to-end encrypted, so HTTPS is not necessary (it's also not feasible without browser warnings: Let's Encrypt doesn't sign HTTPS certificates for <code>.onion</code> sites). Unlike loading normal websites in Tor Browser, when you load onion websites, there is no Tor exit node that could spy on the traffic -- all of the traffic stays within the Tor network.</p>
+<p>Now, I need to send this web address to my friend who I'm sharing files with. The easiest way to do this securely is to use an encrypted messaging app like Signal Desktop, Wire, Keybase, or iMessage -- or, if you're oldschool, Jabber/OTR. If the files you're sharing aren't especially sensitive, you can also share this web address in a way that is easily spied on but might be more convenient, like in a Facebook, Twitter, Google Hangouts, Slack, or Discord message, or in an email.</p>
+<p><img src="torbrowser-share1.png" alt=""></p>
+<p>My friend then opens Tor Browser and loads the OnionShare address I sent her. She sees a website with a list of the files I'm sharing, and a "Download Files" button.</p>
+<p>The key thing to understand about how OnionShare works is that this website is hosted <em>directly on my laptop</em>, not on a server in a data center somewhere. If I suspend my laptop, that link won't work anymore. If I close OnionShare before the files have been downloaded, then that Tor web address simply disappears from the internet. Because of this, OnionShare always takes place in real-time -- you and the person you're sharing files with need to both be online <em>at the same time</em>.</p>
+<h3 id="onionshare-doesn-t-zip-if-you-share-just-one-file">OnionShare doesn't zip if you share just one file</h3><p>My friend then downloads the files, which are automatically zipped up. In this case, the zip file is called <code>onionshare_snwga4.zip</code> (the last part of the filename is random), and when she unzips it, she can see a copy of the OnionShare source code I sent. A new feature in OnionShare 2 is that if you share just a single file, it no longer zips it up (but still compresses it with gzip, built into the HTTP protocol).</p>
+<p><img src="share-mode4.png" alt=""></p>
+<p>Back on my computer, OnionShare automatically stopped sharing the moment the files finished sending -- and when this happened, the OnionShare address completely disappeared from the internet, never to exist again.</p>
+<h3 id="onionshare-addresses-are-ephemeral-by-default">OnionShare addresses are ephemeral by default</h3><p>OnionShare addresses are <em>ephemeral</em>, and intended for one-time use. (For example, if someone sends you an OnionShare address in a Twitter DM, and a few minutes later you load it and download the files, that address won't exist anymore in the future. If anyone ever gains access to your Twitter DM history, that OnionShare address will no longer work.)</p>
+<p><img src="torbrowser-share2.png" alt=""></p>
+<p>As you can see, after my friend finished downloading the files I sent her, that OnionShare address ceased to exist.</p>
+<p>This is the default behavior of OnionShare, but you might want to use OnionShare to send files to a group of people, not just one person, in which case you don't want it to be ephemeral. In this case, you can uncheck "Stop sharing after files have been sent" in the Settings, and then multiple people can download your files, and you'll continue sharing until you manually click "Stop sharing" or close OnionShare.</p>
+<h3 id="receiving-files-with-onionshare">Receiving files with OnionShare</h3><p><img src="receive-mode1.png" alt=""></p>
+<p>All of this is, more or less, how OnionShare has always worked. But the "Receive Files" tab is brand new to OnionShare 2. And it's still just the beginning -- we have plans for adding more tabs to OnionShare in the future, such as a <a href="https://github.com/micahflee/onionshare/issues/791">static website sharing</a> tab.</p>
+<p>When you use OnionShare to receive files, you turn your computer into an anonymous dropbox -- I like to think of it is a super lightweight version of <a href="https://securedrop.org/">SecureDrop</a> that anyone can run on their own laptop, for free, without needing to set up any infrastructure or do any systems administration. (However, it's not as robust, or secure, as SecureDrop, which enforces isolated environments in a way that OnionShare can't.)</p>
+<p><img src="receive-mode2.png" alt=""></p>
+<p>A few seconds after I clicked "Start Receive Mode", OnionShare gave me an unguessable Tor address, which I share with my friend the same way I did with the share mode address. But this time, instead of me sending files to her, <em>she can send files to me</em>, and all she needs is Tor Browser -- she doesn't need OnionShare herself.</p>
+<p>If I publish this OnionShare address, <em>anyone can send files to me</em>, without me having any way to know who they are (because they'll be using Tor), and in a way that is end-to-end encrypted, so eavesdroppers spying on either of our networks can't access the files, or even realize that we're using OnionShare. To network eavesdroppers, all they'll be able to tell is that we're both using Tor.</p>
+<p><img src="torbrowser-receive1.png" alt=""></p>
+<p>My friend simply clicks Browse, finds the files she wants to send, and clicks "Send Files".</p>
+<p><img src="receive-mode3.png" alt=""></p>
+<p>Over in OnionShare on my computer, I can see the status of all of the files that I'm receiving. Because OnionShare uses Tor onion services, I don't actually have any way of knowing <em>who</em> is sending files to me -- if I want to make it so only very specific people can send me files, I need to securely share the OnionShare address to only those people. My computer will continue to act as an anonymous dropbox until I click "Stop Receive Mode", or close OnionShare. And, just like with share mode, if I suspend my laptop, the OnionShare address stops working.</p>
+<p><img src="receive-mode-finder.png" alt=""></p>
+<p>The files that I receive get saved to <code>~/OnionShare</code>, and they're automatically organized by date and time.</p>
+<h3 id="only-open-things-from-people-you-trust-or-if-you-know-what-you-are-doing">Only open things from people you trust, or if you know what you are doing</h3><p>Now that you know how the "Receive Files" tab works, <em>be very careful with it</em>, and make sure to take the prominent warning to heart:</p>
+<blockquote><p><strong>Some files can potentially take control of your computer if you open them. Only open things from people you trust, or if you know what you are doing.</strong></p>
+</blockquote>
+<p>All of the warnings about not opening email attachments apply just as much here. In this example, I received <code>gimp-2.10.8-x86_64-2.dmg</code>, which is an installer for the open source image editing software GIMP. But, it could easily be a modified version of that installer that has malware hidden inside. And if someone sends you <code>.docx</code> or <code>.pdf</code> files, they could contain malware that could try to hack you through a vulnerability in Microsoft Word or Adobe Reader. How to safely open files you receive is <em>outside of the scope of OnionShare</em>. Use this feature with caution.</p>
+<h3 id="public-onionshare-addresses">Public OnionShare addresses</h3><p>OnionShare 2 has a new feature: Public mode. But before explaining what it does, first I'll explain how OnionShare addresses work without it.</p>
+<p>By default, OnionShare addresses look <code>http://[tor-address].onion/[slug]</code>, where the slug is two random words out of a list of words 7,776 words (technically, this is a 2-word <a href="https://theintercept.com/2015/03/26/passphrases-can-memorize-attackers-cant-guess/">diceware passphrase</a>).</p>
+<p>The idea is that if an attacker could figure out the <code>tor-address</code> part of the address, they still can't download the files you're sharing, or upload files to your computer, without first knowing the slug. The slug is, essentially, a password. (This is less important when using <code>v3</code> onion services. The old <code>v2</code> onion services have a known issue where, if the onion connection happens to get facilitated by a malicious Tor node, that node could learn the <code>tor-address</code> part. This is one of the reasons that <code>v3</code> onions are more secure.)</p>
+<p>But the slug is only two words, so what stops the attacker from guessing it, by guessing every possible 2-word slug? The wordlist that OnionShare uses is public, after all.</p>
+<p><img src="slug-guess.png" alt=""></p>
+<p>OnionShare counts how many 404 errors (file not found web requests), and on the 20th 404 error, it assumes that someone it trying to guess the slug and automatically stops the server.</p>
+<p>This gives the attacker 20 chances to guess the two words correctly. Because the words are chosen from a list of 7,776 words, that means there are 7,776^2, or over 60 million, possible slugs. Which basically means that if an attacker tries to guess the slug, they have a 0.00003% chance of getting it right within their only 20 chances, and a 99.99996% chance of failing, and forcing OnionShare to stop sharing.</p>
+<p>This works great, but what if you <em>want</em> anyone to be able to load your OnionShare address?</p>
+<p>For example, let's say you want to anonymously publish some files. You disable the "Stop sharing after files have been sent" setting, drag the files into OnionShare, start sharing, and tweet the OnionShare address. It turns out that anyone on the internet that sees the tweet can force your server to stop just by making 20 404 errors. (This situation actually happened, by the way, and their server kept shutting down because people kept making 404 errors.)</p>
+<p>This is the use case that public mode was built for. If you want to publicly share an OnionShare address, just go to Settings and check the box next to "Public mode". When you start sharing, the OnionShare address will look like <code>http://[tor-address].onion/</code>, without the slug, and the server will remain up no matter how many 404 errors it gets.</p>
+<h3 id="running-an-anonymous-dropbox">Running an anonymous dropbox</h3><p>You've seen receive mode, which is great for allowing people to privately send you files. But if you want to allow <em>anyone</em> to privately send you files, there are a few settings you'll want to consider using.</p>
+<p>First, you'll definitely want to enable public mode.</p>
+<p>Second, you'll also want to go into Settings and enable "Use a persistent address". With this setting, when you stop an OnionShare server and then start it again, you'll get this exact same onion address as you had last time. This gives you the flexibility to, for example, reboot your computer and start OnionShare again, without having to switch OnionShare addresses.</p>
+<p>And finally, you may want to run your anonymous dropbox on a headless Linux server, rather than your normal daily workstation. OnionShare comes with two binaries, <code>onionshare</code> (the command line version) and <code>onionshare-gui</code> (the graphical version). Both of them share the same configuration file -- in Linux, this is in <code>~/.config/onionshare/onionshare.json</code>. So, using the graphical version of OnionShare, choose all of the settings that you'd like, and then copy <code>onionshare.json</code> to your server, and run OnionShare like this:</p>
+<pre><code>$ onionshare --receive
+OnionShare 2.0 | https://onionshare.org/
+Connecting to the Tor network: 100% - Done
+Setting up onion service on port 17612.
+ * Running on http://127.0.0.1:17612/ (Press CTRL+C to quit)
+
+Files sent to you appear in this folder: /home/user/OnionShare
+
+Warning: Receive mode lets people upload files to your computer. Some files can potentially take control of your computer if you open them. Only open things from people you trust, or if you know what you are doing.
+
+Give this address to the sender:
+http://v2oxpolhvyd3kh44drt6gtz57v7wwun2twddcw3xhim2kgu2vvcewvqd.onion
+
+Press Ctrl+C to stop the server
+127.0.0.1 - - [18/Feb/2019 10:48:04] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/Feb/2019 10:48:06] "GET /static/css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [18/Feb/2019 10:48:07] "GET /static/js/receive-noscript.js HTTP/1.1" 200 -
+127.0.0.1 - - [18/Feb/2019 10:48:07] "GET /static/js/receive.js HTTP/1.1" 200 -
+127.0.0.1 - - [18/Feb/2019 10:48:07] "GET /static/js/jquery-3.3.1.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [18/Feb/2019 10:48:07] "GET /static/img/logo.png HTTP/1.1" 200 -
+127.0.0.1 - - [18/Feb/2019 10:48:08] "GET /static/img/logo_large.png HTTP/1.1" 200 -
+127.0.0.1 - - [18/Feb/2019 10:48:10] "GET /static/img/favicon.ico HTTP/1.1" 200 -
+Feb 18, 10:48AM: Upload of total size 102.1 KiB is starting
+=&gt; 101.9 KiB       2016_tax_return.pdf
+Received: /home/user/OnionShare/2019-02-18/10.48.18/2016_tax_return.pdf
+127.0.0.1 - - [18/Feb/2019 10:48:20] "POST /upload-ajax HTTP/1.1" 200 -
+127.0.0.1 - - [18/Feb/2019 10:48:21] "GET /static/img/ajax.gif HTTP/1.1" 200 -
+</code></pre>
+<h3 id="onionshare-in-your-language">OnionShare in your language</h3><p><img src="onionshare-persian.png" alt=""></p>
+<p>Finally, one of the things I'm most excited about OnionShare 2 is that it has now been translated into twelve new languages, making OnionShare accessible to a considerable swath of humanity. Some of the major languages that OnionShare 2 is translated in include Spanish (400 million native speakers), Portuguese (215 million), Russian (170 million), and Japanese (130 million). (These numbers <a href="https://www.babbel.com/en/magazine/the-10-most-spoken-languages-in-the-world">come from</a> Babbel magazine.)</p>
+<p>The new languages include: Bengali (বাংলা), Catalan (Català), Danish (Dansk), French (Français), Greek (Ελληνικά), Italian (Italiano), Japanese (日本語), Persian (فارسی), Brazilian Portuguese (Português Brasil), Russian (Русский), Spanish (Español), and Swedish (Svenska), and more languages will be included in the future. If you're a native speaker of a non-English language and are interested in contributing to OnionShare, you can find <a href="https://github.com/micahflee/onionshare/wiki/Translating">instructions</a> for helping on the wiki.</p>
+<p>I hope you like OnionShare 2!</p>
+
+
+      <div id="commento"></div>
+      <script src="https://cdn.commento.io/js/commento.js"></script>
+
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name centered"><a href="../../../">Micah Lee's blog</a></p>
+      <p class="centered"><img class="fullwidth" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Director of Infosec at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Advisor at <a href="https://ddosecrets.com/">DDoSecrets</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Cofounded <a href="https://freedom.press/">Freedom of the Press</a> (former)
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://semiphemeral.com">Semiphemeral</a>
+        </li>
+      </ul>
+
+      <p class="centered"><iframe class="centered" src="https://snowflake.torproject.org/embed.html" width="320"
+          height="240" frameborder="0" scrolling="no"></iframe></p>
+
+      <p class="centered"><a href="https://standwithreality.org/"><img class="fullwidth"
+            src="../../../static/images/reality.png"></a>
+      </p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?
+      <p>
+      <p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License"
+            src="../../../static/images/cc-by-nc.png"></a>
+        <br />
+        <br />
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative
+          Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me
+        credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must
+        make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

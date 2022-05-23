@@ -1,0 +1,204 @@
+<!doctype html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Legacy Comments</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="../../../../static/style.css">
+  <link rel="stylesheet" href="../../../../static/fontawesome/css/all.min.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">WhoCares</p>
+        <p class="legacy-comment-meta-pub_date">April 11, 2017 06:02 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Debian Squeeze is oldoldstable, I suppose you meant Stretch or Sid (given that package number). You might not read anything about Debian by yourself, or very often? :)</p>
+<p>My understanding about SubGraph's "security model" is that whenever it will be ready (whatever that means) of course /etc will be restricted and Nautilus/your favourite file manager will be sandboxed also, just like anything practical, permitting to isolate things per-context (something similar to Qubes' disposable VM indeed, but at that much cheaper application level, speaking of RAM), e.g. it'll offer its users to explore an unzipped archived as you do in your video, safely. So, no, I don't think you are "exploiting SubGraph security model", but only pointing out how premature it is. At least, it is clearly labeled as alpha software.</p>
+<p>My guess is, more generally, it's pretty early to imply either SubGraph, or Qubes (as you do) would be any trustable, as yet: neither is build-reproducible to date, and that's a huge deal. While SubGraph might not yet be entirely free software ("booooo"), at least it's Debian and therefore will likely get there a lot quicker than Qubes, which dom0 is (still?) Fedora.</p>
+<p>Are you trusting RedHat not to focus on their Customers (now they deploy in-memory kernel patches), but also to spend all efforts distributing each and every patch back "upstream" to their Fedora playground and to their users, or even to upstream kernel, all of it in a timely manner? Let me doubt. Also as pointed in previous comment, Xen has seen a number of exploits (even if only 10% of them would affect Qubes, it's still notable). And so have any kernel-built security strategies. That's not to judge one approach would be better or worse than another, of course the smaller codebase in a dom0 a-la-Qubes would be preferable, but it's only to point that -- given the above issues -- Qubes also, could advertise its alpha status, still today.</p>
+<p>By the way, Tails ISO were just announced to be reproducible. Yeah, sure, your "exploit" would apply there, but hey: one may strictly follow Tails user guidelines and isolate reboots or even better, hardware systems.</p>
+<p>I suppose there are people with different needs, and hardware requirements. But all would need, first, entirely new hardware platforms (for example, go read Johanna's suggestion on firmware ports, if you haven't already) and those just don't quite exist, yet. Until then, all mitigation approaches will be bare alpha anyway, all of them. Bottom line, if anyone feels clever enough to use Tails or Qubes or SubGraph and follow their user guidelines, then why would they random-click anyway?</p>
+<p>So, what's the point of framing such an artificial "fight" between all "attempts" (as you qualify SubGraph), isn't there enough room for all to exist and improve? Hell, I think there is. Long life to Qubes, SubGraph and Tails, in alphabetical order. As for me, I'll stay with Jessie-the-insecure and keep being careful before opening random stuff from the Internetz in any environment.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">cooloutac</p>
+        <p class="legacy-comment-meta-pub_date">April 11, 2017 07:54 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Subgraph is gonna be in alpha forever I guess.</p>
+<p>I would be better off compiling my own grsecurity kernel on debian and using a sandbox solution myself then trusting subgraph. I actually think that would also be easier then trying to use subgraph lol.   Qubes is something I can't do myself and imo an os that is more realistic.  Its ready for every day use by its basic nature even as it develops.</p>
+<p>At least Micah didn't get the hostility from them a nobody troll like me got when bringing up questions to them.  But seems he still got a feeling they don't seem to care too much which makes you wonder.</p>
+<p>You talk about an artificial fight but then talk about fedora vs debian... come on now.  Red Hat exposes some of he most serious linus exploits and their kernel development means it really doesn't matter what distro you use.  It also really doesn't matter what distro you are using in dom0.  Its Xen.</p>
+<p>There isn't a subgraph template, but there is a debian one and a community grsec kernel called coldkernel you can try.  you can even use apparmor in qubes easily.  I personally like the vm solution over the sandbox solution.  Maybe not as resource friendly, but easier to use and more peace of mind. 
+But a sandbox in a vm sure sounds nice.</p>
+<p>I can't imagine the subgraph guys wanting to be on anyone elses team though.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name centered"><a href="../../../../">Micah Lee's blog</a></p>
+      <p class="centered"><img class="fullwidth" src="../../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Director of Infosec at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Advisor at <a href="https://ddosecrets.com/">DDoSecrets</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Cofounded <a href="https://freedom.press/">Freedom of the Press</a> (former)
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://semiphemeral.com">Semiphemeral</a>
+        </li>
+      </ul>
+
+      <p class="centered"><iframe class="centered" src="https://snowflake.torproject.org/embed.html" width="320"
+          height="240" frameborder="0" scrolling="no"></iframe></p>
+
+      <p class="centered"><a href="https://standwithreality.org/"><img class="fullwidth"
+            src="../../../../static/images/reality.png"></a>
+      </p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?
+      <p>
+      <p>Check the <a href="../../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License"
+            src="../../../../static/images/cc-by-nc.png"></a>
+        <br />
+        <br />
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative
+          Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me
+        credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must
+        make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

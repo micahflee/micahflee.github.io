@@ -1,0 +1,230 @@
+<!doctype html>
+
+<head>
+  <meta charset="utf-8">
+  <title>OnionShare 2.5 fixes security issues and adds censorship circumvention features</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@micahflee" />
+  <meta name="twitter:creator" content="@micahflee" />
+  <meta property="og:url" content="https://micahflee.com/2022/01/onionshare-25-released" />
+  <meta property="og:title" content="OnionShare 2.5 fixes security issues and adds censorship circumvention features" />
+  <meta property="og:image" content="https://micahflee.com/2022/01/onionshare-25-released/ros-logo.gif" />
+
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="./ros-logo.gif" />
+    </p>
+    
+    
+      <h1 class="article-title">OnionShare 2.5 fixes security issues and adds censorship circumvention features</h1>
+    
+    <p class="meta">
+      Posted January 17, 2022
+      
+        in
+        
+          <a class="tag" href="../../../tags/security">security</a>
+        
+          <a class="tag" href="../../../tags/onionshare">onionshare</a>
+        
+      
+    </p>
+    
+      <p>The OnionShare team has just released OnionShare 2.5! This version fixes security vulnerabilities uncovered in our first comprehensive security audit, and also includes improved censorship circumvention features. Download it from <a href="https://onionshare.org">onionshare.org</a>.</p>
+<h1 id="onionshare-s-first-security-audit">OnionShare's first security audit</h1><p>Late last year, the OnionShare project was lucky enough to be get a comprehensive security audit from the non-profit penetration testing group <a href="https://www.radicallyopensecurity.com/">Radically Open Security</a>. This work was funded by Open Technology Fund's <a href="https://www.opentech.fund/labs/red-team-lab/">Red Team Lab</a>.</p>
+<p>Fortunately, ROS didn't find any issues with a threat level of <em>critical</em> or <em>high</em>, but they found 2 that were <em>elevated</em>, 3 that were <em>moderate</em>, and 4 that were <em>low</em>. All vulnerabilities have been fixed in version 2.5.</p>
+<p>From the report:</p>
+<blockquote><p>The penetration test goals were the de-anonymization of users and code execution on any of the involved parties, which was not found possible in the time allocated for the engagement. This is most likely due to the choice of offloading the client interaction and authentication fully on the Tor-browser and relying on the security assumptions of a recent and well maintained browser. Additionally, the usage of stable third party libraries for file and network handling, as well as the separation of logic and user interface exposed only a minimal attack surface. User-controlled input is minimal and in most cases sanitized or validated.</p>
+<p>...</p>
+<p>Our general impression is that the Onionshare project has no major security vulnerabilities and can be used within the
+properly documented boundaries. Sane default configurations were chosen and inexperienced users are warned about
+the consequences of sensitive configuration changes.</p>
+</blockquote>
+<p>Check out the <a href="https://raw.githubusercontent.com/onionshare/onionshare/develop/security/2021%20Penetration%20Test%20Report.pdf">full penetration test report</a>, which I summarize at the end of this post.</p>
+<h1 id="improved-censorship-circumvention">Improved censorship circumvention</h1><p>It's becoming alarmingly more common to see hostile governments pressure internet providers to block access to the Tor network. For example, in December, several <a href="https://ooni.org/post/2021-russia-blocks-tor/">Russian ISPs started blocking Tor as well as censoring access to torproject.org</a>. Because OnionShare relies on Tor, this means that Russia is preventing people from using OnionShare as well.</p>
+<p>This update greatly improves our support for <em>bridges</em>, which let people quickly and easily circumvent this sort of censorship. A bridge is a Tor server, generally with a secret IP address so it's harder to block, that just forwards traffic onto the Tor network for people. So if you live in Moscow and you can't connect to Tor because your ISP is blocking the IP addresses of public Tor nodes, you can configure OnionShare (or Tor Browser) to use a bridge. This way you'll connect to an IP address that isn't blocked, thus bypassing the censorship.</p>
+<p>OnionShare has supported bridges for some time, but one of the coolest features of this release is the ability to automatically fetch bridges from the <a href="https://bridges.torproject.org/">BridgeDB service</a> directly from the settings tab.</p>
+<p><img src="moat1.png" alt=""></p>
+<p>When you click "Request a New Bridge", you must solve a CAPTCHA to get access to the bridge settings.</p>
+<p><img src="moat2.png" alt=""></p>
+<p>But if the ISP is already blocking access to the Tor network and to torproject.org, what stops them from blocking BridgeDB also? To prevent this from happening, OnionShare uses a tool called <a href="https://gitlab.torproject.org/legacy/trac/-/wikis/doc/meek/">meek</a> that uses a technique called <a href="https://www.bamsoftware.com/papers/fronting/">domain fronting</a> to disguise the request to BridgeDB as an innocuous request to a major CDN, the kind that you make thousands of times a day as you use the web. This prevents these countries from being able to block the BridgeDB request without blocking the whole CDN itself, which would break large portions of the internet for its users.</p>
+<p>OnionShare has also added support for <a href="https://snowflake.torproject.org/">Snowflake bridges</a> which uses WebRTC (the technology that we all use for our all-too-frequent video conferences) to allow anyone to quickly and easily run a bridge.</p>
+<p>If you want to help censored users connect to Tor, you can actually just turn on Snowflake in the sidebar of my blog. As long as this tab is open, your browser will be running a Snowflake bridge.</p>
+<h1 id="summary-of-onionshare-2-4-s-security-audit">Summary of OnionShare 2.4's security audit</h1><h3 id="improper-input-sanitization-and-an-out-of-bounds-read-in-qt">Improper input sanitization and an out-of-bounds read in Qt</h3><p>If a user was running the graphical version of OnionShare and an attacker entered a malicious string containing HTML in the path of the URL, and the user running OnionShare opened the History pane (which is collapsed by default), this HTML would be rendered by Qt, the library that OnionShare uses for its GUI.</p>
+<p>When the ROS pen testers discovered that they could use this to display arbitrary images in the History pane, they started attacking Qt's image rendering and <em>uncovered a vulnerability in Qt's image renderer</em>. When used in conjunction with this sanitization issue in OnionShare, an out-of-bounds read was possible, causing OnionShare to crash.</p>
+<p>ROS responsibly disclosed this vulnerability to the upstream Qt project which has fixed the issues. We're really proud that our project helped make Qt more secure.</p>
+<h3 id="receive-mode-s-request-limit-was-easily-dos-able">Receive mode's request limit was easily DoS-able</h3><p>Receive mode had a rate limit built in to try to prevent race conditions with folder creation during concurrent uploads. It turns out that it's pretty easy to force a denial-of-service attack by submitting the form more than 100 times per second, which would prevent authentic requests from being submitted. We solved this by using microseconds in the folder creation system, which now makes it impractical to hit the rate limit.</p>
+<h3 id="chat-mode-issues">Chat mode issues</h3><p>ROS discovered that there were a variety of issues in Chat mode, most of which were closely related to one another, and so were fixed all at once. They were mostly impersonation attacks. These included:</p>
+<ul>
+<li>The ability to change your username to something almost identical to that of another user, like by having whitespace at the end of the username, or by using special characters</li>
+<li>It was possible to join the chat but not emit the <code>join</code> event, which meant you were effectively invisible in the room, unbeknownst to the other parties, which might be a privacy issue</li>
+<li>Similar to the above, it was possible to post messages to the chat room without technically being visible, or with another person's username, leading to confusion or impersonation</li>
+<li>And again, similar to the above, it was possible to spoof the <code>leave</code> event, making people think you had left the chat room when in fact you were still able to read subsequent chat messages</li>
+</ul>
+<h3 id="minor-issues">Minor issues</h3><p>ROS also discovered a handful of minor issues, including:</p>
+<ul>
+<li>The Linux packaging using Snapcraft and Flatpak could be hardened prevent read-only access to the user's home folder</li>
+<li>The Content Security Policy header could be disabled but not configured</li>
+</ul>
+<p>It's important to keep in mind that because of how OnionShare is designed, all of the vulnerabilities discovered could only be exploited if the attacker had access to the OnionShare site. It would either need to be a publicly advertised OnionShare address, or the attacker would need to intercept or be directly sent an OnionShare address and private key.</p>
+<p>I want to take the opportunity to thank Radically Open Security, as well as the Open Technology Fund, for conducting such a comprehensive audit. ROS is a talented and professional organization, and it was really easy to work with them to address these issues.</p>
+
+
+      <div id="commento"></div>
+      <script src="https://cdn.commento.io/js/commento.js"></script>
+
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name centered"><a href="../../../">Micah Lee's blog</a></p>
+      <p class="centered"><img class="fullwidth" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Director of Infosec at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Advisor at <a href="https://ddosecrets.com/">DDoSecrets</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Cofounded <a href="https://freedom.press/">Freedom of the Press</a> (former)
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://semiphemeral.com">Semiphemeral</a>
+        </li>
+      </ul>
+
+      <p class="centered"><iframe class="centered" src="https://snowflake.torproject.org/embed.html" width="320"
+          height="240" frameborder="0" scrolling="no"></iframe></p>
+
+      <p class="centered"><a href="https://standwithreality.org/"><img class="fullwidth"
+            src="../../../static/images/reality.png"></a>
+      </p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?
+      <p>
+      <p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License"
+            src="../../../static/images/cc-by-nc.png"></a>
+        <br />
+        <br />
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative
+          Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me
+        credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must
+        make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

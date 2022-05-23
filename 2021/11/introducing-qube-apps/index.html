@@ -1,0 +1,214 @@
+<!doctype html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Qube Apps: a Flatpak-based app store for each qube</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@micahflee" />
+  <meta name="twitter:creator" content="@micahflee" />
+  <meta property="og:url" content="https://micahflee.com/2021/11/introducing-qube-apps" />
+  <meta property="og:title" content="Qube Apps: a Flatpak-based app store for each qube" />
+  <meta property="og:image" content="https://micahflee.com/2021/11/introducing-qube-apps/qube-apps.png" />
+
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="./qube-apps.png" />
+    </p>
+    
+    
+      <h1 class="article-title">Qube Apps: a Flatpak-based app store for each qube</h1>
+    
+    <p class="meta">
+      Posted November 1, 2021
+      
+        in
+        
+          <a class="tag" href="../../../tags/qubes">qubes</a>
+        
+          <a class="tag" href="../../../tags/code">code</a>
+        
+      
+    </p>
+    
+      <p>I really like <a href="https://www.qubes-os.org/">Qubes</a> but I haven't been using it a lot lately. I have a Qubes laptop that I use for specific high security tasks, but my daily driver the last few months has been Ubuntu or <a href="https://pop.system76.com/">Pop!_OS</a> (I really like the tiling windows and the design), and sometimes macOS. Qubes is great, but it can be cumbersome to use.</p>
+<p>But then I did something silly. I downloaded documents from an anonymous person on the internet that I was interested in looking at. One of them was in a strange format I wasn't familiar with, but I found an open source tool that could load the document, so I installed that and then opened it... and then it immediately crashed. Was it just a glitch, or did I just get hacked? Ugh, this is why I should be using Qubes. In Qubes, I could do this in a disposable, networkless qube so that if it did try to hack me it wouldn't have access to any of my data, or even the internet.</p>
+<p>Now that I'm back on Qubes, I decided to write a little utility called <a href="https://github.com/micahflee/qube-apps">Qube Apps</a> that helps make it a little less cumbersome. It's a simple graphical wrapper around <code>flatpak</code> that lets you install, run, and update apps inside a single qube, giving you easy access to everything available in the Linux app store <a href="https://flathub.org/home">Flathub</a>, and installing it all in your private storage so you don't need to constantly fiddle with your templates.</p>
+<p>Here's how it works. Each qube is based on either a Fedora or Debian template. If you have a <code>work</code> qube that's based on <code>fedora-34</code> and you want to install Slack in it, you need to first install Slack in the <code>fedora-34</code> template, and then you'll be able to run it in <code>work</code>. But this means you'll also have Slack installed in every other qube that's based on <code>fedora-34</code>, and you might not want this. What if in addition to <a href="https://flathub.org/apps/details/com.slack.Slack">Slack</a>, you also want <a href="https://flathub.org/apps/details/com.discordapp.Discord">Discord</a>, <a href="https://flathub.org/apps/details/com.visualstudio.code">Visual Studio Code</a>, <a href="https://flathub.org/apps/details/org.signal.Signal">Signal Desktop</a>, and <a href="https://flathub.org/apps/details/com.spotify.Client">Spotify</a>? Should you install all of this in your template even if you only need these apps in a single qube?</p>
+<p>The answer is to install all of these as Flatpak apps, and to use <code>--user</code> when you run the <code>flatpak</code> commands which will run without root and install the software into your <code>~/.local/share/flatpak/</code> folder, which is in your qube's private storage, so it will still be there the next time you reboot it. This is also more secure than using software installed through traditional package managers like <code>dnf</code> or <code>apt</code> because Flatpak packages all run in sandboxes.</p>
+<p>Let me show you an example. I already have Qube Apps installed in my <code>fedora-34</code> template, so let's make a new qube to test with:</p>
+<p><img src="qube-apps1.png" alt=""></p>
+<p>After creating it, I open its Qube Settings, switch to the Applications tab, and add Qube Apps to the selected applications. Then I run Qube Apps in the <code>my-new-qube</code> qube. It looks like this, because I don't have any apps from Flathub installed yet.</p>
+<p><img src="qube-apps2.png" alt=""></p>
+<p>When I click "Install New App" I get a simple interface to search for apps. Let's search for Signal Desktop.</p>
+<p><img src="qube-apps3.png" alt=""></p>
+<p>This search basically just ran <code>flatpak search signal</code> for you and displays the results. There are several results on Flathub that mention "signal" in their name or description, but the Signal Desktop one looks like it's probably the right one. If you click the Info button it will load the specific app that it's referring to on Flathub, in this case <a href="https://flathub.org/apps/details/org.signal.Signal">Signal Desktop</a>.</p>
+<p>Now, I click the Install button. This opens an interactive <code>xterm</code> that asks if I'm sure I want to install it, and shows me installation progress.</p>
+<p><img src="qube-apps4.png" alt=""></p>
+<p>Eek, it says: "Warning: Not enough disk space to complete this operation". This is a common problem that you will almost certainly run into if you're install Flatpak apps in your qubes, but it's easy to fix. Just give the qube more disk space. I'm going to change the private storage for <code>my-new-qube</code> from 2 GB to 10 GB.</p>
+<p><img src="qube-apps5.png" alt=""></p>
+<p>Now that I have 10 GB of private storage, Signal Desktop finishes installing without a problem. I can run it or delete, and if I click Update Apps it will update all of the Flatpak apps I have installed to the latest versions.</p>
+<p><img src="qube-apps6.png" alt=""></p>
+<p>Now I'm going to install Slack, Discord, Spotify, and Visual Studio Code as well. Easy peasy.</p>
+<p><img src="qube-apps7.png" alt=""></p>
+<p>Hopefully Qube Apps will help you avoid installing tons of software in your templates, and help you run more of your apps in an inception of sandboxes.</p>
+<p>Qube Apps is licensed GPLv3 and the code is <a href="https://github.com/micahflee/qube-apps">on github</a>. The whole thing is a python script that's less than 400 lines of code. I programmed it last night. See the <a href="https://github.com/micahflee/qube-apps/blob/main/README.md">README.md</a> for instructions on building it and installing it in your template.</p>
+
+
+      <div id="commento"></div>
+      <script src="https://cdn.commento.io/js/commento.js"></script>
+
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name centered"><a href="../../../">Micah Lee's blog</a></p>
+      <p class="centered"><img class="fullwidth" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Director of Infosec at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Advisor at <a href="https://ddosecrets.com/">DDoSecrets</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Cofounded <a href="https://freedom.press/">Freedom of the Press</a> (former)
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://semiphemeral.com">Semiphemeral</a>
+        </li>
+      </ul>
+
+      <p class="centered"><iframe class="centered" src="https://snowflake.torproject.org/embed.html" width="320"
+          height="240" frameborder="0" scrolling="no"></iframe></p>
+
+      <p class="centered"><a href="https://standwithreality.org/"><img class="fullwidth"
+            src="../../../static/images/reality.png"></a>
+      </p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?
+      <p>
+      <p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License"
+            src="../../../static/images/cc-by-nc.png"></a>
+        <br />
+        <br />
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative
+          Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me
+        credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must
+        make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

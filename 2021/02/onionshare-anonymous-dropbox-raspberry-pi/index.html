@@ -1,0 +1,452 @@
+<!doctype html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Running an OnionShare anonymous dropbox on a Raspberry Pi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@micahflee" />
+  <meta name="twitter:creator" content="@micahflee" />
+  <meta property="og:url" content="https://micahflee.com/2021/02/onionshare-anonymous-dropbox-raspberry-pi" />
+  <meta property="og:title" content="Running an OnionShare anonymous dropbox on a Raspberry Pi" />
+  <meta property="og:image" content="https://micahflee.com/2021/02/onionshare-anonymous-dropbox-raspberry-pi/raspberry-pi.png" />
+
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="./raspberry-pi.png" />
+    </p>
+    
+    
+      <h1 class="article-title">Running an OnionShare anonymous dropbox on a Raspberry Pi</h1>
+    
+    <p class="meta">
+      Posted February 24, 2021
+      
+        in
+        
+          <a class="tag" href="../../../tags/onionshare">onionshare</a>
+        
+          <a class="tag" href="../../../tags/leaks">leaks</a>
+        
+          <a class="tag" href="../../../tags/sysadmin">sysadmin</a>
+        
+          <a class="tag" href="../../../tags/tor">tor</a>
+        
+      
+    </p>
+    
+      <p>Now that the command line version of OnionShare has <a href="https://micahflee.com/2021/02/onionshare-tabs-anonymous-chat-cli/">better support for running on headless Linux servers</a>, I figured I should set up a dedicated <a href="https://www.raspberrypi.org/">Raspberry Pi</a> anonymous dropbox server, and while I'm at it document how I'm doing it in a blog post.</p>
+<h2 id="find-a-raspberry-pi">Find a Raspberry Pi</h2><p>Personally, I dug through my cardboard box full of random electronics and pulled out a trusty old Raspberry Pi 3 Model B. After all, who among us doesn't have extra Raspberry Pis laying around in piles of old electronics? If you're not as fortunate as I, at the time of writing the fanciest model is the Raspberry Pi 4 Model B, and it costs $35.</p>
+<p>Raspberry Pis use microSD cards as their hard drive, so you'll also need a microSD card reader that you can plug into your computer to set it up, a micro-USB cable to provide power to your Pi, and an internet connection (ethernet is simplest, but wifi works too).</p>
+<h2 id="install-ubuntu-server-20-04-on-the-pi">Install Ubuntu Server 20.04 on the Pi</h2><p>Follow <a href="https://ubuntu.com/tutorials/how-to-install-ubuntu-on-your-raspberry-pi#1-overview">this tutorial that Ubuntu makes</a> to install Ubuntu on your Pi -- that's what I'm doing. I'm using the Ubuntu Server 20.04.2 LTS (RPi 3/4/400) 64-bit image. Once you get to the step "4. Boot Ubuntu Server" you can come back here.</p>
+<p>I don't feel like plugging an HDMI cable and USB keyboard into my Pi, so after plugging in ethernet and power, I'm going to need to discover my Pi's IP address so I can connect to it remotely over the network. I'm using <a href="https://nmap.org/">nmap</a> to do this. You can install it from your Linux package manager, from Homebrew on a Mac, or from nmap's website on Windows)</p>
+<p>Because my local network IP address is <code>192.168.1.x</code>, I'm going to scan my whole subnet (<code>192.168.1.0/24</code>) for computers with the SSH port (22) open, and one of them is bound to be my Pi:</p>
+<pre>
+$ nmap -p22 --open 192.168.1.0/24
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-23 17:51 PST
+Nmap scan report for 192.168.1.46
+Host is up (0.0015s latency).
+
+PORT   STATE SERVICE
+22/tcp open  ssh
+
+Nmap done: 256 IP addresses (7 hosts up) scanned in 3.13 seconds
+</pre><p>There it is, my Pi's IP address is <code>192.168.1.46</code>. So let's see if I can SSH into it. If you're following along, make sure to use the IP of <em>your</em> Pi, as it's probably different than mine. The default username and password are both <code>ubuntu</code>.</p>
+<pre>
+$ ssh ubuntu@192.168.1.46
+The authenticity of host '192.168.1.46 (192.168.1.46)' can't be established.
+ECDSA key fingerprint is SHA256:tdB9dxpe4dIpFfvbjNdPpPVLeBlpTXaSu6SCaabjyFc.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '192.168.1.46' (ECDSA) to the list of known hosts.
+ubuntu@192.168.1.46's password: 
+You are required to change your password immediately (administrator enforced)
+Welcome to Ubuntu 20.04.2 LTS (GNU/Linux 5.4.0-1028-raspi aarch64)
+[...snip...]
+</pre><p>Accept the fingerprint. After logging in, you're forced to reset the password. Set it to something random and save it in your password manager. You do use a <a href="https://ssd.eff.org/en/module/creating-strong-passwords">password manager</a>, right?</p>
+<p>After you reset your password, your connection will close and you'll need to SSH in again:</p>
+<pre>
+[...snip...]
+WARNING: Your password has expired.
+You must change your password now and login again!
+Changing password for ubuntu.
+Current password: 
+New password: 
+Retype new password: 
+passwd: password updated successfully
+Connection to 192.168.1.46 closed.
+
+$ ssh ubuntu@192.168.1.46
+ubuntu@192.168.1.46's password: 
+Welcome to Ubuntu 20.04.2 LTS (GNU/Linux 5.4.0-1028-raspi aarch64)
+[...snip...]
+ubuntu@ubuntu:~$ 
+</pre><p><em>(hacker voice)</em> <strong>I'm in.</strong></p>
+<p>Go ahead and install updates by running:</p>
+<pre>
+sudo apt update
+sudo apt upgrade -y
+</pre><h2 id="install-onionshare">Install OnionShare</h2><p>OnionShare is written in python, and you can install the <a href="https://docs.onionshare.org/2.3.1/en/advanced.html#command-line-interface">command line version</a> use python's package manager <code>pip</code>. So first, I must install <code>pip</code>:</p>
+<pre>
+sudo apt install python3-pip
+</pre><p>Now I'm going to install OnionShare itself:</p>
+<pre>
+pip3 install --user onionshare-cli
+</pre><p>When you install programs with <code>pip</code> and use the <code>--user</code> flag, it installs them into <code>~/.local/bin</code>, which isn't in your path by default. This will add <code>~/.local/bin</code> to your path automatically for the next time you SSH into your Pi:</p>
+<pre>
+echo "PATH=\$PATH:~/.local/bin" >> ~/.bashrc
+source ~/.bashrc
+</pre><p>Okay, now try running <code>onionshare-cli</code>. You should see the usage information:</p>
+<p><img src="onionshare-usage.png" alt=""></p>
+<h2 id="test-it-out-install-tor">Test it out (install tor)</h2><p>Great, so let's start by seeing if we can run a chat server:</p>
+<pre>
+$ onionshare-cli --chat
+OnionShare 2.3.1 | https://onionshare.org/
+
+                     @@@@@@@@@                      
+                @@@@@@@@@@@@@@@@@@@                 
+             @@@@@@@@@@@@@@@@@@@@@@@@@              
+           @@@@@@@@@@@@@@@@@@@@@@@@@@@@@            
+             @@@@@@@@@@@@@@@@@@@@@@@@@@@@@           ___        _               
+               @@@@@@         @@@@@@@@@@@@@         / _ \      (_)              
+         @@@@    @               @@@@@@@@@@@       | | | |_ __  _  ___  _ __    
+       @@@@@@@@                   @@@@@@@@@@       | | | | '_ \| |/ _ \| '_ \   
+     @@@@@@@@@@@@                  @@@@@@@@@@      \ \_/ / | | | | (_) | | | |  
+   @@@@@@@@@@@@@@@@                 @@@@@@@@@       \___/|_| |_|_|\___/|_| |_|  
+      @@@@@@@@@                 @@@@@@@@@@@@@@@@    _____ _                     
+      @@@@@@@@@@                  @@@@@@@@@@@@     /  ___| |                    
+       @@@@@@@@@@                   @@@@@@@@       \ `--.| |__   __ _ _ __ ___ 
+       @@@@@@@@@@@               @    @@@@          `--. \ '_ \ / _` | '__/ _ \
+        @@@@@@@@@@@@@         @@@@@@               /\__/ / | | | (_| | | |  __/
+         @@@@@@@@@@@@@@@@@@@@@@@@@@@@@             \____/|_| |_|\__,_|_|  \___|
+           @@@@@@@@@@@@@@@@@@@@@@@@@@@@@            
+             @@@@@@@@@@@@@@@@@@@@@@@@@              
+                @@@@@@@@@@@@@@@@@@@                 
+                     @@@@@@@@@                      
+
+You must install tor to use OnionShare from the command line
+</pre><p>Oh right, I need to install tor. That's easy:</p>
+<pre>
+sudo apt install tor
+</pre><p>Okay, let's try again:</p>
+<pre>
+$ onionshare-cli --chat
+OnionShare 2.3.1 | https://onionshare.org/
+
+                     @@@@@@@@@                      
+                @@@@@@@@@@@@@@@@@@@                 
+             @@@@@@@@@@@@@@@@@@@@@@@@@              
+           @@@@@@@@@@@@@@@@@@@@@@@@@@@@@            
+             @@@@@@@@@@@@@@@@@@@@@@@@@@@@@           ___        _               
+               @@@@@@         @@@@@@@@@@@@@         / _ \      (_)              
+         @@@@    @               @@@@@@@@@@@       | | | |_ __  _  ___  _ __    
+       @@@@@@@@                   @@@@@@@@@@       | | | | '_ \| |/ _ \| '_ \   
+     @@@@@@@@@@@@                  @@@@@@@@@@      \ \_/ / | | | | (_) | | | |  
+   @@@@@@@@@@@@@@@@                 @@@@@@@@@       \___/|_| |_|_|\___/|_| |_|  
+      @@@@@@@@@                 @@@@@@@@@@@@@@@@    _____ _                     
+      @@@@@@@@@@                  @@@@@@@@@@@@     /  ___| |                    
+       @@@@@@@@@@                   @@@@@@@@       \ `--.| |__   __ _ _ __ ___ 
+       @@@@@@@@@@@               @    @@@@          `--. \ '_ \ / _` | '__/ _ \
+        @@@@@@@@@@@@@         @@@@@@               /\__/ / | | | (_| | | |  __/
+         @@@@@@@@@@@@@@@@@@@@@@@@@@@@@             \____/|_| |_|\__,_|_|  \___|
+           @@@@@@@@@@@@@@@@@@@@@@@@@@@@@            
+             @@@@@@@@@@@@@@@@@@@@@@@@@              
+                @@@@@@@@@@@@@@@@@@@                 
+                     @@@@@@@@@                      
+
+Connecting to the Tor network: 100% - Done
+
+Give this address to the recipient:
+http://onionshare:appetizer-acid@hhzxxzfsx34ckxjtl3z6cjgfk73tyr3fxbsu3rumiqsgdz6nvmorhnyd.onion
+
+Press Ctrl+C to stop the server
+</pre><p>Load the OnionShare address you see in Tor Browser to make sure it works.</p>
+<p><img src="torbrowser-chat.png" alt=""></p>
+<p>Great.</p>
+<p>Press Ctrl-C to quit OnionShare.</p>
+<h2 id="start-a-persistent-anonymous-dropbox">Start a persistent anonymous dropbox</h2><p>To let people anonymously upload files to your computer (in this case, your Raspberry Pi) you use <a href="https://docs.onionshare.org/2.3.1/en/features.html#receive-files">receive mode</a>. In the command line this is the <code>--receive</code> flag.</p>
+<p>You'll also want to make sure you use <code>--persistent</code>. This will save the Tor onion key into a file so that if you ever, for example, reboot your Raspberry Pi, you can start up your service with the exact same OnionShare address.</p>
+<p>You'll also probably want to use <code>--public</code> which disables the default password protection. Basically, this lets you post a link to your anonymous dropbox <a href="https://twitter.com/kenklippenstein/status/1363744555435249665">on Twitter</a> (for example) and anyone can go there to anonymously leak documents to you.</p>
+<p>Putting it all together:</p>
+<pre>
+$ onionshare-cli --receive --persistent ~/anon-dropbox.session --public
+OnionShare 2.3.1 | https://onionshare.org/
+
+                     @@@@@@@@@                      
+                @@@@@@@@@@@@@@@@@@@                 
+             @@@@@@@@@@@@@@@@@@@@@@@@@              
+           @@@@@@@@@@@@@@@@@@@@@@@@@@@@@            
+             @@@@@@@@@@@@@@@@@@@@@@@@@@@@@           ___        _               
+               @@@@@@         @@@@@@@@@@@@@         / _ \      (_)              
+         @@@@    @               @@@@@@@@@@@       | | | |_ __  _  ___  _ __    
+       @@@@@@@@                   @@@@@@@@@@       | | | | '_ \| |/ _ \| '_ \   
+     @@@@@@@@@@@@                  @@@@@@@@@@      \ \_/ / | | | | (_) | | | |  
+   @@@@@@@@@@@@@@@@                 @@@@@@@@@       \___/|_| |_|_|\___/|_| |_|  
+      @@@@@@@@@                 @@@@@@@@@@@@@@@@    _____ _                     
+      @@@@@@@@@@                  @@@@@@@@@@@@     /  ___| |                    
+       @@@@@@@@@@                   @@@@@@@@       \ `--.| |__   __ _ _ __ ___ 
+       @@@@@@@@@@@               @    @@@@          `--. \ '_ \ / _` | '__/ _ \
+        @@@@@@@@@@@@@         @@@@@@               /\__/ / | | | (_| | | |  __/
+         @@@@@@@@@@@@@@@@@@@@@@@@@@@@@             \____/|_| |_|\__,_|_|  \___|
+           @@@@@@@@@@@@@@@@@@@@@@@@@@@@@            
+             @@@@@@@@@@@@@@@@@@@@@@@@@              
+                @@@@@@@@@@@@@@@@@@@                 
+                     @@@@@@@@@                      
+
+Connecting to the Tor network: 100% - Done
+ * Running on http://127.0.0.1:17636/ (Press CTRL+C to quit)
+
+Files sent to you appear in this folder: /home/ubuntu/OnionShare
+
+Warning: Receive mode lets people upload files to your computer. Some files can potentially take control of your computer if you open them. Only open things from people you trust, or if you know what you are doing.
+
+Give this address to the sender:
+http://vxat6yszh7o5r2fxzvibxsb4lmfi6yzudobn3o3yz2vhvue3z2xmbqid.onion
+
+Press Ctrl+C to stop the server
+</pre><p>Now, load the OnionShare address in Tor Browser to make sure it works.</p>
+<p><img src="torbrowser-receive.png" alt=""></p>
+<p>It works!</p>
+<p>And live web logs get displayed in the terminal as well. For example when I loaded the OnionShare address, this was displayed in the terminal:</p>
+<pre>
+127.0.0.1 - - [24/Feb/2021 02:36:06] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [24/Feb/2021 02:36:07] "GET /static_nwr7jepc7gzurz2tyf2ddqnaxe/css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [24/Feb/2021 02:36:08] "GET /static_nwr7jepc7gzurz2tyf2ddqnaxe/js/jquery-3.5.1.min.js HTTP/1.1" 200 -
+127.0.0.1 - - [24/Feb/2021 02:36:08] "GET /static_nwr7jepc7gzurz2tyf2ddqnaxe/js/receive.js HTTP/1.1" 200 -
+127.0.0.1 - - [24/Feb/2021 02:36:08] "GET /static_nwr7jepc7gzurz2tyf2ddqnaxe/img/logo.png HTTP/1.1" 200 -
+127.0.0.1 - - [24/Feb/2021 02:36:08] "GET /static_nwr7jepc7gzurz2tyf2ddqnaxe/img/logo_large.png HTTP/1.1" 200 -
+127.0.0.1 - - [24/Feb/2021 02:36:09] "GET /static_nwr7jepc7gzurz2tyf2ddqnaxe/img/favicon.ico HTTP/1.1" 200 -
+</pre><p>You'll never get to know the IP addresses of people who visit your onion site. Their IP will always look like <code>127.0.0.1</code>. This is how Tor onion services work: you run a service anonymously, and all the clients that connect to your service are anonymous as well. If someone loads your anonymous dropbox while you happen to be looking at the terminal, you'll be able to tell that someone is there because you'll see the logs they generate, but you won't know who it is.</p>
+<h2 id="upload-a-file-and-then-see-what-was-uploaded">Upload a file, and then see what was uploaded</h2><p>Now, let's try uploading a file. In my case, I'm uploading a ~2.6mb file called <code>IMG_0417.jpg</code>.</p>
+<p>In the terminal you can see the progress of the file as it uploads, and then you can see the location it was saved to:</p>
+<pre>
+=> 2.5 MiB IMG_0417.jpg             
+Received: /home/ubuntu/OnionShare/2021-02-24/22.29.20/IMG_0417.jpg
+127.0.0.1 - - [24/Feb/2021 22:29:29] "POST /upload-ajax HTTP/1.1" 200 -
+</pre><p>But now, how do I actually access this file? There are many ways. Here are some options:</p>
+<h3 id="in-macos-or-windows">In macOS or Windows</h3><p>If you use macOS or Windows you can use SFTP software like <a href="https://cyberduck.io/">Cyberduck</a>. For example, here I'm setting up a new connection in Cyberduck called <code>onionsharepi</code>:</p>
+<p><img src="cyberduck1.png" alt=""></p>
+<p>Then when I connect to it, I can browse the files and download anything to my computer:</p>
+<p><img src="cyberduck2.png" alt=""></p>
+<p>And finally, I can open <code>IMG_0417.jpg</code> and see what this image I uploaded was.</p>
+<p><img src="tor-mask.png" alt=""></p>
+<h3 id="in-linux">In Linux</h3><p>In Ubuntu (or other distros that use nautilus as the file manager), I open the file manager, go to "Other Locations", and connect to the server <code>sftp://ubuntu@192.168.1.46/</code>.</p>
+<p><img src="ubuntu-files1.png" alt=""></p>
+<p>Now I have access to the files that get uploaded to my anonymous dropbox:</p>
+<p><img src="ubuntu-files2.png" alt=""></p>
+<h2 id="make-sure-the-anonymous-dropbox-is-actually-persistent">Make sure the anonymous dropbox is actually persistent</h2><p>The command we used to start OnionShare in receive mode is:</p>
+<pre>
+onionshare-cli --receive --persistent ~/anon-dropbox.session --public
+</pre><p>This stores all the settings associated with this session, including the secret key required to get this same Tor onion address, in the file <code>anon-dropbox.session</code>.</p>
+<p>If you quit OnionShare by pressing Ctrl-C, then run that same command over again (in the terminal press up arrow, then enter), it should start OnionShare again, and the URL should be exactly the same. This is important because if you ever have to quit OnionShare (like maybe you need to unplug the Raspberry Pi and plug it in somewhere else, forcing it to reboot), you'll be able to get your anonymous dropbox up and running again with the same address.</p>
+<p>...and yup, I just confirmed persistence works on my end.</p>
+<p>You may wish to copy and paste the contents of this file into a note field in your password manager, or otherwise make a secure backup of it. This way when you spill coffee all over your Raspberry Pi, you can get up and running again without too much trouble.</p>
+<h2 id="run-onionshare-in-a-screen-session-so-you-can-close-your-terminal">Run OnionShare in a screen session so you can close your terminal</h2><p>So far this works great, but there's a big problem: When you SSH into a remote server (the Pi) and run a command (<code>onionshare-cli</code>), if you close your terminal, get disconnected from wifi, or otherwise end your SSH session, it will close <code>onionshare-cli</code> as well. Ideally you want it to just always be open and running in the background.</p>
+<p>A simple way of doing this is using the program <code>screen</code>, a terminal multiplexer (you can also use <code>tmux</code> or whatever else you prefer). If OnionShare is running on your Raspberry Pi, quit it with Ctrl-C. Then from a terminal, install screen and download a simple <code>.screenrc</code> file so it will look a bit nicer:</p>
+<pre>
+sudo apt install -y screen
+wget https://raw.githubusercontent.com/micahflee/dotfiles/master/.screenrc
+</pre><p>Then run <code>screen</code>:</p>
+<pre>
+screen
+</pre><p>You should see a new bar at the bottom of the screen with <code>0 bash</code> highlighted in yellow. This means you're inside a screen session now. (If you want to get nerdy, you may with to teach yourself more about using <code>screen</code> or similar terminal multiplexers.)</p>
+<p><em>Now</em> run <code>onionshare-cli</code> again:</p>
+<p><img src="onionshare-screen.png" alt=""></p>
+<p>Now go ahead and completely close out of the terminal window, and make sure your you can still load your OnionShare address. It should load fine, because <code>onionshare-cli</code> should still be running on the Pi in your <code>screen</code> session.</p>
+<p>Now let's get back in. Open a new terminal and SSH back into the Pi:</p>
+<pre>
+ssh ubuntu@192.168.1.46
+</pre><p>Once you're in, reconnect your <code>screen</code> session:</p>
+<pre>
+screen -x
+</pre><p>You should see your OnionShare anonymous dropbox again.</p>
+<h2 id="some-final-thoughts">Some final thoughts</h2><p>After following this guide, you should have:</p>
+<ul>
+<li>A Raspberry Pi with Ubuntu Server 20.04 installed on it</li>
+<li>The ability to SSH into the server to remotely configure it</li>
+<li>An OnionShare anonymous dropbox running in a screen session</li>
+<li>The ability to access all the files that get uploaded to your anonymous dropbox on your normal computer</li>
+</ul>
+<p>Congratulations! You're now equipped to accept leaks from the public. Just let people know that they can load your OnionShare address in Tor Browser to send you stuff anonymously. Here are a few things to keep in mind:</p>
+<p>You can keep an eye on it by keeping a terminal open with the <code>screen</code> session attached to see when people access it, and regularly checking on the files that get uploaded.</p>
+<p>Now that you're running a server, it's a good idea to regularly install updates so it doesn't get hacked, and keep an eye out for OnionShare updates as well (you'll be able to update <code>onionshare-cli</code> by running <code>pip3 install --upgrade onionshare-cli</code>). You might also want to do other things to harden your server like start using SSH keys instead of passwords or set up a firewall.</p>
+<p><strong>Your Raspberry Pi's hard drive is not encrypted, which means if someone can physically access your Pi, they can simply unplug the microSD card, plug it into their own computer, and copy all of the documents people have uploaded to you.</strong> The best solution is to add disk encryption to this setup (perhaps this will be the target of a future blog post -- if you're interested in that, post in the comments). But in the meantime, whenever someone sends you anything sensitive, you can download it to your computer and then delete it from the Raspberry Pi, and <em>then</em> securely erase the free space on the Pi's microSD card so that it can't be recovered.</p>
+<p>To securely delete free space, install the <code>secure-delete</code> package:</p>
+<pre>
+sudo apt install secure-delete
+</pre><p>And then run <code>sfill</code> to fill up all of the free space from zeros:</p>
+<pre>
+sudo sfill -v -l /
+</pre><p>In this command I'm using the flag <code>-l</code> which means "lessens the security. Only two passes are written: one mode with 0xff and a final mode with random values." -- though honestly I think this is fine for almost every use-case. This will take a very long time as it is, but if you leave off the <code>-l</code> it will take about 19 times longer, overwriting your free space 38 times instead of 2 times. (Run <code>man sfill</code> for more information.)</p>
+<p><strong>Warning: Receive mode lets people upload files to your computer. Some files can potentially take control of your computer if you open them. Only open things from people you trust, or if you know what you are doing.</strong></p>
+<p>This warning is prominently displayed in OnionShare, and I think it's important to point out again. Just like why you're instructed not to open sketchy email attachments, you shouldn't just blindly open documents that you receive from OnionShare. For a trivial example, if you use Windows someone can send you <code>backdoor.exe</code>, and if you open that file, they will have hacked you.</p>
+<p>If you do get a document and you're worried it might hack you when you open it, here are a few strategies to try:</p>
+<ul>
+<li>If it's an office document, run it through <a href="https://dangerzone.rocks/">Dangerzone</a> first. This is another piece of software I wrote that turns office documents into PDFs that you can be confident won't hack you.</li>
+<li>If you're not concerned with sharing it with third parties:<ul>
+<li>You can upload it to <a href="https://www.virustotal.com/">VirusTotal</a> to get it scanned by dozens of anti-virus programs, which might help inform if you want to open it or not.</li>
+<li>You can also upload certain types of documents (including office docs, videos, and audio files) to Google Drive, and then view them in your web browser instead of programs like Word or VLC. If these documents would try to hack you, they'll instead try to hack some container running on Google's infrastructure, letting you view it safely.</li>
+</ul>
+</li>
+<li>Set up a <a href="https://theintercept.com/2015/09/16/getting-hacked-doesnt-bad/">virtual machine</a>, turn networking off, copy the document to your VM, and open it there. If it's malicious it will try to hack your VM instead of your host computer, and if it tries to phone home it will fail because your VM doesn't have networking.</li>
+</ul>
+<p>Good luck, and I'd love to know if you're running an OnionShare anonymous dropbox of your own.</p>
+<p>Oh and if you have any newsworthy leaks, feel free to send them my way: <a href="http://vxat6yszh7o5r2fxzvibxsb4lmfi6yzudobn3o3yz2vhvue3z2xmbqid.onion">http://vxat6yszh7o5r2fxzvibxsb4lmfi6yzudobn3o3yz2vhvue3z2xmbqid.onion</a></p>
+
+
+      <div id="commento"></div>
+      <script src="https://cdn.commento.io/js/commento.js"></script>
+
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name centered"><a href="../../../">Micah Lee's blog</a></p>
+      <p class="centered"><img class="fullwidth" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Director of Infosec at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Advisor at <a href="https://ddosecrets.com/">DDoSecrets</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Cofounded <a href="https://freedom.press/">Freedom of the Press</a> (former)
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://semiphemeral.com">Semiphemeral</a>
+        </li>
+      </ul>
+
+      <p class="centered"><iframe class="centered" src="https://snowflake.torproject.org/embed.html" width="320"
+          height="240" frameborder="0" scrolling="no"></iframe></p>
+
+      <p class="centered"><a href="https://standwithreality.org/"><img class="fullwidth"
+            src="../../../static/images/reality.png"></a>
+      </p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?
+      <p>
+      <p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License"
+            src="../../../static/images/cc-by-nc.png"></a>
+        <br />
+        <br />
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative
+          Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me
+        credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must
+        make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

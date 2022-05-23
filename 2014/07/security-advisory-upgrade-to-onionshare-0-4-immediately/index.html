@@ -1,0 +1,214 @@
+<!doctype html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Security Advisory: Upgrade to OnionShare 0.4 Immediately</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="twitter:card" content="summary" />
+  
+  <meta name="twitter:site" content="@micahflee" />
+  <meta name="twitter:creator" content="@micahflee" />
+  <meta property="og:url" content="https://micahflee.com/2014/07/security-advisory-upgrade-to-onionshare-0-4-immediately" />
+  <meta property="og:title" content="Security Advisory: Upgrade to OnionShare 0.4 Immediately" />
+  
+
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    
+      <h1 class="article-title">Security Advisory: Upgrade to OnionShare 0.4 Immediately</h1>
+    
+    <p class="meta">
+      Posted July 16, 2014
+      
+        in
+        
+          <a class="tag" href="../../../tags/advisory">advisory</a>
+        
+          <a class="tag" href="../../../tags/onionshare">onionshare</a>
+        
+      
+    </p>
+    
+      <p>Yesterday Jacob Appelbaum discovered an input sanitation bug in OnionShare 0.3. It is now fixed, and you should upgrade to the latest version before using it again. You can download the latest version from <a href="https://onionshare.org/">https://onionshare.org/</a>.</p>
+<p><strong>Here’s how the bug worked</strong></p>
+<p>The OnionShare GUI is built using webkit, the browser engine that powers Chrome, and written in HTML, CSS, and Javascript. When you open OnionShare and share a file, you get a URL that looks like this:</p>
+<pre><code>http://e6hkwn4iyfvoaecu.onion/2hff4jdz7pthbbkfxtighpolpu
+</code></pre>
+<p>If the recipient loaded that exact URL, it displayed “Download page loaded” in the GUI.  But if the recipient loaded a different URL at the same Tor hidden service address, such as:</p>
+<pre><code>http://e6hkwn4iyfvoaecu.onion/some_other_url
+</code></pre>
+<p>The recipient would receive a 404 error and the OnionShare would display “Other page has been loaded: /some_other_url” to the sender. This string, “some_other_url”, is the input that was not being sanitized. If the recipient loaded:</p>
+<pre><code>http://e6hkwn4iyfvoaecu.onion/&lt;script&gt;alert('xss')&lt;/script&gt;
+</code></pre>
+<p>Then that piece of Javascript would execute inside the OnionShare GUI on the sender’s computer, and “xss” would pop up in an alert box.</p>
+<p>This is a serious vulnerability because the recipient can use it to deanonymize the sender by forcing webkit to load a resource on a website that the attacker controls. This resource will be loaded over the normal internet, not Tor, so the receiver can check their web server log to find the sender’s IP address.</p>
+<p>Additionally, I’ve discovered that the version of webkit that comes with Qt4’s QtWebKit framework is scarily old, and doesn’t get automatic webkit updates. It’s possible that there are year-old public webkit exploits could be used by the receiver to not only deanonymize the sender, but escalate to arbitrary code execution.</p>
+<p><strong>What is not affected</strong></p>
+<p>If an outside attacker monitors the network traffic of either the sender or the receiver, they still couldn’t compromise the file being sent or the anonymity of either party. The attacker in this case must be the receiver (or someone who eavesdropped on the OnionShare URL that was sent, and started making requests to it before the legitimate receiver downloaded it).</p>
+<p><strong>How the fix works</strong></p>
+<p>OnionShare 0.4 fixes this bug in a couple ways. First, the input is now sanitized, so when the receiver loads:</p>
+<pre><code>http://e6hkwn4iyfvoaecu.onion/&lt;script&gt;alert('xss')&lt;/script&gt;
+</code></pre>
+<p>It just displays: <code>Other page has been loaded: /&lt;script&gt;alert(‘xss’)&lt;/script&gt;</code> and doesn’t actually execute any Javascript.</p>
+<p>Additionally, the web server that powers the GUI’s browser now sets the <code>Content-Security-Policy</code> header to <code>default-src ‘self’; connect-src ‘self'</code>. This means that the page will refuse to execute any Javascript that is inline (inside <code>&lt;script&gt;</code> tags), in attributes like onclick or onmouseover, in links like <code>href="javascript:"</code>, etc. It will also refuse to load any resources from any external domain. So in case some other cross-site scripting vulnerability exists, the malicious Javascript won’t execute and the sender won’t be able to be deanonymized.</p>
+<p><strong>Future plans</strong></p>
+<p>An important future plan for OnionShare is automatic updating for Windows and OSX, and to be included in Linux distro repositories to use the package manager’s automatic updates.  <a href="https://github.com/micahflee/onionshare/issues/93">Here’s the issue on GitHub</a>, but for now users have to update manually.</p>
+<p>At first it seemed like using webkit to build desktop app GUIs was excellent. It makes it quick and simple to deploy powerful, featureful, HTML5-based desktop programs. But considering potential bugs like this one, and that the version of webkit that ships with GUI libraries like Qt and GTK are abysmally old and don’t get security updates, it now seems like this is a bad way of building secure software. I plan on rebuilding the OnionShare GUI using pure Qt widgets, and not including webkit at all. This will dramatically decrease the client-side attack surface.  <a href="https://github.com/micahflee/onionshare/issues/95">Here’s the issue on GitHub</a>.</p>
+<p>When you’re using OnionShare in Tails there is an additional risk. You’re required to run it as the root user because it needs to open a hole in the local firewall (this will no longer be necessary when we remove webkit), and only the root user in Tails can connect to the Tor control port to start a new hidden service. It would be much better if OnionShare ran as the unprivileged amnesia user, and a separate root processes was started just for the specific tasks that require root. <a href="https://github.com/micahflee/onionshare/issues/96">Here’s the issue on GitHub</a>.</p>
+
+
+      <div id="commento"></div>
+      <script src="https://cdn.commento.io/js/commento.js"></script>
+
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name centered"><a href="../../../">Micah Lee's blog</a></p>
+      <p class="centered"><img class="fullwidth" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Director of Infosec at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Advisor at <a href="https://ddosecrets.com/">DDoSecrets</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Cofounded <a href="https://freedom.press/">Freedom of the Press</a> (former)
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://semiphemeral.com">Semiphemeral</a>
+        </li>
+      </ul>
+
+      <p class="centered"><iframe class="centered" src="https://snowflake.torproject.org/embed.html" width="320"
+          height="240" frameborder="0" scrolling="no"></iframe></p>
+
+      <p class="centered"><a href="https://standwithreality.org/"><img class="fullwidth"
+            src="../../../static/images/reality.png"></a>
+      </p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?
+      <p>
+      <p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License"
+            src="../../../static/images/cc-by-nc.png"></a>
+        <br />
+        <br />
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative
+          Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me
+        credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must
+        make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

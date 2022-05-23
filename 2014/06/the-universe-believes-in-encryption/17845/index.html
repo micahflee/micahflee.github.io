@@ -1,0 +1,249 @@
+<!doctype html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Legacy Comments</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="../../../../static/style.css">
+  <link rel="stylesheet" href="../../../../static/fontawesome/css/all.min.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Seth Schoen</p>
+        <p class="legacy-comment-meta-pub_date">June 5, 2014 04:52 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>There are clearly some math problems that take more computation to solve than human beings will ever be able to perform. In fact, it's <a href="https://en.wikipedia.org/wiki/Busy_beaver" rel="nofollow">pretty easy to state</a> math problems like that.</p>
+<p>A concern for me is that we don't have proof than <em>any</em> of our cryptographic primitives are inherently that difficult to break. We don't have a proof that a block cipher like AES-256 inherently requires 2²⁵⁶ computational steps (or even 2²⁵⁰ or 2¹²⁸ or 2⁶⁴ steps) to <a href="https://en.wikipedia.org/wiki/Block_cipher#Standard_model" rel="nofollow">distinguish its output from random data</a>. We don't have a proof that a hash function like SHA-256 requires a particular number of computational steps to compute <a href="https://en.wikipedia.org/wiki/Preimage_attack" rel="nofollow">preimages or second preimages</a>. We don't have a proof of what exactly the inherent difficulty is of the tasks whose difficulty we rely on for public-key cryptography (<a href="https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_problem" rel="nofollow">DHP</a> and <a href="https://en.wikipedia.org/wiki/RSA_problem" rel="nofollow">RSA problem</a>, or their naïve solutions via <a href="https://en.wikipedia.org/wiki/Discrete_logarithm" rel="nofollow">discrete logarithm</a> and <a href="https://en.wikipedia.org/wiki/Integer_factorization#Difficulty_and_complexity" rel="nofollow">integer factorization</a>).</p>
+<p>Most of the research in cryptography that does involve formal proofs is in the form of <em>reductions</em> that transform the ability to solve one problem into the ability to solve another (which has been assumed to be hard to solve), or conversely that transform the resistance of one system to a class of attacks into the resistance of another system to another class of attacks. (We assume that problem X is hard to solve and we show that if you could solve problem Y, you could solve problem X; therefore we must conclude that problem Y is also hard to solve.) This is the same general strategy of lots of computational complexity research, which is interested in the relative difficulty of problems, which can be established by exhibiting reductions.</p>
+<p>In the cryptographic case, though, there's usually just an assumption at the bottom, which is that the underlying thing seems pretty difficult to break and no very powerful attacks against it have been published. It seems that many of the problems that we would like to be easy (because we want to do computations using them) are proven to be hard, while many of the problems that we would like to be hard (because we want to rely on their difficulty for cryptographic purposes) are not proven to be hard.</p>
+<p>So although the universe clearly does allow us to have secure cryptography, we're still unable to demonstrate that any of the cryptography that we regularly use is actually secure cryptography.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">June 5, 2014 10:31 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>These are excellent points. None of the crypto we use is provably secure, which is why we have to worry about unknown flaws at all. I think this will change though in the future (maybe very near future?) when quantum crypto becomes more feasible. We can only hope that NSA/GCHQ doesn’t have secret mathematic knowledge about certain ciphers that the civilian cryptographers don’t know about it.</p>
+<p>I’m by no means a physcist, but my understanding is because eavesdropping on quantum operations causes superpositions to collapse, eavesdroppers can always be detected. Because of this fact, many quantum crypto tasks could/will have “unconditional security”, meaning they’ve been proven to be secure. Here’s the paper on it: <a href="http://arxiv.org/abs/0906.1030">http://arxiv.org/abs/0906.1030</a></p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Chad</p>
+        <p class="legacy-comment-meta-pub_date">June 18, 2014 05:55 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Micah are you poking fun of this poster?
+Not that I mind, everyone deserves a good poking now and then and some people deserve a good roasting.<br>
+Just that, as I'm not an expert (except to all the people who understand less than I and trust me to secure them and their systems) it's difficult to understand if this is something on the order of "Oh shit, "they" could have broken all encryption and they're just waiting till all the bears are sufficiently sticky and logy from the honeypots before they swoop them up" . . . or more along the computational lines of "Difficult to conclude that life only exists on Earth given the immense vastness of the universe, but since we haven't met E.T. ... a million white crows does not no black crows make."</p>
+<p>You're one of the few voices I trust on the net, and this response almost seems to undermine your usual firm"You can trust encryption with your life" stance.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">June 18, 2014 09:46 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Hey Chad, no I'm not poking fun at Seth. He made some very good points: none of the crypto we rely on has been mathematically <i>proven</i> to be secure. But I don't think this is a reason to panic or anything.</p>
+<p>For example, public key crypto works by picking two very large prime numbers and multiplying them together to get an enormous number that isn't prime, but only has two factors. The security relies on the fact that if you just have that enormous number, it's a "hard problem" to factor it and figure out what the two prime factors are (such a hard problem that we'll all be long dead before an RSA key is broken using the most efficient solution to factor numbers that exists right now). Mathemeticians have been trying to figure out how to do this efficiently for hundreds of years and have so far failed.</p>
+<p>However, no one has ever proved, mathemetically, that it's impossible. (In math people prove things all the time.) So even though it's a hard problem that has stumped geniuses for centuries, it's still <i>possible</i>, as far as we know, that someone could figure out a breakthrough in mathematics: a way to efficiently factor huge numbers.</p>
+<p>So while I personally believe that it's impossible to efficiently factor large numbers, I could be wrong, because it hasn't been proven. Just because something "might not be impossible" doesn't mean that NSA can do it -- on the contrary, they really almost certainly cannot. Be we just don't know that for sure.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name centered"><a href="../../../../">Micah Lee's blog</a></p>
+      <p class="centered"><img class="fullwidth" src="../../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Director of Infosec at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Advisor at <a href="https://ddosecrets.com/">DDoSecrets</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Cofounded <a href="https://freedom.press/">Freedom of the Press</a> (former)
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://semiphemeral.com">Semiphemeral</a>
+        </li>
+      </ul>
+
+      <p class="centered"><iframe class="centered" src="https://snowflake.torproject.org/embed.html" width="320"
+          height="240" frameborder="0" scrolling="no"></iframe></p>
+
+      <p class="centered"><a href="https://standwithreality.org/"><img class="fullwidth"
+            src="../../../../static/images/reality.png"></a>
+      </p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?
+      <p>
+      <p>Check the <a href="../../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License"
+            src="../../../../static/images/cc-by-nc.png"></a>
+        <br />
+        <br />
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative
+          Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me
+        credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must
+        make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>

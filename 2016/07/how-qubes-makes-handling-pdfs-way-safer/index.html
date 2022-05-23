@@ -1,0 +1,371 @@
+<!doctype html>
+
+<head>
+  <meta charset="utf-8">
+  <title>How Qubes makes handling PDFs way safer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@micahflee" />
+  <meta name="twitter:creator" content="@micahflee" />
+  <meta property="og:url" content="https://micahflee.com/2016/07/how-qubes-makes-handling-pdfs-way-safer" />
+  <meta property="og:title" content="How Qubes makes handling PDFs way safer" />
+  <meta property="og:image" content="https://micahflee.com/2016/07/how-qubes-makes-handling-pdfs-way-safer/gellman-tweet.png" />
+
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="./gellman-tweet.png" />
+    </p>
+    
+    
+      <h1 class="article-title">How Qubes makes handling PDFs way safer</h1>
+    
+    <p class="meta">
+      Posted July 21, 2016
+      
+        in
+        
+          <a class="tag" href="../../../tags/qubes">qubes</a>
+        
+      
+    </p>
+    
+      <p>Bart Gellman asked me on Twitter how to make PDFs safe to open. This is an excellent question, especially for a Pulitzer-winning surveillance/national security reporter who needs to open documents from random people on the internet, who may be trying to hack him or may be a valuable new source. PDFs, and all other document formats, can be terribly dangerous, and opening a malicious one can let an attacker take over your computer.</p>
+<p>He was specifically asking if <a href="https://firstlook.org/code/project/pdf-redact-tools/">PDF Redact Tools</a>, a tool that I developed to securely redact documents, could be used in Tails to safely sanitize potentially-malicious PDFs before opening them. Yes you can, but Qubes offers some built-in tools that do a better job of this, in a safer manner, with less hassle, and that’s quicker and easier.</p>
+<p>The two key features are: “Open in Disposable VM” and “Convert to Trusted PDF”.</p>
+<p><strong>Open in Disposable VM</strong></p>
+<p>In Qubes, you run all of your software in VMs, and its up to the user to decide how they want to do it. I have a VM called “email” that I use to check my email, and nothing else.</p>
+<p>Qubes comes with a Thunderbird extension that makes it simple to open email attachments in disposable VMs. It also comes with a file manager extension that lets you right-click on a file to open it in a disposable VM.</p>
+<p>It’s absurdly easy to use. I’ll use a sketchy piece of potentially-malicious spam to demonstrate:</p>
+<p><img src="sketchy-attachment.png" alt="sketchy attachment"></p>
+<p>Notice the window decorations of my Thunderbird window. It has a blue border (because that’s the color I chose) and says “[email]” in the window, to let me know that I’m running this program in my email VM.</p>
+<p>And here’s the window that opens:</p>
+<p><img src="sketchy-attachment-dispvm.png" alt="sketchy attachment DispVM"></p>
+<p>Here’s what happened:</p>
+<ul>
+<li>Qubes created a brand new VM that doesn’t have any data in it at all</li>
+<li>Then it copied this file <code>AWARD NOTIFICATION.pdf</code> to this new VM</li>
+<li>Then it opened the PDF in the new VM</li>
+<li>When I closed the window, Qubes deleted that disposable VM</li>
+</ul>
+<p>Check the window title. This PDF is open in a VM called “disp11”. When I close the window, the VM shuts down and gets deleted. If the PDF were malicious and tried to hack me, and the hack successfully exploited my PDF reader (Evince, in this case), it would still fail. The exploit wouldn’t have access to any of my data at all, and as soon as I closed the window it would be deleted forever.</p>
+<p>There’s a setting in the Qubes Thunderbird extension to open all email attachments in disposable VMs. And this works with any type of document, not just PDFs.</p>
+<p><strong>Convert to Trusted PDF</strong></p>
+<p>Qubes also has a feature that’s similar to what Bart was wanting to use PDF Redact Tools for: to convert an unknown PDF into one that you can safely open on any computer, even one running Windows or OS X with a vulnerable version of Adobe Reader.</p>
+<p>In this example, I’ve downloaded a PDF from Cryptome, and I have no idea if it’s malicious or not. I could choose to just open it in my PDF reader, to open it in a disposable VM, or to convert it to a PDF that I can trust.</p>
+<p><img src="trusted-pdf.png" alt="trusted pdf"></p>
+<p>First, notice the window decorations. This is the file manager running in my “browser” VM, and I chose the window color yellow.</p>
+<p>Right-clicking on the PDF and choosing “Convert To Trusted PDF” does something similar to what PDF Redact Tools does, but it will do it in a more secure way, because it can, because it’s running in Qubes. The short version is this:</p>
+<ul>
+<li>Qubes creates a new disposable VM</li>
+<li>It copies the document <code>fbi-cia-ssci-saudi.pdf</code> to it</li>
+<li>It does a complicated process to flatten and remove anything malicious from the PDF (it does a better job than PDF Redact Tools, which simply runs the ImageMagick “convert” tool, meaning that a PDF especially crafted to attack ImageMagick rather than Adobe Reader could still hack your computer)</li>
+<li>It copies the trusted PDF back to the VM</li>
+<li>It moves the original PDF to <code>~/QubesUntrustedPDFs</code> in the VM you’re using (browser, in my case), and it names the trusted PDF <code>fbi-cia-ssci-saudi.trusted.pdf</code></li>
+</ul>
+<p>If you want a much more detailed explanation of what’s going on, check out Joanna Rutkowska’s <a href="https://theinvisiblethings.blogspot.com/2013/02/converting-untrusted-pdfs-into-trusted.html">blog post on the topic</a>.</p>
+<p>There are two annoying downsides that trusted PDFs have: In order to make it safe, Qubes completely flattens the PDF, which means means you can no longer select any text from it. You’ll have to OCR it if you want the text layer back. And it makes the file size bigger, sometimes much bigger. The original <code>fbi-cia-ssci-saudi.pdf</code> is 624 kb, but <code>fbi-cia-ssci-saudi.trusted.pdf</code> is 2.3 mb.</p>
+<p><em>Update:</em> There’s a <a href="https://groups.google.com/forum/#!topic/qubes-users/qSiLD4jTXtQ">minor correction</a> from Qubes developer Marek Marczykowski-Górecki:</p>
+<blockquote><p>“It copies the trusted PDF back to the VM” – that  would mean that compromised DispVM (by the very same PDF) could pass it back unmodified instead of the sanitized one. It isn’t what is done there – it pass only very simple representation of the file (bitmap in this case), then reassemble PDF in the calling VM.</p>
+</blockquote>
+<p><strong>You can still get hacked with Qubes</strong></p>
+<p>These Qubes features are awesome and will protect you from just about 100% of random drive-by attacks. But like everything on computers, it’s still possible for an attacker with the right exploits to hack you, even if you’re using Qubes.</p>
+<p>They would need:</p>
+<ol>
+<li>An exploit for the program you’re using to open the document. In Qubes, the default PDF reader is Evince, but you can obviously use whichever software you think is safest.</li>
+<li>An exploit for Xen, which is the hypervisor that Qubes uses. These exploits are rare, but certainly happen. (Like this recent incredibly scary one.)</li>
+<li>A payload that’s specifically targeted against Qubes.</li>
+</ol>
+<p>The Qubes developers are completely on top of security updates. If you keep dom0 and all of your template VMs always up-to-date, using disposable VMs and converting to trusted PDFs will protect you from all but the most persistent and resourced attackers.</p>
+
+
+      <div id="commento"></div>
+      <script src="https://cdn.commento.io/js/commento.js"></script>
+
+      
+        
+        <div class="legacy-comments">
+          <p class="legacy-comments-notice">Legacy comments, imported from previous version of this blog:</p>
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Lettuce</p>
+        <p class="legacy-comment-meta-pub_date">July 9, 2017 04:37 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Dead link? "He was specifically asking if PDF Redact Tools,"</p>
+<p><a href="https://firstlook.org/code/project/pdf-redact-tools/">https://firstlook.org/code/project/pdf-redact-tools/</a></p>
+<p>Working version:</p>
+<p><a href="https://code.firstlook.media/projects/pdf-redact-tools.html">https://code.firstlook.media/projects/pdf-redact-tools.html</a></p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Anon</p>
+        <p class="legacy-comment-meta-pub_date">November 20, 2016 04:12 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Dear Micah Lee;</p>
+<p>Thank you so much for maintaining and publishing these articles in this blog. They are so helpful.</p>
+<p>Best wishes,</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Technop</p>
+        <p class="legacy-comment-meta-pub_date">January 3, 2017 06:06 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Can it run Crysis?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Itch</p>
+        <p class="legacy-comment-meta-pub_date">February 18, 2017 07:35 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>With GPU passthrough (major security headache), the right hardware, compatible GPU, probably...</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">a</p>
+        <p class="legacy-comment-meta-pub_date">December 3, 2016 06:49 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>but... can you do it in tails?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Sums Up</p>
+        <p class="legacy-comment-meta-pub_date">January 3, 2017 05:55 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>He gave the answer in this paragraph:</p>
+<p>He was specifically asking if PDF Redact Tools, a tool that I developed to securely redact documents, could be used in Tails to safely sanitize potentially-malicious PDFs before opening them. Yes you can, but Qubes offers some built-in tools that do a better job of this, in a safer manner, with less hassle, and that’s quicker and easier.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+        </div>
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name centered"><a href="../../../">Micah Lee's blog</a></p>
+      <p class="centered"><img class="fullwidth" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Director of Infosec at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Advisor at <a href="https://ddosecrets.com/">DDoSecrets</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Cofounded <a href="https://freedom.press/">Freedom of the Press</a> (former)
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://semiphemeral.com">Semiphemeral</a>
+        </li>
+      </ul>
+
+      <p class="centered"><iframe class="centered" src="https://snowflake.torproject.org/embed.html" width="320"
+          height="240" frameborder="0" scrolling="no"></iframe></p>
+
+      <p class="centered"><a href="https://standwithreality.org/"><img class="fullwidth"
+            src="../../../static/images/reality.png"></a>
+      </p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?
+      <p>
+      <p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License"
+            src="../../../static/images/cc-by-nc.png"></a>
+        <br />
+        <br />
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative
+          Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me
+        credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must
+        make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+</body>
