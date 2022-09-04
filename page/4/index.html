@@ -18,6 +18,38 @@
       
   <div class="blog-post">
     
+    
+      <h1 class="article-title"><a href="../../2014/04/dual-booting-qubes-and-ubuntu-with-encrypted-disks/">Dual-booting Qubes and Ubuntu with Encrypted Disks</a></h1>
+    
+    <p class="meta">
+      Posted April 23, 2014
+      
+        in
+        
+          <a class="tag" href="../../tags/crypto">crypto</a>
+        
+          <a class="tag" href="../../tags/linux">linux</a>
+        
+          <a class="tag" href="../../tags/security">security</a>
+        
+          <a class="tag" href="../../tags/qubes">qubes</a>
+        
+      
+    </p>
+    
+      <p>Qubes is my preferred operating system, but occasionally you need to run something else. It’s hard to get certain hardware working the way you expect in Qubes, like webcams or non-disk USB devices. And Qubes VMs don’t support 3D acceleration, which you might occasionally need. You also can’t run VirtualBox inside of Qubes. You normally don’t have any reason to do this, except for very specific cases, like software development with Vagrant.</p>
+<p>So here are instructions for how to dual-boot Qubes R2 rc1 and Ubuntu 14.04 LTS, using disk encryption for both. You should be able to adopt this same technique to dual-boot pretty much any two GNU/Linux distros with disk encryption. Keep in mind that if you’re booted into Ubuntu and you get owned, it’s possible for the attacker to then compromise Qubes. (You have to get really, really, really owned for an attacker who compromised Qubes to then compromise Ubuntu.)</p>
+
+      <p><a href="../../2014/04/dual-booting-qubes-and-ubuntu-with-encrypted-disks/">Continue reading →</a></p>
+    
+  </div>
+
+    
+  
+    
+      
+  <div class="blog-post">
+    
     <p class="feature-image">
       <img src="../../2014/04/the-operating-system-that-can-protect-you-even-if-you-get-hacked/qubes.png" />
     </p>
@@ -282,37 +314,6 @@
 
     
   
-    
-      
-  <div class="blog-post">
-    
-    
-      <h1 class="article-title"><a href="../../2013/07/despite-googles-statement-they-still-have-access-to-your-wifi-passwords/">Despite Google’s statement, they still have access to your wifi passwords</a></h1>
-    
-    <p class="meta">
-      Posted July 19, 2013
-      
-        in
-        
-          <a class="tag" href="../../tags/crypto">crypto</a>
-        
-          <a class="tag" href="../../tags/mobile">mobile</a>
-        
-          <a class="tag" href="../../tags/security">security</a>
-        
-      
-    </p>
-    
-      <p><em><strong>UPDATE:</strong> The Android bug tracker <a href="https://code.google.com/p/android/issues/detail?id=57560#c33">isn’t the correct place</a> to ask Google to fix this bug. The backup/restore feature is part of the proprietary Google apps for Android, not the open source Android project. <a href="https://productforums.google.com/forum/#!category-topic/mobile/android-devices/android-applications/D6vWpQu8AWU">This thread on the Google product forums</a> is the correct place.</em></p>
-<p>Earlier this week <a href="http://arstechnica.com/security/2013/07/does-nsa-know-your-wifi-password-android-backups-may-give-it-to-them/">Ars Technica covered</a> a <a href="https://code.google.com/p/android/issues/detail?id=57560">bug report</a> I posted on the Android issue tracker about the “Backup and restore” feature not offering encrypted backups.</p>
-<p>Because there’s no option to encrypt your backup data on your Android device with a passphrase that you set, Google has the capability to see the plaintext data, including all your saved wifi passwords. Google can then be compelled to give up this data (and any other user data that they store) to the US government when requested to do so.</p>
-
-      <p><a href="../../2013/07/despite-googles-statement-they-still-have-access-to-your-wifi-passwords/">Continue reading →</a></p>
-    
-  </div>
-
-    
-  
 
   
   <div class="pagination">
@@ -374,11 +375,15 @@
         </li>
         <li>
           <i class="fas fa-code-branch"></i>
-          <a href="https://onionshare.org">OnionShare</a>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
         </li>
         <li>
           <i class="fas fa-code-branch"></i>
-          <a href="https://dangerzone.rocks">Dangerzone</a>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
         </li>
         <li>
           <i class="fas fa-code-branch"></i>
