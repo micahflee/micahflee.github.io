@@ -3,11 +3,11 @@ let rotation = 0;
 
 setInterval(function(){
     background.style.transform = "rotate("+rotation+"deg)";
-    rotation += 0.001;
+    rotation += 0.02;
     if (rotation > 360) {
         rotation = 0;
     }
-}, 1);
+}, 200);
 
 function centerBackground() {
     let width = document.body.clientWidth;
