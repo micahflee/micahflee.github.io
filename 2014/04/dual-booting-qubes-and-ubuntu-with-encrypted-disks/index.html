@@ -112,12 +112,38 @@ sudo grub2-install /dev/sda
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">Palibe Presley</p>
-        <p class="legacy-comment-meta-pub_date">November 25, 2015 03:31 AM</p>
+        <p class="legacy-comment-meta-author">Mich</p>
+        <p class="legacy-comment-meta-pub_date">November 2, 2015 12:05 PM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>any thoughts about how this would work with dual booting windows instead of ubuntu?  i would imagine that as long as i know the correct partition to use it would allow ntldr to load?</p>
+      <p>Hello, I have a question, because I did some "mistakes".
+I installed SolydX and Qubes as described. Everything worked fine. After time I had some problems with qubes, so I decided to reinstall them. In SolydX I deleted Qubes partitions (with knowledge that there is SolydX grub in /dev/sda1). Then I did same steps like before.
+Now I am not able to boot SolydX. Nothing is happen in this option. I can boot only Qubes.
+Can you help me?
+TA+BR, Mich</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">hardbox</p>
+        <p class="legacy-comment-meta-pub_date">April 23, 2014 08:35 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>typo:
+menuenty "Ubuntu" {</p>
+<p>should be:
+menuentry "Ubuntu" {</p>
 
     </div>
   </div>
@@ -130,13 +156,12 @@ sudo grub2-install /dev/sda
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">Reader</p>
-        <p class="legacy-comment-meta-pub_date">December 12, 2015 04:25 PM</p>
+        <p class="legacy-comment-meta-author">micah</p>
+        <p class="legacy-comment-meta-pub_date">April 24, 2014 11:56 AM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>Replace 'Ubuntu' with 'Windows' in the script and you should be good to go.</p>
-<p>You're chainloading into the booter on the other partition - whether that other booter is grub2 or ntldr is irrelevant to qubes bootloader.</p>
+      <p>Thanks, fixed.</p>
 
     </div>
   </div>
@@ -197,14 +222,151 @@ sudo grub2-install /dev/sda
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">Sam</p>
-        <p class="legacy-comment-meta-pub_date">February 4, 2016 12:31 PM</p>
+        <p class="legacy-comment-meta-author">Tschernobyl</p>
+        <p class="legacy-comment-meta-pub_date">April 15, 2016 12:45 PM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>I am installing Ubuntu 14 and qubes r3 on an external USB HDD. I partitioned a 2tb HDD with /root then ubuntu ext4 1tb, then unallocated space, then 500 gb fat32 /dos.</p>
-<p>I installed ubuntu without any problems. When installing Qubes all goes well, it finds the 500gb free space and starts installing until it gets to Dom0 making the swap partition and it crashes. I do not use a swap partition in Ubuntu. Apparently there is some bug with going without a swap partition in Qubes or making it on an external usb hdd. Can I manually partition Qubes to install without a swap partition? Or anyother solution?</p>
-<p>Sam.</p>
+      <p>The menuentry Ubuntu in Grub won't load. Are you sure this piece of code is correct? Is the hd0,1 part generic, and if not, where will you find your own parameters for this?</p>
+<p>menuentry "Ubuntu" {
+set root=(hd0,1)
+chainloader +1
+}</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Michael Siepmann</p>
+        <p class="legacy-comment-meta-pub_date">November 27, 2015 09:16 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Thanks for this post.  Re "Keep in mind that if you’re booted into Ubuntu and you get owned, it’s possible for the attacker to then compromise Qubes" how about running Qubes from a USB 3.0 drive, which you remove when using Ubuntu (or whatever other OS is on the computer's internal disk)?  According to <a href="https://www.qubes-os.org/doc/system-requirements/">https://www.qubes-os.org/doc/system-requirements/</a>:  "Qubes can be installed on a USB flash drive or external disk, and testing has shown that this works very well. A fast USB 3.0 flash drive is recommended".</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Reader</p>
+        <p class="legacy-comment-meta-pub_date">December 12, 2015 04:35 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Not sure “Keep in mind that if you’re booted into Ubuntu and you get owned, it’s possible for the attacker to then compromise Qubes” is particularly significant/likely.</p>
+<p>Each side is encrypted with it's own / different key. An owned Ubuntu should not be able to affect Qubes encrypted area. I suppose it could delete Qubes, but the value to such attack is to surreptitiously attack and/or observe. You know if Qubes is gone, something's up.</p>
+<p>However, I don't have the expertise to answer how vulnerable Qubes boot is to such a Kubuntu owning, nor whether a Maid or USB attack under Kubuntu could impact Qubes.</p>
+<p>Seems prudent to execute one's favourite boot checksum verification process - you're still owned, but at least you find out that you are.</p>
+<p>Certainly a good question - a link in the article to the answer of which would be appreciated.</p>
+<p>"how about running Qubes from a USB 3.0 drive, which you remove when using Ubuntu (or whatever other OS is on the computer’s internal disk)?"</p>
+<p>Speed. And ... you've disabled all but internal hard drive boot, and passworded the BIOS, already, right? i.e. No USB boot permitted. Else ... Maid vulnerability exists - what's to say some other malicious USB isn't booted without your knowledge, infecting boot ... owning both Ubuntu and Qubes later. Unknowingly.</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">December 12, 2015 05:13 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>If you're dual-booting Ubuntu and Qubes, and an attacker has owned your Ubuntu, they can modify your Qubes's /boot to do an evil maid attack. Specifically, they can replace the cryptsetup binary with a malicious one. So the next time you boot into Qubes and it asks you to type your encryption passphrase, you'll be typing that into the attacker's program rather than the legit one.</p>
+<p>If you store Qubes's /boot on removable media like a USB stick, then this won't be possible. However it might be possible for the attacker to update your BIOS firmware from Ubuntu, which could then spy on any OS you use on that hardware, including Qubes.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Palibe Presley</p>
+        <p class="legacy-comment-meta-pub_date">November 25, 2015 03:31 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>any thoughts about how this would work with dual booting windows instead of ubuntu?  i would imagine that as long as i know the correct partition to use it would allow ntldr to load?</p>
+
+    </div>
+  </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Reader</p>
+        <p class="legacy-comment-meta-pub_date">December 12, 2015 04:25 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Replace 'Ubuntu' with 'Windows' in the script and you should be good to go.</p>
+<p>You're chainloading into the booter on the other partition - whether that other booter is grub2 or ntldr is irrelevant to qubes bootloader.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">davee</p>
+        <p class="legacy-comment-meta-pub_date">May 21, 2015 05:49 AM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>Thanks for posting this HOWTO: this is exactly what I was planning to do myself and you've laid out the procedure perfectly. Cheers :-)</p>
+<p>Dave.</p>
 
     </div>
   </div>
@@ -265,18 +427,33 @@ esrt: ESRT header is not in the memory map.
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">Reader</p>
-        <p class="legacy-comment-meta-pub_date">December 12, 2015 04:17 PM</p>
+        <p class="legacy-comment-meta-author">Sam</p>
+        <p class="legacy-comment-meta-pub_date">February 4, 2016 12:34 PM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>" the GUI partitioning tools don’t make it simple to encrypt your swap with the same key that you use to encrypt your root partition."</p>
-<ul>
-<li>but do you need to?</li>
-</ul>
-<p>By your / a reasonable argument, you don't need swap to boot. But you could turn it on after boot, automatically / scripted even - and have it use a different key.</p>
-<p>Not sure a different key is good or bad - haven't completely through through that yet.</p>
-<p>But the question of '-but do you need to', remains.</p>
+      <p>/boot, not /root</p>
+
+    </div>
+  </div>
+  
+
+            
+          
+            
+              
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Sam</p>
+        <p class="legacy-comment-meta-pub_date">February 4, 2016 12:31 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I am installing Ubuntu 14 and qubes r3 on an external USB HDD. I partitioned a 2tb HDD with /root then ubuntu ext4 1tb, then unallocated space, then 500 gb fat32 /dos.</p>
+<p>I installed ubuntu without any problems. When installing Qubes all goes well, it finds the 500gb free space and starts installing until it gets to Dom0 making the swap partition and it crashes. I do not use a swap partition in Ubuntu. Apparently there is some bug with going without a swap partition in Qubes or making it on an external usb hdd. Can I manually partition Qubes to install without a swap partition? Or anyother solution?</p>
+<p>Sam.</p>
 
     </div>
   </div>
@@ -360,93 +537,12 @@ What must i write inside grub.cfg file that is inside Grub2_vg_crypt-Grub2_lg_cr
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">robotnumber401</p>
-        <p class="legacy-comment-meta-pub_date">September 19, 2015 04:32 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>How can i do this with my boot files on a seperate hard drive and custom (read: more secure) full disk encryption? Say i have a laptop with weak processing power, the default ubiquity settings may not be secure 'enough'.</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Sam</p>
-        <p class="legacy-comment-meta-pub_date">February 4, 2016 12:34 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>/boot, not /root</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Mich</p>
-        <p class="legacy-comment-meta-pub_date">November 2, 2015 12:05 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Hello, I have a question, because I did some "mistakes".
-I installed SolydX and Qubes as described. Everything worked fine. After time I had some problems with qubes, so I decided to reinstall them. In SolydX I deleted Qubes partitions (with knowledge that there is SolydX grub in /dev/sda1). Then I did same steps like before.
-Now I am not able to boot SolydX. Nothing is happen in this option. I can boot only Qubes.
-Can you help me?
-TA+BR, Mich</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
         <p class="legacy-comment-meta-author">Dual-booting Qubes and Ubuntu (encrypted disks) | 0ddn1x: tricks with *nix</p>
         <p class="legacy-comment-meta-pub_date">February 26, 2016 01:00 PM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
       <p>[&#8230;] <a href="https://micahflee.com/2014/04/dual-booting-qubes-and-ubuntu-with-encrypted-disks/">https://micahflee.com/2014/04/dual-booting-qubes-and-ubuntu-with-encrypted-disks/</a> [&#8230;]</p>
-
-    </div>
-  </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">davee</p>
-        <p class="legacy-comment-meta-pub_date">May 21, 2015 05:49 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Thanks for posting this HOWTO: this is exactly what I was planning to do myself and you've laid out the procedure perfectly. Cheers :-)</p>
-<p>Dave.</p>
 
     </div>
   </div>
@@ -479,16 +575,12 @@ TA+BR, Mich</p>
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">Tschernobyl</p>
-        <p class="legacy-comment-meta-pub_date">April 15, 2016 12:45 PM</p>
+        <p class="legacy-comment-meta-author">robotnumber401</p>
+        <p class="legacy-comment-meta-pub_date">September 19, 2015 04:32 PM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>The menuentry Ubuntu in Grub won't load. Are you sure this piece of code is correct? Is the hd0,1 part generic, and if not, where will you find your own parameters for this?</p>
-<p>menuentry "Ubuntu" {
-set root=(hd0,1)
-chainloader +1
-}</p>
+      <p>How can i do this with my boot files on a seperate hard drive and custom (read: more secure) full disk encryption? Say i have a laptop with weak processing power, the default ubiquity settings may not be secure 'enough'.</p>
 
     </div>
   </div>
@@ -498,117 +590,25 @@ chainloader +1
           
             
               
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">hardbox</p>
-        <p class="legacy-comment-meta-pub_date">April 23, 2014 08:35 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>typo:
-menuenty "Ubuntu" {</p>
-<p>should be:
-menuentry "Ubuntu" {</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">micah</p>
-        <p class="legacy-comment-meta-pub_date">April 24, 2014 11:56 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Thanks, fixed.</p>
-
-    </div>
-  </div>
-  
-
-        
-      
-    </div>
-  
-
-            
-          
-            
-              
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Michael Siepmann</p>
-        <p class="legacy-comment-meta-pub_date">November 27, 2015 09:16 AM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>Thanks for this post.  Re "Keep in mind that if you’re booted into Ubuntu and you get owned, it’s possible for the attacker to then compromise Qubes" how about running Qubes from a USB 3.0 drive, which you remove when using Ubuntu (or whatever other OS is on the computer's internal disk)?  According to <a href="https://www.qubes-os.org/doc/system-requirements/">https://www.qubes-os.org/doc/system-requirements/</a>:  "Qubes can be installed on a USB flash drive or external disk, and testing has shown that this works very well. A fast USB 3.0 flash drive is recommended".</p>
-
-    </div>
-  </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
   <div class="legacy-comment">
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
         <p class="legacy-comment-meta-author">Reader</p>
-        <p class="legacy-comment-meta-pub_date">December 12, 2015 04:35 PM</p>
+        <p class="legacy-comment-meta-pub_date">December 12, 2015 04:17 PM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>Not sure “Keep in mind that if you’re booted into Ubuntu and you get owned, it’s possible for the attacker to then compromise Qubes” is particularly significant/likely.</p>
-<p>Each side is encrypted with it's own / different key. An owned Ubuntu should not be able to affect Qubes encrypted area. I suppose it could delete Qubes, but the value to such attack is to surreptitiously attack and/or observe. You know if Qubes is gone, something's up.</p>
-<p>However, I don't have the expertise to answer how vulnerable Qubes boot is to such a Kubuntu owning, nor whether a Maid or USB attack under Kubuntu could impact Qubes.</p>
-<p>Seems prudent to execute one's favourite boot checksum verification process - you're still owned, but at least you find out that you are.</p>
-<p>Certainly a good question - a link in the article to the answer of which would be appreciated.</p>
-<p>"how about running Qubes from a USB 3.0 drive, which you remove when using Ubuntu (or whatever other OS is on the computer’s internal disk)?"</p>
-<p>Speed. And ... you've disabled all but internal hard drive boot, and passworded the BIOS, already, right? i.e. No USB boot permitted. Else ... Maid vulnerability exists - what's to say some other malicious USB isn't booted without your knowledge, infecting boot ... owning both Ubuntu and Qubes later. Unknowingly.</p>
+      <p>" the GUI partitioning tools don’t make it simple to encrypt your swap with the same key that you use to encrypt your root partition."</p>
+<ul>
+<li>but do you need to?</li>
+</ul>
+<p>By your / a reasonable argument, you don't need swap to boot. But you could turn it on after boot, automatically / scripted even - and have it use a different key.</p>
+<p>Not sure a different key is good or bad - haven't completely through through that yet.</p>
+<p>But the question of '-but do you need to', remains.</p>
 
     </div>
   </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Micah Lee</p>
-        <p class="legacy-comment-meta-pub_date">December 12, 2015 05:13 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>If you're dual-booting Ubuntu and Qubes, and an attacker has owned your Ubuntu, they can modify your Qubes's /boot to do an evil maid attack. Specifically, they can replace the cryptsetup binary with a malicious one. So the next time you boot into Qubes and it asks you to type your encryption passphrase, you'll be typing that into the attacker's program rather than the legit one.</p>
-<p>If you store Qubes's /boot on removable media like a USB stick, then this won't be possible. However it might be possible for the attacker to update your BIOS firmware from Ubuntu, which could then spy on any OS you use on that hardware, including Qubes.</p>
-
-    </div>
-  </div>
-  
-
-        
-      
-    </div>
-  
-
-        
-      
-    </div>
   
 
             

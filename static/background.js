@@ -3,8 +3,8 @@ let rotation = 0;
 
 setInterval(function(){
     background.style.transform = "rotate("+rotation+"deg)";
-    rotation += 0.01;
-    if (rotation > 90) {
+    rotation += 0.001;
+    if (rotation > 360) {
         rotation = 0;
     }
 }, 1);
