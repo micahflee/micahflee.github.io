@@ -20,11 +20,22 @@
 body {
   font-family: 'Roboto', sans-serif;
   background-color: #000000;
-  background-image: url('images/earth.jpg');
-  background-position: top center;
-  background-repeat: no-repeat;
   margin: 20px;
   padding: 0;
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 2048px;
+  height: 2048px;
+  z-index: -1;
+  background-image: url('images/earth.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  object-fit: none; 
 }
 
 a {

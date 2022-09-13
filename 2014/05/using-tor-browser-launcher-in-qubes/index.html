@@ -18,6 +18,7 @@
 </head>
 
 <body>
+  <div class="background"></div>
   <div class="wrapper">
     <article>
       
@@ -75,38 +76,15 @@ rm -r QubesIncoming
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">Brennan Novak</p>
-        <p class="legacy-comment-meta-pub_date">May 30, 2015 05:07 AM</p>
+        <p class="legacy-comment-meta-author">privacyfriend</p>
+        <p class="legacy-comment-meta-pub_date">May 19, 2014 01:55 PM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>Hey Micah. I noticed in your step <blockquote>You’ll need to build an RPM from the torbrowser-launcher source code first. Create a new appvm (I called mine tbl-builder), open a terminal in it, and follow these steps:</blockquote> you seem to be creating a unique "AppVM" just to do the building process, do you do this for building all packages? Is this the more desired / secure approach instead of doing it inside of the fedora-21 TemplateVM ?</p>
+      <p>Is it OK to remove the torlauncher TorBrowser Addon when running in transparent torification mode? (Starting Torbrowser without that addon is ALOT faster.)</p>
 
     </div>
   </div>
-  
-    <div class="legacy-comment-nested">
-      
-        
-          
-  <div class="legacy-comment">
-    <div class="legacy-comment-meta">
-      <i class="fas fa-mask"></i>
-      <div>
-        <p class="legacy-comment-meta-author">Micah Lee</p>
-        <p class="legacy-comment-meta-pub_date">May 30, 2015 09:34 PM</p>
-      </div>
-    </div>
-    <div class="legacy-comment-body">
-      <p>I don't think this is necessarily more secure than just installing these in the fedora-21 template. I just didn't want people mucking up their template with packages they might not necessarily want.</p>
-
-    </div>
-  </div>
-  
-
-        
-      
-    </div>
   
 
             
@@ -225,17 +203,38 @@ I study online whonix runs flash safely if asked, so can Qubes do the same? Than
     <div class="legacy-comment-meta">
       <i class="fas fa-mask"></i>
       <div>
-        <p class="legacy-comment-meta-author">privacyfriend</p>
-        <p class="legacy-comment-meta-pub_date">May 15, 2014 01:07 PM</p>
+        <p class="legacy-comment-meta-author">Brennan Novak</p>
+        <p class="legacy-comment-meta-pub_date">May 30, 2015 05:07 AM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>Hello Micah, 
-thank you for your guide.</p>
-<p>you might want to add 'rpm-build' to the list of packages to install before building, otherwise building will fail because rpmspec is missing.</p>
+      <p>Hey Micah. I noticed in your step <blockquote>You’ll need to build an RPM from the torbrowser-launcher source code first. Create a new appvm (I called mine tbl-builder), open a terminal in it, and follow these steps:</blockquote> you seem to be creating a unique "AppVM" just to do the building process, do you do this for building all packages? Is this the more desired / secure approach instead of doing it inside of the fedora-21 TemplateVM ?</p>
 
     </div>
   </div>
+  
+    <div class="legacy-comment-nested">
+      
+        
+          
+  <div class="legacy-comment">
+    <div class="legacy-comment-meta">
+      <i class="fas fa-mask"></i>
+      <div>
+        <p class="legacy-comment-meta-author">Micah Lee</p>
+        <p class="legacy-comment-meta-pub_date">May 30, 2015 09:34 PM</p>
+      </div>
+    </div>
+    <div class="legacy-comment-body">
+      <p>I don't think this is necessarily more secure than just installing these in the fedora-21 template. I just didn't want people mucking up their template with packages they might not necessarily want.</p>
+
+    </div>
+  </div>
+  
+
+        
+      
+    </div>
   
 
             
@@ -247,11 +246,13 @@ thank you for your guide.</p>
       <i class="fas fa-mask"></i>
       <div>
         <p class="legacy-comment-meta-author">privacyfriend</p>
-        <p class="legacy-comment-meta-pub_date">May 19, 2014 01:55 PM</p>
+        <p class="legacy-comment-meta-pub_date">May 15, 2014 01:07 PM</p>
       </div>
     </div>
     <div class="legacy-comment-body">
-      <p>Is it OK to remove the torlauncher TorBrowser Addon when running in transparent torification mode? (Starting Torbrowser without that addon is ALOT faster.)</p>
+      <p>Hello Micah, 
+thank you for your guide.</p>
+<p>you might want to add 'rpm-build' to the list of packages to install before building, otherwise building will fail because rpmspec is missing.</p>
 
     </div>
   </div>
@@ -397,4 +398,5 @@ thank you for your guide.</p>
       </p>
     </div>
   </div>
+  <script src="../../../static/background.js"></script>
 </body>
