@@ -1,0 +1,206 @@
+<!doctype html>
+
+<head>
+  <meta charset="utf-8">
+  <title>OnionShare 2.6 has a quickstart screen, automatic censorship circumvention, and better packaging</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@micahflee" />
+  <meta name="twitter:creator" content="@micahflee" />
+  <meta property="og:url" content="https://micahflee.com/2022/10/new-censorship-circumvention-features-come-to-onionshare-26" />
+  <meta property="og:title" content="OnionShare 2.6 has a quickstart screen, automatic censorship circumvention, and better packaging" />
+  <meta property="og:image" content="https://micahflee.com/2022/10/new-censorship-circumvention-features-come-to-onionshare-26/onionshare-2.6.png" />
+
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="../../../static/fontawesome/css/all.min.css">
+</head>
+
+<body>
+  <div class="background"></div>
+  <div class="wrapper">
+    <article>
+      
+  
+  <div class="blog-post">
+    
+    <p class="feature-image">
+      <img src="./onionshare-2.6.png" />
+    </p>
+    
+    
+      <h1 class="article-title">OnionShare 2.6 has a quickstart screen, automatic censorship circumvention, and better packaging</h1>
+    
+    <p class="meta">
+      Posted October 9, 2022
+      
+        in
+        
+          <a class="tag" href="../../../tags/onionshare">onionshare</a>
+        
+          <a class="tag" href="../../../tags/code">code</a>
+        
+      
+    </p>
+    
+      <p>I'm excited to announce that the OnionShare team just released version 2.6! You can download it from <a href="https://onionshare.org/">onionshare.org</a>. Here are the main things that are new.</p>
+<h1 id="quickstart-screen">Quickstart screen</h1><p>When you opened OnionShare it used to immediately try connecting to Tor, and if the connection failed, or if you canceled it, it would <em>then</em> let you adjust your Tor settings. We've now introduced a "quickstart" screen which lets you choose to change your Tor settings before it tries to connect if you'd like to. (And it also has an awesome rocket ship launching animation.)</p>
+<p>This is important when it comes to internet censorship. OnionShare keeps its users anonymous by using Tor. Because Tor is a common way to bypass censorship, networks that block part of the internet also often block Tor. There are even entire countries, like Russia, Iran, and China, that try to block Tor. If you're in one of those countries and you open OnionShare, it's better that your computer doesn't automatically connect to a Tor node IP address, instead giving you a chance to change your Tor settings to bypass censorship, like by using a <a href="https://tb-manual.torproject.org/bridges/">Tor bridge</a>, before you connect.</p>
+<h1 id="automatic-censorship-circumvention">Automatic censorship circumvention</h1><p>Bypassing censorship sounds complicated, but with Tor it's actually pretty easy, and this release of OnionShare makes it even simpler. If you try connecting to Tor and it fails because of internet censorship, OnionShare will then let you try to automatically bypass it. You just click a button and OnionShare will automatically figure out the best way to bypass the censorship that you're currently facing, and then connect to Tor. That's it.</p>
+<p>Behind the scenes, OnionShare use's Tor Project's new distribution system for bridges called <a href="https://gitlab.torproject.org/tpo/anti-censorship/rdsys">rdsys</a>, or the "censorship API". Using a technique called domain fronting, OnionShare makes a connection to rdsys that's disguised as an innocuous request to a major CDN, the kind that you make thousands of times a day as you use the web, asking for ideal settings. Based on the country that you're connecting from, the rdsys server makes its best guess at what your Tor settings should be to bypass censorship. It might tell you to connect using an obfs4proxy bridge, and provide you with IP addresses for some bridges that aren't block in your country; or it might tell you to connect using <a href="https://snowflake.torproject.org/">Snowflake</a>. Tor keeps its rdsys database updated based on the current state of internet censorship.</p>
+<p>Late last year, <a href="https://ooni.org/post/2021-russia-blocks-tor/">Russia started blocking Tor</a>. While we were developing this feature we had a friend in Russia test it for us. They went to a public wifi network and opened an early build of OnionShare. They tried connecting to Tor, which failed because it was blocked, and then tried automatically bypassing it, and it succeeded. This should make bypassing censorship much simpler for OnionShare users.</p>
+<h1 id="better-packaging">Better packaging</h1><p>Finally, this release includes a lot of new work going into automating packaging. OnionShare is now available for these platforms:</p>
+<ul>
+<li>Windows (64-bit)</li>
+<li>Windows (32-bit)</li>
+<li>macOS (Intel, but it runs on Apple Silicon and some day we'll support it natively)</li>
+<li>Linux: <a href="https://flathub.org/apps/details/org.onionshare.OnionShare">Flatpak</a> (x86_64 and arm64)</li>
+<li>Linux: <a href="https://snapcraft.io/onionshare">Snapcraft</a> (amd64, arm64, and armhf)</li>
+</ul>
+<p>I'm particularly excited about the Snapcraft work because this makes it much simpler to install in ARM-based Linux systems, such as <a href="https://micahflee.com/2021/02/onionshare-anonymous-dropbox-raspberry-pi/">Raspberry Pis</a>. All you have to do, after <a href="https://snapcraft.io/docs/installing-snap-on-raspbian">installing Snap</a>, is run: <code>sudo snap install onionshare</code>. Then you can run the command line version of OnionShare with <code>onionshare.cli</code>.</p>
+<p>The new Snapcraft packaging also automatically builds and pushes changes to the Snapcraft edge channel. So if you want to try the very latest version of OnionShare, basically the code in the main branch <a href="https://github.com/onionshare/onionshare">on github</a>, you can install that by running: <code>sudo snap install onionshare --edge</code>.</p>
+
+
+      <div id="commento"></div>
+      <script src="https://cdn.commento.io/js/commento.js"></script>
+
+      
+    
+  </div>
+
+
+    </article>
+    <div class="sidebar">
+      <p class="name centered"><a href="../../../">Micah Lee's blog</a></p>
+      <p class="centered"><img class="fullwidth" src="../../../static/images/micah-coffee.gif"></p>
+      <ul class="sidebar-items">
+        <li>
+          <i class="fas fa-bolt"></i>
+          Director of Infosec at <a href="https://theintercept.com/staff/micah-lee/">The Intercept</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Advisor at <a href="https://ddosecrets.com/">DDoSecrets</a>
+        </li>
+        <li>
+          <i class="fas fa-rocket"></i>
+          Cofounded <a href="https://freedom.press/">Freedom of the Press</a> (former)
+        </li>
+        <li>
+          <i class="fas fa-at"></i>
+          micah@micahflee.com
+        </li>
+        <li>
+          <i class="fas fa-lock"></i>
+          PGP <a href="/micah.asc">0x403C2657CD994F73</a>
+        </li>
+        <li>
+          <i class="fab fa-keybase"></i>
+          <a href="https://keybase.io/micahflee">@micahflee</a> on Keybase
+        </li>
+        <li>
+          <i class="fab fa-twitter"></i>
+          <a href="https://twitter.com/micahflee">@micahflee</a> on Twitter
+        </li>
+        <li>
+          <i class="fab fa-mastodon"></i>
+          <a href="https://mastodon.social/@micahflee">@micahflee@mastodon.social</a>
+        </li>
+        <li>
+          <i class="fas fa-rss"></i>
+          <a href="../../../feed.xml">Subscribe to feed</a>
+        </li>
+        <li>&nbsp;</li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/micahflee">GitHub</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/onionshare">OnionShare</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/torbrowser-launcher">Tor Browser Launcher</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://github.com/micahflee/passphraseme">passphraseme</a>
+        </li>
+        <li>
+          <i class="fas fa-code-branch"></i>
+          <a href="https://semiphemeral.com">Semiphemeral</a>
+        </li>
+      </ul>
+
+      <p class="centered"><iframe class="centered" src="https://snowflake.torproject.org/embed.html" width="320"
+          height="240" frameborder="0" scrolling="no"></iframe></p>
+
+      <h3>Archives</h3>
+      <p>Looking for an old post?
+      <p>
+      <p>Check the <a href="../../../archives/">archives</a>.</p>
+
+      <h3>Tags</h3>
+      
+      
+  <ul>
+  
+    <li><a href="../../../tags/advisory/">advisory</a></li>
+  
+    <li><a href="../../../tags/code/">code</a></li>
+  
+    <li><a href="../../../tags/crypto/">crypto</a></li>
+  
+    <li><a href="../../../tags/drama/">drama</a></li>
+  
+    <li><a href="../../../tags/hackers/">hackers</a></li>
+  
+    <li><a href="../../../tags/https/">https</a></li>
+  
+    <li><a href="../../../tags/journalism/">journalism</a></li>
+  
+    <li><a href="../../../tags/leaks/">leaks</a></li>
+  
+    <li><a href="../../../tags/linux/">linux</a></li>
+  
+    <li><a href="../../../tags/mobile/">mobile</a></li>
+  
+    <li><a href="../../../tags/onionshare/">onionshare</a></li>
+  
+    <li><a href="../../../tags/openpgp/">openpgp</a></li>
+  
+    <li><a href="../../../tags/qubes/">qubes</a></li>
+  
+    <li><a href="../../../tags/security/">security</a></li>
+  
+    <li><a href="../../../tags/semiphemeral/">semiphemeral</a></li>
+  
+    <li><a href="../../../tags/spies/">spies</a></li>
+  
+    <li><a href="../../../tags/subgraph/">subgraph</a></li>
+  
+    <li><a href="../../../tags/sysadmin/">sysadmin</a></li>
+  
+    <li><a href="../../../tags/tor/">tor</a></li>
+  
+    <li><a href="../../../tags/wikileaks/">wikileaks</a></li>
+  
+  </ul>
+
+
+      <p class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License"
+            src="../../../static/images/cc-by-nc.png"></a>
+        <br />
+        <br />
+        Blog posts are licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative
+          Commons Attribution-NonCommercial</a>. You are free to share and adapt this content, but you must give me
+        credit, you can't use it for commercial purposes, and if you make adaptations (like a translation), you must
+        make it clear that it has been modified.
+      </p>
+    </div>
+  </div>
+  <script src="../../../static/background.js"></script>
+</body>
